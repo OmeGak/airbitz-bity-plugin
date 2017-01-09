@@ -41,13 +41,12 @@ module.exports = function setupProcessingOfStylesheets(webpackCfg, { IS_PRODUCTI
   const { plugins = [], module: prevModule = {} } = webpackCfg;
   const { rules = [] } = prevModule;
 
+  const filename = IS_PRODUCTION_MODE ? '[name]-[chunkhash]' : '[name]';
+
   rules.push(createRule(/\.css$/, defaultLoaders, null, IS_PRODUCTION_MODE));
   rules.push(createRule(/\.less$/, defaultLoaders, lessLoaderCfg, IS_PRODUCTION_MODE));
   rules.push(createRule(/\.(scss|sass)$/, defaultLoaders, sassLoaderCfg, IS_PRODUCTION_MODE));
 
-  // ---------
-  // configure postcss-loader
-  // ---------
   const postCssLoaderOptions = {
     plugins: [
       autoprefixer
@@ -56,6 +55,11 @@ module.exports = function setupProcessingOfStylesheets(webpackCfg, { IS_PRODUCTI
 
   if (IS_PRODUCTION_MODE) {
     postCssLoaderOptions.plugins.push(cssnano);
+
+    plugins.push(new ExtractTextPlugin({
+      filename: `${filename}.css`,
+      allChunks: true
+    }));
   }
 
   plugins.push(new webpack.LoaderOptionsPlugin({
