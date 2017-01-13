@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   extends: 'airbnb',
   env: {
     browser: true,
@@ -20,6 +21,8 @@ module.exports = {
     'vars-on-top': 'off',
     'max-len': ['error', 120],
     'import/imports-first': 'off',
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
+    
+    'react/jsx-filename-extension': 'off'
   }
 };
