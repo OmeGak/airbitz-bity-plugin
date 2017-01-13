@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 
 import Router from 'react-router/lib/Router';
 import hashHistory from 'react-router/lib/hashHistory';
-// import { Router, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from './routes';
 
