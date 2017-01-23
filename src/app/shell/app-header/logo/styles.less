@@ -1,5 +1,20 @@
-:local(.logo) {
-  display: inline-block;
-  width: auto;
-  height: 100%;
+:local {
+  .root {
+    display: inline-block;
+    width: auto;
+    height: 100%;
+  }
+
+  .visibleImg {
+    display: inline-block;
+    width: auto;
+    height: 100%;
+  }
+
+  .hiddenImg {
+    position: absolute;
+    left: -1000px;
+    top: -1000px;
+    visibility: hidden;
+  }
 }
