@@ -14,7 +14,7 @@ const defaultProps = {
 
 export default function MenuBtn({ className: extraClassName, inverted }) {
   const className = classNames(styles.menu, extraClassName, {
-    [styles.menuInverted]: inverted
+    [styles.inverted]: inverted
   });
 
   return (
