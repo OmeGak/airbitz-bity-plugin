@@ -5,7 +5,7 @@ import { Form, Field, Errors } from 'react-redux-form';
 import { connect } from 'react-redux';
 import formStyles from '../form/styles.less';
 import ErrorMsg from '../form/error-msg';
-import { isNotEmptyString, isValidEmail } from '../../lib/validators';
+import { isNotEmptyString, isValidEmail } from '../../../lib/validators';
 
 const propTypes = {
   modelName: PropTypes.string.isRequired,

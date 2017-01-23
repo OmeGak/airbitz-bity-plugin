@@ -1,6 +1,6 @@
 import React from 'react';
 import Page from '../lib/page';
-import SignupForm from './signup-form';
+import SignupForm from './lib/signup-form';
 
 export default function SignupPage() {
   return (

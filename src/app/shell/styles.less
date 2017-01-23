@@ -1,1 +1,33 @@
+@import './bity-colors';
 @import './bootstrap/styles';
+
+:local {
+  .app {
+    position: relative;
+    
+    display: block;
+    width:100%;
+    
+    margin-top: 50px; // the height of header
+  }
+  
+  .header {
+    position: fixed;
+    left: 0;
+    top: 0;
+    
+    display: block;
+    width: 100%;
+    
+    background-color: @body-bg;
+    
+    z-index: 10;
+  }
+  
+  .content {
+    position: relative;
+    display: block;
+    
+    z-index: 0;
+  }
+}

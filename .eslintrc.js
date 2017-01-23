@@ -23,6 +23,7 @@ module.exports = {
     'import/imports-first': 'off',
     'import/prefer-default-export': 'off',
     
-    'react/jsx-filename-extension': 'off'
+    'react/jsx-filename-extension': 'off',
+    'jsx-a11y/img-has-alt': 'off'
   }
 };

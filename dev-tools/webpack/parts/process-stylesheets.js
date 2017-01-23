@@ -13,7 +13,8 @@ const cssLoaderCfg = {
     modules: false,
     camelCase: true,
     importLoaders: 1,
-    localIdentName: '[local]'
+    localIdentName: '[local]__[path][name]__[hash:base64:5]',
+    minimize: false
   }
 };
 
@@ -65,6 +66,7 @@ module.exports = function setupProcessingOfStylesheets(webpackCfg, { IS_PRODUCTI
   plugins.push(new webpack.LoaderOptionsPlugin({
     test: /\.(css|less|scss|sass)$/,
     options: {
+      context: '', // see https://github.com/webpack/css-loader/issues/340#issuecomment-273906395
       postcss: postCssLoaderOptions
     }
   }));

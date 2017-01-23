@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
-import Nav from './nav';
-import './styles.less';
+// import Nav from './nav';
+import Header from './app-header';
+import Notifications from '../notifications/notifications';
+import styles from './styles.less';
 
 const propTypes = {
   children: PropTypes.node
@@ -12,9 +14,14 @@ const defaultProps = {
 
 export default function Shell({ children }) {
   return (
-    <div>
-      <Nav />
-      {children}
+    <div className={styles.app}>
+      <div className={styles.header}>
+        <Header />
+      </div>
+      <div className={styles.content}>
+        {children}
+      </div>
+      <Notifications />
     </div>
   );
 }
