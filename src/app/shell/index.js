@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 // import Nav from './nav';
 import Header from './app-header';
+import Footer from './footer';
 import Notifications from '../notifications/notifications';
 import styles from './styles.less';
 
@@ -21,6 +22,7 @@ export default function Shell({ children }) {
       <div className={styles.content}>
         {children}
       </div>
+      <Footer />
       <Notifications />
     </div>
   );
