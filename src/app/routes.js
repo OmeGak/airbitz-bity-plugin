@@ -26,7 +26,7 @@ export default {
       component: CreateOrderPage
     },
     {
-      path: 'details',
+      path: 'account',
       component: DetailsPage
     }
   ]
