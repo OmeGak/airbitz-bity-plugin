@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import normalizeResponsePlugin from './plugins/normalize-response-plugin';
 import normalizeRequestCfgPlugin from './plugins/normalize-request-cfg-plugin';
 
