@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
-// import Nav from './nav';
 import Header from './app-header';
 import Footer from './footer';
+import Menu from './menu';
 import Notifications from '../notifications/notifications';
 import styles from './styles.less';
 
@@ -15,14 +15,17 @@ const defaultProps = {
 
 export default function Shell({ children }) {
   return (
-    <div className={styles.app}>
-      <div className={styles.header}>
-        <Header />
+    <div className={styles.root}>
+      <Menu />
+      <div className={styles.app}>
+        <div className={styles.header}>
+          <Header />
+        </div>
+        <div className={styles.content}>
+          {children}
+        </div>
+        <Footer />
       </div>
-      <div className={styles.content}>
-        {children}
-      </div>
-      <Footer />
       <Notifications />
     </div>
   );

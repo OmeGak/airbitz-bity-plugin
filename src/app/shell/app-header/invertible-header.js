@@ -65,7 +65,7 @@ export default class InvertibleHeader extends Component {
 
   render() {
     const { inverted } = this.state;
-    return <Header inverted={inverted} />;
+    return <Header inverted={inverted} {...this.props} />;
   }
 }
 

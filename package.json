@@ -71,6 +71,7 @@
     "classnames": "^2.2.5",
     "cookies-js": "^1.2.3",
     "react": "^15.4.2",
+    "react-burger-menu": "^1.10.10",
     "react-dom": "^15.4.2",
     "react-notification-system": "^0.2.11",
     "react-notification-system-redux": "^1.0.11",

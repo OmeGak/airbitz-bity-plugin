@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import createBity from './create-bity';
 import setupAuth from './auth/data/setup';
 import setupNotifications from './notifications/setup';
+import setupSidebarMenu from './shell/menu/state/setup';
 
 const bity = createBity();
 
@@ -12,6 +13,7 @@ let cfg = {
 
 cfg = setupAuth(cfg, bity);
 cfg = setupNotifications(cfg);
+cfg = setupSidebarMenu(cfg);
 
 const { reducers, sagas } = cfg;
 const reducer = combineReducers(reducers);

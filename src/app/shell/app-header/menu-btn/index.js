@@ -4,21 +4,23 @@ import styles from './styles.less';
 
 const propTypes = {
   className: PropTypes.string,
-  inverted: PropTypes.bool
+  inverted: PropTypes.bool,
+  onClick: PropTypes.func
 };
 
 const defaultProps = {
   className: '',
-  inverted: false
+  inverted: false,
+  onClick: () => {}
 };
 
-export default function MenuBtn({ className: extraClassName, inverted }) {
+export default function MenuBtn({ className: extraClassName, inverted, onClick }) {
   const className = classNames(styles.menu, extraClassName, {
     [styles.inverted]: inverted
   });
 
   return (
-    <div className={className}>
+    <div className={className} onClick={onClick}>
       <div className={styles.bar} />
       <div className={styles.bar} />
       <div className={styles.bar} />

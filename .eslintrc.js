@@ -24,6 +24,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     
     'react/jsx-filename-extension': 'off',
-    'jsx-a11y/img-has-alt': 'off'
+    'jsx-a11y/img-has-alt': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off'
   }
 };

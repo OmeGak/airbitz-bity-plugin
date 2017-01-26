@@ -6,14 +6,15 @@ import Logo from './logo';
 import MenuBtn from './menu-btn';
 
 const propTypes = {
-  inverted: PropTypes.bool
+  inverted: PropTypes.bool,
+  onMenuBtnClick: PropTypes.func.isRequired
 };
 
 const defaultProps = {
   inverted: false
 };
 
-export default function AppHeader({ inverted }) {
+export default function AppHeader({ inverted, onMenuBtnClick }) {
   const className = classNames(styles.header, {
     [styles.inverted]: inverted
   });
@@ -24,7 +25,7 @@ export default function AppHeader({ inverted }) {
         <Logo className={styles.logo} inverted={inverted} />
       </div>
       <div className={styles.menuBtnWrapper}>
-        <MenuBtn className={styles.menuBtn} inverted={inverted} />
+        <MenuBtn className={styles.menuBtn} inverted={inverted} onClick={onMenuBtnClick} />
       </div>
     </div>
   );

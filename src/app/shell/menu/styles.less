@@ -1,0 +1,67 @@
+@import '../bity-colors';
+
+.bm-menu-wrap {
+  z-index: 20 !important;
+}
+
+.bm-menu {
+  box-sizing: border-box;
+  background: @bity-dark-blue;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.bm-overlay {
+  z-index: 11 !important; // it should be above the header
+}
+
+:local {
+  .menuItem {
+    @text-color: rgba(255, 255, 255, 0.7);
+
+    display: block;
+
+    color: @text-color;
+
+    a {
+      display: block;
+      font-weight: 700;
+
+      box-sizing: border-box;
+      padding-left: 30px;
+      padding-top: 13px;
+      padding-bottom: 13px;
+
+      &,
+      &:hover,
+      &:active,
+      &:focus {
+        outline: none;
+        color: @text-color;
+        text-decoration: none;
+      }
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &.activeLink {
+        border-left: 5px solid @bity-yellow;
+        padding-left: 25px; // original 30px - 5px for border-left
+        cursor: default;
+
+        &,
+        &:hover,
+        &:active,
+        &:focus {
+          color: #ffffff;
+          background-color: rgba(255, 255, 255, 0.17);
+        }
+      }
+    }
+  }
+
+  .menuItem + .menuItem {
+    margin-top: 5px;
+  }
+}
