@@ -8,6 +8,9 @@ import DetailsPage from './misc/details-page';
 export default {
   path: '/',
   component: Shell,
+  indexRoute: {
+    onEnter: (nextState, replace) => replace('/orders')
+  },
   childRoutes: [
     {
       path: 'login',
