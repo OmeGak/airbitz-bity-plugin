@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import classNames from 'classnames';
 import { Form, Field, Errors } from 'react-redux-form';
 import { connect } from 'react-redux';
+import Link from '../../../lib/link';
 import formStyles from '../form/styles.less';
 import ErrorMsg from '../form/error-msg';
 import { isNotEmptyString, isValidEmail } from '../../../lib/validators';
@@ -117,7 +117,7 @@ function SignupForm({ modelName, onSubmit, valid }) {
       </div>
       <div>
         <button type="submit" className={submitBtnClassName} disabled={!valid}>signup</button>
-        <Link className={formStyles.formBtn} to="/login">login</Link>
+        <Link className={formStyles.formBtn} to="/login" replace>login</Link>
       </div>
     </Form>
   );

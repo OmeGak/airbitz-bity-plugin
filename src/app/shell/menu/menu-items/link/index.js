@@ -1,34 +1,19 @@
 import React, { PropTypes } from 'react';
-import { Link, withRouter } from 'react-router';
+import Link from '../../../../lib/link';
 import styles from './styles.less';
 
 const propTypes = {
   to: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  replace: PropTypes.bool,
-  router: PropTypes.shape({
-    replace: PropTypes.func.isRequired
-  }).isRequired
+  title: PropTypes.string.isRequired
 };
 
-const defaultProps = {
-  replace: false
-};
+const defaultProps = {};
 
-export default withRouter(MenuLink);
-
-function MenuLink({ to, title, replace, router }) {
+export default function MenuLink(props) {
+  const { to, title, ...rest } = props;
   return (
-    <Link className={styles.link} activeClassName={styles.activeLink} to={to} onClick={onClick}>{title}</Link>
+    <Link className={styles.link} activeClassName={styles.activeLink} to={to} {...rest}>{title}</Link>
   );
-
-  function onClick(event) {
-    if (!replace) {
-      return;
-    }
-    event.preventDefault();
-    router.replace(to);
-  }
 }
 
 MenuLink.propTypes = propTypes;
