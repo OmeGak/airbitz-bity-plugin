@@ -21,7 +21,7 @@ module.exports = function setupProcessingOfAssets(webpackCfg, extraCfg) {
   const urlLoaderCfg = {
     loader: 'url-loader',
     options: {
-      limit: 1000,
+      // limit: 1000, // inline all assets everything
       name: `${ASSETS_ROOT}/${filename}`
     }
   };
