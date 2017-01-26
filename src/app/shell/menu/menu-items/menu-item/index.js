@@ -1,21 +1,20 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import styles from './styles.less';
 
 const propTypes = {
-  href: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  children: PropTypes.node,
   onClick: PropTypes.func
 };
 
 const defaultProps = {
-  onClick() {}
+  children: null,
+  onClick: () => {}
 };
 
-export default function MenuItem({ href, title, onClick }) {
+export default function MenuItem({ children, onClick }) {
   return (
     <div className={styles.menuItem} onClick={onClick}>
-      <Link to={href} activeClassName={styles.activeLink}>{title}</Link>
+      {children}
     </div>
   );
 }

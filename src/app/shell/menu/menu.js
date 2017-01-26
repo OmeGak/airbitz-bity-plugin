@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import BurgerMenu from 'react-burger-menu';
-import createMenuItems from './menu-items';
+import createMenuItems from './create-menu-items';
 import './styles.less';
 
 const SlideMenu = BurgerMenu.slide;
@@ -18,10 +18,7 @@ const defaultProps = {
 };
 
 export default function Menu({ isOpen, onStateChange, onMenuItemClick, isAuthenticated }) {
-  const items = createMenuItems({
-    onClick: onMenuItemClick,
-    isAuthenticated
-  });
+  const items = createMenuItems(isAuthenticated, onMenuItemClick);
 
   return (
     <SlideMenu
