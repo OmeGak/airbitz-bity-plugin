@@ -1,4 +1,6 @@
 import Shell from './shell';
+import protectedRoute from './auth/protected-route';
+import onlyGuestRoute from './auth/only-guest-route';
 import LoginPage from './auth/login-page';
 import SignupPage from './auth/signup-page';
 import OrdersHistoryPage from './orders/orders-history-page';
@@ -14,23 +16,23 @@ export default {
   childRoutes: [
     {
       path: 'login',
-      component: LoginPage
+      component: onlyGuestRoute(LoginPage)
     },
     {
       path: 'signup',
-      component: SignupPage
+      component: onlyGuestRoute(SignupPage)
     },
     {
       path: 'orders',
-      component: OrdersHistoryPage
+      component: protectedRoute(OrdersHistoryPage)
     },
     {
       path: 'orders/new',
-      component: CreateOrderPage
+      component: protectedRoute(CreateOrderPage)
     },
     {
       path: 'account',
-      component: DetailsPage
+      component: protectedRoute(DetailsPage)
     }
   ]
 };
