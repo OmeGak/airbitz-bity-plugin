@@ -3,6 +3,8 @@ import { LocalForm, Field } from 'react-redux-form';
 import classNames from 'classnames';
 import { isNotEmptyString } from '../../../lib/validators';
 import formStyles from '../../lib/form/styles.less';
+import Spinner from '../../../lib/spinner';
+import styles from './styles.less';
 
 const submitBtnClassName = classNames('btn btn-primary btn-block', formStyles.formBtn);
 
@@ -21,7 +23,8 @@ const initialState = {
 };
 
 const propTypes = {
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  isRequestStarted: PropTypes.bool.isRequired
 };
 
 export default class LoginForm extends Component {
@@ -50,6 +53,20 @@ export default class LoginForm extends Component {
 
   render() {
     const { valid } = this.state;
+    const { isRequestStarted } = this.props;
+
+    const disableSubmitBtn = !valid || isRequestStarted;
+
+    const loginBtnContent = isRequestStarted ?
+      (
+        <span className={styles.loading}>
+          <Spinner type="inline" />
+          <span>connecting...</span>
+        </span>
+      ) :
+      (
+        <span>login</span>
+      );
 
     return (
       <LocalForm
@@ -70,7 +87,9 @@ export default class LoginForm extends Component {
           </Field>
         </div>
         <div>
-          <button type="submit" className={submitBtnClassName} disabled={!valid}>login</button>
+          <button type="submit" className={submitBtnClassName} disabled={disableSubmitBtn}>
+            {loginBtnContent}
+          </button>
         </div>
       </LocalForm>
     );
