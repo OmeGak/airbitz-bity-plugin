@@ -55,7 +55,42 @@ module.exports = function setupProcessingOfStylesheets(webpackCfg, { IS_PRODUCTI
   };
 
   if (IS_PRODUCTION_MODE) {
-    postCssLoaderOptions.plugins.push(cssnano);
+    postCssLoaderOptions.plugins.push(cssnano({
+      autoprefixer: true,
+      calc: true,
+      colormin: true,
+      core: true,
+      discardComments: true,
+      discardDuplicates: true,
+      discardEmpty: true,
+      discardOverridden: true,
+      discardUnused: false,
+      filterOptimiser: true,
+      functionOptimiser: true,
+      mergeIdents: false,
+      mergeLonghand: true,
+      mergeRules: true,
+      minifyFontValues: true,
+      minifyGradients: true,
+      minifyParams: true,
+      minifySelectors: true,
+      normalizeCharset: true,
+      normalizeString: true,
+      normalizeUnicode: true,
+      normalizeUrl: true,
+      orderedValues: true,
+      reduceBackgroundRepeat: true,
+      reduceDisplayValues: true,
+      reduceIdents: false,
+      reduceInitial: true,
+      reducePositions: true,
+      reduceTimingFunctions: true,
+      reduceTransforms: true,
+      styleCache: true,
+      svgo: true,
+      uniqueSelectors: true,
+      zindex: false
+    }));
 
     plugins.push(new ExtractTextPlugin({
       filename: `${filename}.css`,
