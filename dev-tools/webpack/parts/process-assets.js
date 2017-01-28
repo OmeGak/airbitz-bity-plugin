@@ -11,12 +11,12 @@ module.exports = function setupProcessingOfAssets(webpackCfg, extraCfg) {
     loader: 'null-loader'
   };
 
-  const fileLoaderCfg = {
-    loader: 'file-loader',
-    options: {
-      name: `${ASSETS_ROOT}/${filename}`
-    }
-  };
+  // const fileLoaderCfg = {
+  //   loader: 'file-loader',
+  //   options: {
+  //     name: `${ASSETS_ROOT}/${filename}`
+  //   }
+  // };
 
   const urlLoaderCfg = {
     loader: 'url-loader',
@@ -45,11 +45,11 @@ module.exports = function setupProcessingOfAssets(webpackCfg, extraCfg) {
   // -----------
   // fonts
   // -----------
-  const fontFileLoaders = IS_TEST_MODE ? [nullLoaderCfg] : [fileLoaderCfg];
+  // const fontFileLoaders = IS_TEST_MODE ? [nullLoaderCfg] : [fileLoaderCfg];
 
   rules.push({
     test: /\.(eot|svg|ttf|woff|woff2)$/,
-    use: fontFileLoaders
+    use: urlLoaderCfg
   });
 
   const module = Object.assign({}, prevModule, { rules });
