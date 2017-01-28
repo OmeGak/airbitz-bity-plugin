@@ -13,8 +13,10 @@ const initialState = {
 
 export default function authReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case actions.AUTH_STATUS_CHANGED:
-      return onAuthStatusChanged(state, action);
+    case actions.AUTHENTICATED:
+      return onAuthenticated(state, action);
+    case actions.UNAUTHENTICATED:
+      return onUnauthenticated(state, action);
     case actions.ON_LOGIN_REQUEST_STARTED:
       return onLoginRequestStarted(state, action);
     case actions.ON_LOGIN_REQUEST_SUCCEED:
@@ -26,10 +28,17 @@ export default function authReducer(state = initialState, action = {}) {
   }
 }
 
-function onAuthStatusChanged(state, { payload: status }) {
+function onAuthenticated(state) {
   return {
     ...state,
-    isAuthenticated: status
+    isAuthenticated: true
+  };
+}
+
+function onUnauthenticated(state) {
+  return {
+    ...state,
+    isAuthenticated: false
   };
 }
 

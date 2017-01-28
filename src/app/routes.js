@@ -5,7 +5,7 @@ import LoginPage from './auth/login-page';
 import SignupPage from './auth/signup-page';
 import OrdersHistoryPage from './orders/orders-history-page';
 import CreateOrderPage from './orders/create-order-page';
-import DetailsPage from './misc/details-page';
+import AccountInfoPage from './account/account-info-page';
 
 export default {
   path: '/',
@@ -32,7 +32,7 @@ export default {
     },
     {
       path: 'account',
-      component: protectedRoute(DetailsPage)
+      component: protectedRoute(AccountInfoPage)
     }
   ]
 };

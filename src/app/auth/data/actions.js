@@ -3,11 +3,11 @@ import { prefix } from './constants';
 // ==========================
 // auth status
 // ==========================
-export const AUTH_STATUS_CHANGED = `${prefix}::AUTH_STATUS_CHANGED`;
+export const AUTHENTICATED = `${prefix}::AUTHENTICATED`;
+export const UNAUTHENTICATED = `${prefix}::UNAUTHENTICATED`;
 export function authStatusChanged(status) {
   return {
-    type: AUTH_STATUS_CHANGED,
-    payload: status
+    type: status ? AUTHENTICATED : UNAUTHENTICATED
   };
 }
 

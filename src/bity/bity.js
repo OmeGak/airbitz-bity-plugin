@@ -2,6 +2,7 @@ import authFactory from './auth';
 import ajaxFactory from './ajax';
 import prefixPluginFactory from './ajax/plugins/prefix-plugin';
 import cookiesStorageFactory from './storage/cookies-storage';
+import accountApiFactory from './account';
 
 export default function createBityInstance(opts = {}) {
   const {
@@ -30,10 +31,15 @@ export default function createBityInstance(opts = {}) {
   const ajaxForAuth = prefixPluginFactory(host)(baseAjax);
 
   // ajax used for REST API requests
-  let ajaxForApi = authAjaxPlugin(baseAjax); // eslint-disable-line no-unused-vars
-  ajaxForApi = prefixPluginFactory(host)(baseAjax);
+  const REST_API_PREFIX = '/api/v1'; // TODO REST API prefix should be declared in the external config
+
+  let ajaxForApi = authAjaxPlugin(baseAjax);
+  ajaxForApi = prefixPluginFactory(`${host}/${REST_API_PREFIX}`)(ajaxForApi);
+
+  const accountApi = accountApiFactory(ajaxForApi);
 
   return {
-    auth: authApiFactory(ajaxForAuth)
+    auth: authApiFactory(ajaxForAuth),
+    account: accountApi
   };
 }
