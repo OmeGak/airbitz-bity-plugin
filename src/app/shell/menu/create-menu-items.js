@@ -11,10 +11,10 @@ export default function createMenuItems(isAuthenticated, onMenuItemClick) {
 function createGuestMenuItems(onMenuItemClick) {
   return [
     <MenuItem onClick={onMenuItemClick} key="1">
-      <Link to="/login" title="Login" replace />
+      <Link to="/login" title="Login" replace className="menu-item--sign-in" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="2">
-      <Link to="/signup" title="Register" replace />
+      <Link to="/signup" title="Register" replace className="menu-item--sign-up" />
     </MenuItem>
   ];
 }
@@ -22,16 +22,16 @@ function createGuestMenuItems(onMenuItemClick) {
 function createKnownUserMenuItems(onMenuItemClick) {
   return [
     <MenuItem onClick={onMenuItemClick} key="1">
-      <Link to="/orders" title="History" />
+      <Link to="/orders" title="History" className="menu-item--history" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="2">
-      <Link to="/orders/new" title="Buy / Sell" />
+      <Link to="/orders/new" title="Buy / Sell" className="menu-item--convert" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="3">
-      <Link to="/account" title="My Info" />
+      <Link to="/account" title="My Info" className="menu-item--account" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="4">
-      <LogoutButton />
+      <LogoutButton className="menu-item--sign-out" />
     </MenuItem>
   ];
 }

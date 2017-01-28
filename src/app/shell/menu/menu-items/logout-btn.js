@@ -17,9 +17,9 @@ const propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-function LogoutButton({ onClick }) {
+function LogoutButton({ onClick, ...rest }) {
   return (
-    <Button title="Logout" onClick={onClick} />
+    <Button title="Logout" onClick={onClick} {...rest} />
   );
 }
 

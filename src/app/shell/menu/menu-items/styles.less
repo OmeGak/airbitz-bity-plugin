@@ -1,0 +1,121 @@
+& {
+  @prefix: 'menu-item';
+
+  @icon-width: 20px;
+  @icon-label-gap: 10px;
+
+  // ------------------------
+  // base
+  // ------------------------
+  @content: ~'@{prefix}__content';
+  @label: ~'@{prefix}__label';
+  @icon: ~'@{prefix}__icon';
+
+  .@{content} {
+    display: table;
+  }
+
+  .@{label},
+  .@{icon} {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .@{icon} {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: @icon-width;
+
+    &:after {
+      content: '';
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .@{label} {
+    padding-left: @icon-label-gap;
+  }
+
+  // ------------------------
+  // login menu item
+  // ------------------------
+  @login-menu-item: ~'@{prefix}--sign-in';
+  .@{login-menu-item} {
+    .@{icon} {
+      background-image: url('assets/sign-in-icon.svg');
+
+      &:after {
+        padding-top: 100%;
+      }
+    }
+  }
+
+  // ------------------------
+  // register menu item
+  // ------------------------
+  @register-menu-item: ~'@{prefix}--sign-up';
+  .@{register-menu-item} {
+    .@{icon} {
+      background-image: url('assets/sign-up-icon.svg');
+
+      &:after {
+        padding-top: 100%;
+      }
+    }
+  }
+
+  // ------------------------
+  // history menu item
+  // ------------------------
+  @history-menu-item: ~'@{prefix}--history';
+  .@{history-menu-item} {
+    .@{icon} {
+      background-image: url('assets/icon-history.svg');
+      
+      width: 18px;
+
+      &:after {
+        padding-top: 100% / (50 / 56);
+      }
+    }
+
+    .@{label} {
+      padding-left: 12px;
+    }
+  }
+
+  // ------------------------
+  // buy/sell menu item
+  // ------------------------
+  @convert-menu-item: ~'@{prefix}--convert';
+  .@{convert-menu-item} {
+    .@{icon} {
+      background-image: url('assets/icon-convert.svg');
+
+      &:after {
+        //padding-top: 100% / (50 / 56);
+      }
+    }
+  }
+
+  // ------------------------
+  // my account menu item
+  // ------------------------
+  @account-menu-item: ~'@{prefix}--account';
+  .@{account-menu-item} {
+    .@{icon} {
+      background-image: url('assets/icon-my-account.svg');
+    }
+  }
+
+  // ------------------------
+  // logout menu item
+  // ------------------------
+  @logout-menu-item: ~'@{prefix}--sign-out';
+  .@{logout-menu-item} {
+    .@{icon} {
+      background-image: url('assets/sign-out-icon.svg');
+    }
+  }
+}
