@@ -4,12 +4,14 @@ import './styles.less';
 
 const spinnerTypes = {
   PAGE_LOADING: 'page-loading',
-  INLINE: 'inline'
+  INLINE: 'inline',
+  CARD: 'card'
 };
 
 const mapTypeToClassName = {
   [spinnerTypes.PAGE_LOADING]: 'spinner--page-loading',
-  [spinnerTypes.INLINE]: 'spinner--inline'
+  [spinnerTypes.INLINE]: 'spinner--inline',
+  [spinnerTypes.CARD]: 'spinner--card'
 };
 
 const propTypes = {

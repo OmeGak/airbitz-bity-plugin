@@ -5,7 +5,8 @@ export default function convertBityErrorToNotificationCfg({ code }) {
     case errors.ERROR_NETWORK:
       return {
         title: 'Network error',
-        message: 'Check your internet connection'
+        message: 'Can\'t connect to server',
+        autoDismiss: 0
       };
     case errors.ERROR_INVALID_CREDENTIALS:
       return {

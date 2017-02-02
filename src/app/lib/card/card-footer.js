@@ -1,17 +1,22 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 import styles from './styles.less';
 
 const propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string
 };
 
 const defaultProps = {
-  children: null
+  children: null,
+  className: ''
 };
 
-export default function CardFooter({ children }) {
+export default function CardFooter({ children, className: extraClassName }) {
+  const className = classNames(styles.footer, extraClassName);
+
   return (
-    <div className={styles.footer}>
+    <div className={className}>
       {children}
     </div>
   );

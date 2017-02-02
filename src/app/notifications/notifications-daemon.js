@@ -1,11 +1,13 @@
 import { take, spawn, put } from 'redux-saga/effects';
 import { error as showErrorAction } from 'react-notification-system-redux';
-import * as actions from '../auth/data/actions';
+import * as authActions from '../auth/data/actions';
+import * as actions from './actions';
 import { parse } from '../../bity/errors';
 import convertBityErrorToNotificationCfg from './convert-bity-error-to-notification-cfg';
 
 const listenMessages = [
-  actions.ON_LOGIN_REQUEST_FAILED
+  authActions.ON_LOGIN_REQUEST_FAILED,
+  actions.UNHANDLED_ERROR
 ];
 
 export default function* run() {

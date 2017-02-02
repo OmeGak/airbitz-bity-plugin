@@ -3,6 +3,7 @@ import ajaxFactory from './ajax';
 import prefixPluginFactory from './ajax/plugins/prefix-plugin';
 import cookiesStorageFactory from './storage/cookies-storage';
 import accountApiFactory from './account';
+import ordersApiFactory from './orders';
 
 export default function createBityInstance(opts = {}) {
   const {
@@ -37,9 +38,11 @@ export default function createBityInstance(opts = {}) {
   ajaxForApi = prefixPluginFactory(`${host}/${REST_API_PREFIX}`)(ajaxForApi);
 
   const accountApi = accountApiFactory(ajaxForApi);
+  const ordersApi = ordersApiFactory(ajaxForApi);
 
   return {
     auth: authApiFactory(ajaxForAuth),
-    account: accountApi
+    account: accountApi,
+    orders: ordersApi
   };
 }

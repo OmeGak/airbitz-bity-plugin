@@ -1,17 +1,22 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classnames';
 import styles from './styles.less';
 
 const propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string
 };
 
 const defaultProps = {
-  children: null
+  children: null,
+  className: ''
 };
 
-export default function Card({ children }) {
+export default function Card({ children, className: extraClassName }) {
+  const cardClassName = classNames(styles.card, extraClassName);
+
   return (
-    <div className={styles.card}>
+    <div className={cardClassName}>
       {children}
     </div>
   );

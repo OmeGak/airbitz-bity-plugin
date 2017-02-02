@@ -1,0 +1,209 @@
+@import '../../../../shell/bity-colors';
+
+.orders__icon-arrow-right {
+  display: inline-block;
+  width: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+
+  background-image: url('./assets/long-arrow-right.svg');
+  background-size: cover;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 100%;
+  }
+}
+
+:local {
+  @narrow-screen-width: 500px;
+  @wide-screen-width: 680px;
+
+  .list {
+    position: relative;
+
+    display: block;
+    width: 100%;
+  }
+
+  .table {
+    position: relative;
+
+    display: block;
+    width: 100%;
+
+    color: #444444;
+
+    @media (min-width: @wide-screen-width) {
+      display: table;
+      table-layout: fixed;
+    }
+  }
+
+  .row {
+    position: relative;
+
+    display: block;
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 8px 0;
+
+    border-top: 1px solid #a2a2a2;
+
+    &:last-child {
+      border-bottom: 1px solid #a2a2a2;
+    }
+
+    @media (min-width: @narrow-screen-width) {
+      height: 50px;
+    }
+
+    @media (min-width: @wide-screen-width) {
+      display: table-row;
+      height: auto;
+      padding: 0;
+      border-top: none;
+      border-bottom: none;
+    }
+  }
+
+  .header {
+    position: relative;
+
+    display: none;
+    width: 100%;
+
+    @media (min-width: @wide-screen-width) {
+      display: table-row;
+    }
+
+    .cell,
+    .cellReference,
+    .cellType,
+    .cellDate,
+    .cellAmount,
+    .cellStatus {
+      color: inherit;
+      font-weight: bold;
+      border-top: none;
+    }
+  }
+
+  .cell {
+    display: block;
+
+    box-sizing: border-box;
+
+    @media (min-width: @wide-screen-width) {
+      display: table-cell;
+      padding: 8px;
+      border-top: 1px solid #a2a2a2;
+    }
+  }
+
+  .cellReference {
+    .cell();
+
+    color: @bity-blue;
+    font-weight: bold;
+
+    @media (min-width: @narrow-screen-width) {
+      position: absolute;
+      top: 8px;
+      left: 0;
+    }
+
+    @media (min-width: @wide-screen-width) {
+      width: 19.26444833625219%;
+      word-break: break-all;
+
+      position: relative;
+      top: auto;
+      left: auto;
+    }
+  }
+
+  .cellType {
+    .cell();
+
+    font-weight: bold;
+    font-size: 11px;
+
+    @media (min-width: @narrow-screen-width) {
+      position: absolute;
+      top: 8px;
+      left: 120px;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    @media (min-width: @wide-screen-width) {
+      width: 18.56392294220665%;
+
+      position: relative;
+      top: auto;
+      left: auto;
+      font-size: inherit;
+      line-height: inherit;
+    }
+  }
+
+  .cellDate {
+    .cell();
+
+    font-size: 11px;
+
+    @media (min-width: @narrow-screen-width) {
+      position: absolute;
+      bottom: 8px;
+    }
+
+    @media (min-width: @wide-screen-width) {
+      width: 16.28721541155867%;
+
+      position: relative;
+      bottom: auto;
+      font-size: inherit;
+    }
+  }
+
+  .cellAmount {
+    .cell();
+
+    @media (min-width: @narrow-screen-width) {
+      position: absolute;
+      left: 120px;
+      bottom: 5px;
+    }
+
+    @media (min-width: @wide-screen-width) {
+      width: 32.57443082311734%;
+
+      position: relative;
+      left: auto;
+      bottom: auto;
+    }
+  }
+
+  .cellStatus {
+    .cell();
+
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+
+    @media (min-width: @wide-screen-width) {
+      width: 13.30998248686515%;
+
+      position: relative;
+      right: auto;
+      top: auto;
+      transform: none;
+    }
+  }
+}

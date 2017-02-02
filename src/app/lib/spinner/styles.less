@@ -117,8 +117,8 @@
   & {
     @count-of-bars: 5;
 
-    @static-bar-width: 2px;
-    @static-bar-gap: 2px;
+    @static-bar-width: 3px;
+    @static-bar-gap: 3px;
     @bar-width-to-bar-gap-aspect-ratio: @static-bar-width / @static-bar-gap;
 
     @static-spinner-width: @count-of-bars * @static-bar-width + (@count-of-bars - 1) * @static-bar-gap;
@@ -136,6 +136,36 @@
 
       .spinner__bar {
         .mixin-spinner-bar (@bar-percent-width, @gap-percent-width);
+      }
+    }
+  }
+
+  // ------------------------
+  // card spinner
+  // ------------------------
+  & {
+    @count-of-bars: 5;
+
+    @static-bar-width: 2px;
+    @static-bar-gap: 2px;
+    @bar-width-to-bar-gap-aspect-ratio: @static-bar-width / @static-bar-gap;
+
+    @static-spinner-width: @count-of-bars * @static-bar-width + (@count-of-bars - 1) * @static-bar-gap;
+    @static-spinner-height: 20px;
+    @spinner-aspect-ratio: @static-spinner-width / @static-spinner-height;
+
+    @bar-percent-width: 100% * @static-bar-width / @static-spinner-width;
+    @bar-percent-height: 100%;
+    @gap-percent-width: 100% * @static-bar-gap / @static-spinner-width;
+
+    .spinner--card {
+      .mixin-spinner(@spinner-aspect-ratio);
+
+      width: @static-spinner-width;
+
+      .spinner__bar {
+        .mixin-spinner-bar (@bar-percent-width, @gap-percent-width);
+        background-color: #bfbfbf;
       }
     }
   }
