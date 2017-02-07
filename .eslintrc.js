@@ -22,7 +22,12 @@ module.exports = {
     'max-len': ['error', 120],
     'import/imports-first': 'off',
     'import/prefer-default-export': 'off',
-    
+    'import/no-unresolved': ['error', {
+      ignore: [
+        'airbitzPluginApi'
+      ]
+    }],
+
     'react/jsx-filename-extension': 'off',
     'jsx-a11y/img-has-alt': 'off',
     'jsx-a11y/no-static-element-interactions': 'off'

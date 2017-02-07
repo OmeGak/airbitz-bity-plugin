@@ -1,4 +1,4 @@
-module.exports = function createWebpackConfig() {
+module.exports = function createWebpackConfig(env) {
   /* eslint global-require: 'off' */
 
   const globalCfg = require('../global.cfg');
@@ -15,6 +15,8 @@ module.exports = function createWebpackConfig() {
   cfg = require('./parts/process-js-code')(cfg, globalCfg);
   cfg = require('./parts/process-stylesheets')(cfg, globalCfg);
   cfg = require('./parts/process-assets')(cfg, globalCfg);
+
+  cfg = require('./parts/setup-airbitz-api')(cfg, globalCfg, env);
 
   return cfg;
 };
