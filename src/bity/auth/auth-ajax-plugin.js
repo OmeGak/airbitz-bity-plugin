@@ -28,9 +28,7 @@ export default function authAjaxPluginFactory(opts) {
               }
               break;
             case 401:
-              if (responseErrorField === 'invalid_token') {
-                onUnauthResponse();
-              }
+              onUnauthResponse();
               break;
           }
 
