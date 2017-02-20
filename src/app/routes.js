@@ -4,8 +4,11 @@ import onlyGuestRoute from './auth/only-guest-route';
 import LoginPage from './auth/login-page';
 import SignupPage from './auth/signup-page';
 import OrdersHistoryPage from './orders/orders-history-page';
-import CreateOrderPage from './orders/create-order-page';
 import AccountInfoPage from './account/account-info-page';
+
+import ConvertPage from './orders/convert-page';
+import { QuotaExceededPage } from './quota';
+import { Page as PhoneNotVerifiedPage } from './phone/phone-not-verified-page';
 
 export default {
   path: '/',
@@ -27,12 +30,20 @@ export default {
       component: protectedRoute(OrdersHistoryPage)
     },
     {
-      path: 'orders/new',
-      component: protectedRoute(CreateOrderPage)
+      path: 'convert',
+      component: protectedRoute(ConvertPage)
     },
     {
       path: 'account',
       component: protectedRoute(AccountInfoPage)
+    },
+    {
+      path: '/quota/exceeded',
+      component: protectedRoute(QuotaExceededPage)
+    },
+    {
+      path: '/phone/not-verified',
+      component: protectedRoute(PhoneNotVerifiedPage)
     }
   ]
 };

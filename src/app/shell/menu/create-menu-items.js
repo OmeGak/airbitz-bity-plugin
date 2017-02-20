@@ -25,7 +25,7 @@ function createKnownUserMenuItems(onMenuItemClick) {
       <Link to="/orders" title="History" className="menu-item--history" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="2">
-      <Link to="/orders/new" title="Buy / Sell" className="menu-item--convert" />
+      <Link to="/convert" title="Buy / Sell" className="menu-item--convert" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="3">
       <Link to="/account" title="My Info" className="menu-item--account" />

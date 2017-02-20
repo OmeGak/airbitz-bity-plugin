@@ -5,7 +5,10 @@ import cookiesStorageFactory from './storage/cookies-storage';
 import accountApiFactory from './account';
 import ordersApiFactory from './orders';
 import paymentMethodsApiFactory from './payment-methods';
-import conversionRatesApiFactory from './conversion-rates';
+import exchangeRatesApiFactory from './exchange-rates';
+import bankAccountsApiFactory from './bank-accounts';
+import quotaApiFactory from './quota';
+import phoneApiFactory from './phone';
 
 export default function createBityInstance(opts = {}) {
   const {
@@ -41,14 +44,20 @@ export default function createBityInstance(opts = {}) {
 
   const accountApi = accountApiFactory(ajaxForApi);
   const ordersApi = ordersApiFactory(ajaxForApi);
-  const conversionRatesApi = conversionRatesApiFactory(ajaxForApi);
+  const exchangeRatesApi = exchangeRatesApiFactory(ajaxForApi);
   const paymentMethodsApi = paymentMethodsApiFactory(ajaxForApi);
+  const bankAccountsApi = bankAccountsApiFactory(ajaxForApi);
+  const quotaApi = quotaApiFactory(ajaxForApi);
+  const phoneApi = phoneApiFactory(ajaxForApi);
 
   return {
     auth: authApiFactory(ajaxForAuth),
     account: accountApi,
     orders: ordersApi,
-    conversionRates: conversionRatesApi,
-    paymentMethods: paymentMethodsApi
+    exchangeRates: exchangeRatesApi,
+    paymentMethods: paymentMethodsApi,
+    bankAccounts: bankAccountsApi,
+    quota: quotaApi,
+    phone: phoneApi
   };
 }

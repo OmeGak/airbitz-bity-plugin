@@ -1,27 +1,31 @@
 import * as actions from './actions';
 
 const initialState = {
+  data: null,
+  hasData: false,
   request: {
     started: false,
     failed: false
-  },
-  data: {
-    data: null,
-    pristine: true
   }
 };
 
-export default function paymentMethodsReducer(state = initialState, action = {}) {
+export default function paymentMethodsStoreReducer(state = initialState, action = {}) {
   switch (action.type) {
+    case actions.RESET:
+      return reset(state, action);
     case actions.FETCH_STARTED:
       return onRequestStarted(state, action);
-    case actions.FETCH_FAILED:
-      return onRequestFailed(state, action);
     case actions.FETCH_SUCCEED:
       return onRequestSucceed(state, action);
+    case actions.FETCH_FAILED:
+      return onRequestFailed(state, action);
     default:
       return state;
   }
+}
+
+function reset() {
+  return { ...initialState };
 }
 
 function onRequestStarted(state) {
@@ -34,16 +38,6 @@ function onRequestStarted(state) {
   };
 }
 
-function onRequestFailed(state) {
-  return {
-    ...state,
-    request: {
-      started: false,
-      failed: true
-    }
-  };
-}
-
 function onRequestSucceed(state, { payload: data }) {
   return {
     ...state,
@@ -51,9 +45,17 @@ function onRequestSucceed(state, { payload: data }) {
       started: false,
       failed: false
     },
-    data: {
-      data,
-      pristine: false
+    data,
+    hasData: true
+  };
+}
+
+function onRequestFailed(state) {
+  return {
+    ...state,
+    request: {
+      started: false,
+      failed: true
     }
   };
 }

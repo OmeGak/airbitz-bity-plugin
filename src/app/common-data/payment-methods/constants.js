@@ -1,2 +1,2 @@
-export const prefix = 'paymentMethods';
+export const prefix = 'paymentMethodsStore';
 export const mountPoint = prefix;

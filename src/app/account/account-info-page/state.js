@@ -1,10 +1,8 @@
 import { take, put, select, race } from 'redux-saga/effects';
 import {
-  hasData,
-  fetchAccountInfo,
-  ACCOUNT_INFO_LOADING_SUCCEED,
-  ACCOUNT_INFO_LOADING_FAILED
-} from '../account-info/state';
+  selectors as accountInfoSelectors,
+  actions as accountInfoActions
+} from '../../common-data/account-info';
 
 const prefix = 'accountInfoPage';
 const mountPoint = 'accountInfoPage';
@@ -91,17 +89,17 @@ function* prepareAccountInfoPage() {
   while (true) { // eslint-disable-line no-constant-condition
     yield take(MOUNTED);
 
-    const hasAccountInfoData = yield select(hasData);
+    const hasAccountInfoData = yield select(accountInfoSelectors.hasData);
     if (hasAccountInfoData) {
       yield put(onReady());
       continue; // eslint-disable-line no-continue
     }
 
-    yield put(fetchAccountInfo());
+    yield put(accountInfoActions.fetchAccountInfo());
 
     const { failed, unmounted } = yield race({
-      succeed: take(ACCOUNT_INFO_LOADING_SUCCEED),
-      failed: take(ACCOUNT_INFO_LOADING_FAILED),
+      succeed: take(accountInfoActions.ACCOUNT_INFO_LOADING_SUCCEED),
+      failed: take(accountInfoActions.ACCOUNT_INFO_LOADING_FAILED),
       unmounted: take(UNMOUNTED)
     });
 
