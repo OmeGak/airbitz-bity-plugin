@@ -1,5 +1,5 @@
 import { spawn, take, put, select, race, call } from 'redux-saga/effects';
-import * as authActions from '../../auth/data/actions';
+import { actions as authStoreActions } from '../auth';
 import * as actions from './actions';
 import * as selectors from './selectors';
 
@@ -14,7 +14,7 @@ export default function paymentMethodsStoreDaemonFactory(bity) {
 
 function* listenUnauth() {
   while (true) { // eslint-disable-line no-constant-condition
-    yield take(authActions.UNAUTHENTICATED);
+    yield take(authStoreActions.UNAUTHENTICATED);
     yield put(actions.reset());
   }
 }
@@ -48,7 +48,7 @@ function* listenFetchIntents(bity) {
 
 function* fetchData(bity) {
   const res = yield race({
-    unauth: take(authActions.UNAUTHENTICATED),
+    unauth: take(authStoreActions.UNAUTHENTICATED),
     requestResult: call(sendFetchDataRequest, bity)
   });
 

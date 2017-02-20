@@ -1,5 +1,5 @@
 import { spawn, take, put, select, race, call } from 'redux-saga/effects';
-import * as authActions from '../../auth/data/actions';
+import { actions as authStoreActions } from '../auth';
 import {
   actions as accountInfoActions,
   selectors as accountInfoSelectors
@@ -18,7 +18,7 @@ export default function quotaStoreDaemonFactory(bity) {
 
 function* listenUnauth() {
   while (true) { // eslint-disable-line no-constant-condition
-    yield take(authActions.UNAUTHENTICATED);
+    yield take(authStoreActions.UNAUTHENTICATED);
     yield put(actions.reset());
   }
 }
@@ -65,7 +65,7 @@ function* preloadAccountInfoData() {
   yield put(accountInfoActions.fetchAccountInfo());
 
   const res = yield race({
-    unauth: take(authActions.UNAUTHENTICATED),
+    unauth: take(authStoreActions.UNAUTHENTICATED),
     succeed: take(accountInfoActions.ACCOUNT_INFO_LOADING_SUCCEED),
     failed: take(accountInfoActions.ACCOUNT_INFO_LOADING_FAILED),
     canceled: take(accountInfoActions.ACCOUNT_INFO_LOADING_CANCELED),
@@ -86,7 +86,7 @@ function* preloadAccountInfoData() {
 function* fetchQuotaData(bity) {
   const { userId } = yield select(accountInfoSelectors.getData);
   const res = yield race({
-    unauth: take(authActions.UNAUTHENTICATED),
+    unauth: take(authStoreActions.UNAUTHENTICATED),
     requestResult: call(sendFetchQuotaDataRequest, bity, userId)
   });
 

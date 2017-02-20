@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import * as authSelectors from './data/selectors';
+import { selectors as authStoreSelectors } from '../common-data/auth';
 
 const WRAPPER_DISPLAY_NAME = 'OnlyGuestRoute';
 
@@ -54,6 +54,6 @@ function connectToStore(DecoratedComponent) {
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: authSelectors.isAuthenticated(state)
+    isAuthenticated: authStoreSelectors.isAuthenticated(state)
   };
 }

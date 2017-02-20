@@ -3,8 +3,8 @@ import { spawn, take, call, put, select } from 'redux-saga/effects';
 import * as actions from './actions';
 import * as selectors from './selectors';
 
-export default function factory(bity) {
-  return function* run() {
+export default function authDaemonFactory(bity) {
+  return function* runAuthDaemon() {
     yield [
       yield spawn(listenAuthStatus, bity),
       yield spawn(listenLoginRequests, bity),

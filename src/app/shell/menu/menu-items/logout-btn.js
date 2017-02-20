@@ -1,14 +1,14 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Button from './btn';
-import * as authActions from '../../../auth/data/actions';
+import { actions as authStoreActions } from '../../../common-data/auth';
 
 export default connect(null, mapDispatchToProps)(LogoutButton);
 
 function mapDispatchToProps(dispatch) {
   return {
     onClick() {
-      dispatch(authActions.logout());
+      dispatch(authStoreActions.logout());
     }
   };
 }

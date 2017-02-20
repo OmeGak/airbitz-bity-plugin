@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import createBity from './create-bity';
-import setupAuth from './auth/data/setup';
+import { setup as setupAuthStore } from './common-data/auth';
 import setupNotifications from './notifications/setup';
 import setupSidebarMenu from './shell/menu/state/setup';
 import { setupAccountInfoPage } from './account/account-info-page/state';
@@ -22,7 +22,7 @@ let cfg = {
   sagas: []
 };
 
-cfg = setupAuth(cfg, bity);
+cfg = setupAuthStore(cfg, bity);
 cfg = setupNotifications(cfg);
 cfg = setupSidebarMenu(cfg);
 cfg = setupAccountInfoPage(cfg);

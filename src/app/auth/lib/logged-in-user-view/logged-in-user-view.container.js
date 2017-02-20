@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import LoggedInUserView from './logged-in-user-view';
 
-import * as actions from '../../data/actions';
+import { actions as authStoreActions } from '../../../common-data/auth';
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoggedInUserView);
 
@@ -12,7 +12,7 @@ function mapStateToProps() {
 function mapDispatchToProps(dispatch) {
   return {
     logout() {
-      dispatch(actions.logout());
+      dispatch(authStoreActions.logout());
     }
   };
 }

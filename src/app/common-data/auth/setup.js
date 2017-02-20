@@ -1,18 +1,18 @@
-import { MOUNT_POINT } from './constants';
+import { mountPoint } from './constants';
 import reducer from './reducer';
-import runAuthDaemon from './auth-daemon';
+import daemonFactory from './daemon';
 
-export default function setupAuth(cfg, bity) {
+export default function setupAuthStore(cfg = {}, bity) {
   const { reducers: prevReducers = {}, sagas: prevSagas = [] } = cfg;
 
   const reducers = {
     ...prevReducers,
-    [MOUNT_POINT]: reducer
+    [mountPoint]: reducer
   };
 
   const sagas = [
     ...prevSagas,
-    runAuthDaemon(bity)
+    daemonFactory(bity)
   ];
 
   return {

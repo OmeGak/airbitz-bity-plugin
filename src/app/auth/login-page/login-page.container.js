@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import LoginPage from './login-page';
-import * as selectors from '../data/selectors';
+import { selectors as authStoreSelectors } from '../../common-data/auth';
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: selectors.isAuthenticated(state)
+    isAuthenticated: authStoreSelectors.isAuthenticated(state)
   };
 }
 

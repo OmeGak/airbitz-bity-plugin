@@ -1,5 +1,5 @@
 import { take, put, spawn, call, select, race } from 'redux-saga/effects';
-import * as authActions from '../../auth/data/actions';
+import { actions as authStoreActions } from '../auth';
 import * as actions from './actions';
 import * as selectors from './selectors';
 
@@ -26,7 +26,7 @@ function* listenFetchAccountInfoRequests(bity) {
 
     const { fetchResult, unAuth } = yield race({
       fetchResult: call(fetchAccountInfoData, bity),
-      unAuth: take(authActions.UNAUTHENTICATED)
+      unAuth: take(authStoreActions.UNAUTHENTICATED)
     });
 
     if (typeof unAuth !== 'undefined') {
@@ -54,7 +54,7 @@ function* fetchAccountInfoData(bity) {
 
 function* listenUnauthEvent() {
   while (true) { // eslint-disable-line no-constant-condition
-    yield take(authActions.UNAUTHENTICATED);
+    yield take(authStoreActions.UNAUTHENTICATED);
     yield put(actions.resetAccountInfo());
   }
 }
