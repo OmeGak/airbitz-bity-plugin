@@ -1,0 +1,49 @@
+:local {
+  .root {
+    position: relative;
+
+    width: 160px;
+  }
+
+  .singleOption {
+    border: none;
+    border-bottom: solid 2px #c9c9c9;
+
+    text-align: left;
+
+    user-select: none;
+    cursor: default;
+  }
+
+  .chevronDown {
+    position: absolute !important;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+
+    width: 10px;
+  }
+
+  @media (max-width: 465px) {
+    .root {
+      width: 93px;
+    }
+  }
+}
+
+.chevron-down {
+  position: relative;
+
+  display: block;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-image: url('./assets/chevron-down.svg');
+
+  &:after {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 100%;
+  }
+}

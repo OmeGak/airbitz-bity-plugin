@@ -1,10 +1,9 @@
 import { prefix } from './constants';
 
 export const FETCH_DATA = `${prefix}::FETCH_DATA`;
-export function fetchData(skipCache = false) {
+export function fetchData() {
   return {
-    type: FETCH_DATA,
-    payload: skipCache
+    type: FETCH_DATA
   };
 }
 
@@ -31,23 +30,17 @@ export function fetchSucceed(data) {
   };
 }
 
-export const FETCH_CANCELED = `${prefix}::FETCH_CANCELED`;
-export function fetchCanceled() {
-  return {
-    type: FETCH_CANCELED
-  };
-}
-
-export const RESET = `${prefix}::RESET`;
-export function reset() {
-  return {
-    type: RESET
-  };
-}
-
 export const ALREADY_HAS_DATA = `${prefix}::ALREADY_HAS_DATA`;
 export function alreadyHasData() {
   return {
     type: ALREADY_HAS_DATA
+  };
+}
+
+export const DATA_CHANGED = `${prefix}::DATA_CHANGED`;
+export function dataChanged(data) {
+  return {
+    type: DATA_CHANGED,
+    payload: data
   };
 }

@@ -16,6 +16,9 @@ import {
 import {
   actions as exchangeRatesStoreActions
 } from '../../../common-data/exchange-rates';
+import {
+  actions as airbitzWalletStoreActions
+} from '../../../common-data/airbitz-wallet';
 
 export default function convertPageDaemonFactory() {
   return function* runConvertPageDaemon() {
@@ -39,6 +42,9 @@ function* preparePage() {
 
     yield put(actions.preparationStarted());
 
+    // ----------------------
+    // make sure quota is not exceeded
+    // ----------------------
     const quotaIsNotExceeded = yield call(verifyQuotaIsNotExceeded, router);
     if (quotaIsNotExceeded.canceled || quotaIsNotExceeded.skipNextSteps) {
       continue; // eslint-disable-line no-continue
@@ -48,6 +54,9 @@ function* preparePage() {
       continue; // eslint-disable-line no-continue
     }
 
+    // ----------------------
+    // make sure account is activated
+    // ----------------------
     const accountIsActivated = yield call(verifyAccountIsActivated, router);
     if (accountIsActivated.canceled || accountIsActivated.skipNextSteps) {
       continue; // eslint-disable-line no-continue
@@ -57,6 +66,18 @@ function* preparePage() {
       continue; // eslint-disable-line no-continue
     }
 
+    // ----------------------
+    // make sure the data of selected Airbitz wallet is preloaded
+    // ----------------------
+    const airbitzWalletDataPreloading = yield call(preloadAirbitzWalletData);
+    if (airbitzWalletDataPreloading.failed) {
+      yield put(actions.preparationFailed());
+      continue; // eslint-disable-line no-continue
+    }
+
+    // ----------------------
+    // make sure bank accounts preloaded
+    // ----------------------
     const bankAccountsPreloading = yield call(preloadBankAccounts);
     if (bankAccountsPreloading.canceled || bankAccountsPreloading.skipNextSteps) {
       continue; // eslint-disable-line no-continue
@@ -66,6 +87,9 @@ function* preparePage() {
       continue; // eslint-disable-line no-continue
     }
 
+    // ----------------------
+    // make sure exchange rates preloaded
+    // ----------------------
     const exchangeRatesPreloading = yield call(preloadExchangeRates);
     if (exchangeRatesPreloading.canceled || exchangeRatesPreloading.skipNextSteps) {
       continue; // eslint-disable-line no-continue
@@ -75,6 +99,9 @@ function* preparePage() {
       continue; // eslint-disable-line no-continue
     }
 
+    // ----------------------
+    // if everything is okay
+    // ----------------------
     yield put(actions.preparationCompleted());
   }
 }
@@ -176,6 +203,22 @@ function* preloadExchangeRates() {
 
   if (typeof res.failed !== 'undefined') {
     return { failed: true };
+  }
+
+  return { success: true };
+}
+
+function* preloadAirbitzWalletData() {
+  yield put(airbitzWalletStoreActions.fetchData());
+
+  const res = yield race({
+    unmounted: take(actions.UNMOUNTED),
+    succeed: take(airbitzWalletStoreActions.FETCH_SUCCEED),
+    alreadyHasData: take(airbitzWalletStoreActions.ALREADY_HAS_DATA)
+  });
+
+  if (typeof res.unmounted !== 'undefined') {
+    return { canceled: true };
   }
 
   return { success: true };

@@ -1,0 +1,39 @@
+.swap-btn {
+  position: relative;
+
+  display: block;
+  width: 30px;
+
+  cursor: pointer;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 100%;
+  }
+
+  &:before {
+    @padding: 20%;
+    
+    content: '';
+
+    position: absolute;
+    left: @padding;
+    top: @padding;
+    right: @padding;
+    bottom: @padding;
+
+    display: block;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url("./assets/exchange.svg");
+  }
+}
+
+.swap-btn--vertical {
+  &:before {
+    transform: rotate(90deg);
+  }
+}

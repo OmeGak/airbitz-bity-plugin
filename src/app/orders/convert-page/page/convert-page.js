@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import Page from '../../../lib/page';
 import { Card, CardHeader, CardBody } from '../../../lib/card';
 import PageLoader from '../../../lib/page-loader';
+import { ConvertForm } from '../../convert-form';
 import styles from './styles.less';
 
 const propTypes = {
@@ -10,7 +11,8 @@ const propTypes = {
   onMounted: PropTypes.func.isRequired,
   onUnmounted: PropTypes.func.isRequired,
   isPreparationStarted: PropTypes.bool.isRequired,
-  isPreparationFailed: PropTypes.bool.isRequired
+  isPreparationFailed: PropTypes.bool.isRequired,
+  isPreparationCompleted: PropTypes.bool.isRequired
 };
 
 class ConvertPage extends Component {
@@ -44,16 +46,15 @@ class ConvertPage extends Component {
       );
     }
 
-    return (
-      <Page>
-        <Card>
-          <CardHeader>Buy / Sell</CardHeader>
-          <CardBody>
-            <div />
-          </CardBody>
-        </Card>
-      </Page>
-    );
+    if (this.props.isPreparationCompleted) {
+      return (
+        <Page>
+          <ConvertForm />
+        </Page>
+      );
+    }
+
+    return null;
   }
 }
 
