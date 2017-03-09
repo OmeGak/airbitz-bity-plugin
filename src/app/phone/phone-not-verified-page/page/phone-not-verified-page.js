@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { withRouter } from 'react-router';
 import Page from '../../../lib/page';
 import { Card, CardHeader, CardBody } from '../../../lib/card';
+import ExternalLink from '../../../lib/external-link';
 import PageLoader from '../../../lib/page-loader';
 import styles from './styles.less';
 
@@ -61,7 +62,8 @@ class PhoneNotVerifiedPage extends Component {
         <Card>
           <CardHeader>Your phone number is not verified</CardHeader>
           <CardBody className={styles.cardBody}>
-            <div className={styles.text}>Verify your phone number on <a href="http://bity.com/">bity.com</a></div>
+            <div className={styles.text}>Verify your phone number on
+              <ExternalLink href="http://bity.com/">bity.com</ExternalLink></div>
             <div className={styles.text}>and</div>
             <div>
               <button className={btnClassName} onClick={this.onTryAgainBtn} type="button">

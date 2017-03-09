@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 import Spinner from '../../../lib/spinner';
+import ExternalLink from '../../../lib/external-link';
 import { utils } from '../state';
 import styles from './styles.less';
 
@@ -54,7 +55,7 @@ export default function BankAccountWidget(props) {
   return (
     <div className={className}>
       <div className={styles.title}>You need to register your &quot;{currencyTitle}&quot; bank account
-      on <a href="https://dev.sbex.ch/" target="_blank" rel="noreferrer noopener">bity.com</a></div>
+      on <ExternalLink href="https://bity.com/">bity.com</ExternalLink></div>
       <button className={btnClassName} onClick={onBtnClick} disabled={disabled}>
         {btnContent}
       </button>
