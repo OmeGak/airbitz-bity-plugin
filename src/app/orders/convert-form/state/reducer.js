@@ -1,6 +1,7 @@
 import * as actions from './actions';
 import { currencies, inputAmountValidationErrors } from './constants';
 import * as utils from './utils';
+import { exchangeDirection } from '../../../common-data/currencies';
 
 const EMPTY_AMOUNT = '';
 const EMPTY_AMOUNT_LIMIT = NaN;
@@ -32,6 +33,7 @@ const initialState = {
 
   bankAccountsData: null,
   hasBankAccount: true,
+  bankAccountIsRequired: false,
   loadingBankAccounts: false,
 
   canConvert: false
@@ -96,7 +98,9 @@ function onBulkUpdate(state, { payload }) {
   nextState = calculateAndUpdateOutputAmount(nextState);
   nextState = updateInputAmountLimits(nextState);
   nextState = validateInputAmount(nextState);
+
   nextState = validateBankAccount(nextState);
+
   nextState = validateForm(nextState);
 
   return nextState;
@@ -134,7 +138,9 @@ function onInputCurrencyChanged(state, { payload: currencyId }) {
   nextState = calculateAndUpdateOutputAmount(nextState);
   nextState = updateInputAmountLimits(nextState);
   nextState = validateInputAmount(nextState);
+
   nextState = validateBankAccount(nextState);
+
   nextState = validateForm(nextState);
 
   return nextState;
@@ -148,7 +154,9 @@ function onOutputCurrencyChanged(state, { payload: currencyId }) {
   let nextState = storeOutputCurrency(state, outputCurrency);
 
   nextState = calculateAndUpdateOutputAmount(nextState);
+
   nextState = validateBankAccount(nextState);
+
   nextState = validateForm(nextState);
 
   return nextState;
@@ -160,7 +168,9 @@ function onSwapParties(state) {
   nextState = calculateAndUpdateOutputAmount(nextState);
   nextState = updateInputAmountLimits(nextState);
   nextState = validateInputAmount(nextState);
+
   nextState = validateBankAccount(nextState);
+
   nextState = validateForm(nextState);
 
   return nextState;
@@ -316,21 +326,29 @@ function storeBankAccountsData(state, bankAccountsData) {
 function validateBankAccount(state) {
   const { bankAccountsData, inputCurrency, outputCurrency } = state;
 
-  let fiatCurrency;
+  // --------------
+  // hasBankAccount
+  // --------------
+  let hasBankAccount;
   if (utils.isFiatCurrency(inputCurrency.id)) {
-    fiatCurrency = inputCurrency;
+    hasBankAccount = utils.hasBankAccount(bankAccountsData, inputCurrency.id);
   } else if (utils.isFiatCurrency(outputCurrency.id)) {
-    fiatCurrency = outputCurrency;
+    hasBankAccount = utils.hasBankAccount(bankAccountsData, outputCurrency.id);
   } else {
-    return storeBankAccountValidation(state, true);
+    hasBankAccount = false;
   }
 
-  const hasBankAccount = utils.hasBankAccount(bankAccountsData, fiatCurrency.id);
-  return storeBankAccountValidation(state, hasBankAccount);
-}
+  // --------------
+  // bankAccountIsRequired
+  // --------------
+  const direction = exchangeDirection.calcExchangeDirection(inputCurrency.id, outputCurrency.id);
+  const bankAccountIsRequired = direction === exchangeDirection.CRYPTO_TO_FIAT;
 
-function storeBankAccountValidation(state, hasBankAccount) {
-  return { ...state, hasBankAccount };
+  return {
+    ...state,
+    hasBankAccount,
+    bankAccountIsRequired
+  };
 }
 
 // ----------------
@@ -413,11 +431,9 @@ function validateForm(state) {
     return storeCanConvert(state, false);
   }
 
-  if (!state.hasBankAccount) {
+  if (state.bankAccountIsRequired && !state.hasBankAccount) {
     return storeCanConvert(state, false);
   }
-
-  // TODO validate wallet
 
   return storeCanConvert(state, true);
 }

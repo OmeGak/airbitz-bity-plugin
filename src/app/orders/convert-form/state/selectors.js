@@ -40,6 +40,10 @@ export function hasBankAccount(state) {
   return state[mountPoint].hasBankAccount === true;
 }
 
+export function bankAccountIsRequired(state) {
+  return state[mountPoint].bankAccountIsRequired === true;
+}
+
 export function canConvert(state) {
   return state[mountPoint].canConvert === true;
 }

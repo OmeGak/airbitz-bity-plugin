@@ -7,6 +7,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Widget);
 function mapStateToProps(state) {
   return {
     hasBankAccount: selectors.hasBankAccount(state),
+    bankAccountIsRequired: selectors.bankAccountIsRequired(state),
     inputCurrency: selectors.getInputCurrency(state),
     outputCurrency: selectors.getOutputCurrency(state),
     isLoadingStarted: selectors.isLoadingOfBankAccountsStarted(state)

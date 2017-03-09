@@ -6,6 +6,7 @@ import styles from './styles.less';
 
 const propTypes = {
   hasBankAccount: PropTypes.bool.isRequired,
+  bankAccountIsRequired: PropTypes.bool.isRequired,
   className: PropTypes.string,
   inputCurrency: PropTypes.shape({
     id: PropTypes.string.isRequired,
@@ -24,8 +25,8 @@ const defaultProps = {
 };
 
 export default function BankAccountWidget(props) {
-  const { hasBankAccount } = props;
-  if (hasBankAccount) {
+  const { hasBankAccount, bankAccountIsRequired } = props;
+  if (!bankAccountIsRequired || (bankAccountIsRequired && hasBankAccount)) {
     return null;
   }
 
