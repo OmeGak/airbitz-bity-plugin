@@ -12,10 +12,12 @@ const defaultProps = {
   value: ''
 };
 
+const inputType = isMobileBrowser() ? 'number' : 'text';
+
 export default function AmountInput(props) {
   const { value, onChange, ...otherProps } = props;
   return (
-    <input placeholder="Amount" type="text" value={value} onChange={handleOnChange} {...otherProps} />
+    <input placeholder="Amount" type={inputType} value={value} onChange={handleOnChange} {...otherProps} />
   );
 
   function handleOnChange(event) {
@@ -25,3 +27,8 @@ export default function AmountInput(props) {
 
 AmountInput.propTypes = propTypes;
 AmountInput.defaultProps = defaultProps;
+
+function isMobileBrowser() {
+  const ua = window.navigator.userAgent;
+  return /android|ipod|iphone|ipad/gi.test(ua);
+}
