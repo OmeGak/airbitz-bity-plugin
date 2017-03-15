@@ -1,0 +1,70 @@
+import React, { PropTypes, Component } from 'react';
+import { Card, CardHeader, CardBody } from '../../../lib/card';
+import ExchangeRateWidget from './exchange-rate-widget';
+
+import ExchangeParties from './exchange-parties';
+import BankAccounts from './bank-accounts';
+import ExternalReference from './external-reference';
+import SubmitBtn from './submit-btn';
+
+import styles from './form.less';
+
+const propTypes = {
+  showBankAccounts: PropTypes.bool.isRequired,
+  showExternalReference: PropTypes.bool.isRequired,
+  onMounted: PropTypes.func.isRequired,
+  onUnmounted: PropTypes.func.isRequired
+};
+
+export default class ConvertForm extends Component {
+  static propTypes = propTypes;
+
+  componentDidMount() {
+    this.props.onMounted();
+  }
+
+  componentWillUnmount() {
+    this.props.onUnmounted();
+  }
+
+  render() {
+    const { showBankAccounts } = this.props;
+    let bankAccountsSection = null;
+    if (showBankAccounts) {
+      bankAccountsSection = (
+        <div className={styles.formSection}>
+          <BankAccounts />
+        </div>
+      );
+    }
+
+    const { showExternalReference } = this.props;
+    let externalReferenceSection = null;
+    if (showExternalReference) {
+      externalReferenceSection = (
+        <div className={styles.formSection}>
+          <ExternalReference />
+        </div>
+      );
+    }
+
+    return (
+      <Card>
+        <CardHeader className={styles.cardHeader}>
+          <div className={styles.headerTitle}>Buy / Sell</div>
+          <ExchangeRateWidget className={styles.exchangeRateWidget} />
+        </CardHeader>
+        <CardBody>
+          <div className={styles.formSection}>
+            <ExchangeParties />
+          </div>
+          {bankAccountsSection}
+          {externalReferenceSection}
+          <div className={styles.formSection}>
+            <SubmitBtn />
+          </div>
+        </CardBody>
+      </Card>
+    );
+  }
+}

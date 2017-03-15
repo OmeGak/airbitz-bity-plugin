@@ -1,11 +1,14 @@
 export const BTC = {
-  code: 'BTC'
+  code: 'BTC',
+  title: 'Bitcoin'
 };
 
 export const EUR = {
-  code: 'EUR'
+  code: 'EUR',
+  title: 'Euro'
 };
 
 export const CHF = {
-  code: 'CHF'
+  code: 'CHF',
+  title: 'Swiss Francs'
 };

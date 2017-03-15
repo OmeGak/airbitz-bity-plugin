@@ -3,18 +3,18 @@ export function hasBankAccount(bankAccountsData, currencyId) {
     return false;
   }
 
-  return findBankAccountsByCurrencyId(bankAccountsData, currencyId).length > 0;
+  return findBankAccountsByCurrencyCode(bankAccountsData, currencyId).length > 0;
 }
 
-function findBankAccountsByCurrencyId(bankAccountsData, currencyId) {
+export function findBankAccountsByCurrencyCode(bankAccountsData, currencyId) {
   return bankAccountsData
     .filter((obj) => {
-      const bankAccountCurrencyId = extractBankAccountCurrencyId(obj);
+      const bankAccountCurrencyId = extractBankAccountCurrencyCode(obj);
       return bankAccountCurrencyId === currencyId;
     });
 }
 
-function extractBankAccountCurrencyId({ currency = '' }) {
+function extractBankAccountCurrencyCode({ currency = '' }) {
   // data about the currency of bank account is stored in the field "currency" so:
   // { ...
   //   currency: "/api/v1/currency/EUR/"

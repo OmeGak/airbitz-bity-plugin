@@ -14,8 +14,9 @@ import { setup as setupQuotaExceededPageState } from './quota/quota-exceeded-pag
 import { setup as setupPhoneStore } from './common-data/phone';
 import { setup as setupPhoneNotVerifiedPageState } from './phone/phone-not-verified-page/state';
 import { setup as setupExchangeRatesStore } from './common-data/exchange-rates';
-import { setup as setupConvertFormState } from './orders/convert-form/state';
 import { setup as setupAirbitzWalletStore } from './common-data/airbitz-wallet';
+import { setup as setupExchangeOrder } from './common-data/exchange-order';
+import { setup as setupConvertForm2State } from './orders/convert-form/form.state';
 
 const bity = createBity();
 
@@ -38,8 +39,9 @@ cfg = setupQuotaExceededPageState(cfg, bity);
 cfg = setupPhoneStore(cfg, bity);
 cfg = setupPhoneNotVerifiedPageState(cfg, bity);
 cfg = setupExchangeRatesStore(cfg, bity);
-cfg = setupConvertFormState(cfg, bity);
 cfg = setupAirbitzWalletStore(cfg, bity);
+cfg = setupExchangeOrder(cfg, bity);
+cfg = setupConvertForm2State(cfg, bity);
 
 const { reducers, sagas } = cfg;
 const reducer = combineReducers(reducers);

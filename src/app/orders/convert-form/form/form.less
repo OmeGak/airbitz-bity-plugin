@@ -1,0 +1,119 @@
+:local {
+  @import '../../../shell/bity-colors';
+
+  // ========================
+  // header
+  // ========================
+  .cardHeader {
+    &:after,
+    &:before {
+      content: '';
+      display: table;
+      width: 100%;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+
+  .headerTitle {
+    display: block;
+    float: left;
+  }
+
+  .exchangeRateWidget {
+    display: block;
+    float: right;
+  }
+
+  @media (max-width: 400px) {
+    .headerTitle,
+    .exchangeRateWidget {
+      float: none;
+    }
+
+    .exchangeRateWidget {
+      text-align: left;
+    }
+  }
+
+  // ========================
+  // form sections
+  // ========================
+  .formSection {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    box-sizing: border-box;
+  }
+
+  .formSection + .formSection {
+    margin-top: 40px;
+    padding-top: 20px;
+  }
+
+  // ========================
+  // exchange parties
+  // ========================
+  .exchangeParties {
+    display: block;
+    width: 684px;
+
+    margin: 0 auto;
+
+    &:before,
+    &:after {
+      content: '';
+
+      display: table;
+      width: 100%;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+
+  .exchangePartyContainer {
+    position: relative;
+
+    display: block;
+    width: 327px;
+    min-height: 1px;
+
+    float: left;
+  }
+
+  .swapPartiesBtn {
+    position: relative;
+    width: 30px;
+
+    float: left;
+  }
+
+  @media (max-width: 800px) {
+    .exchangeParties {
+      width: 100%;
+    }
+
+    .exchangePartyContainer {
+      width: 100%;
+      float: none;
+    }
+
+    .swapPartiesBtn {
+      float: none;
+
+      top: 6px;
+      margin: 10px auto;
+    }
+
+    :global(.swap-btn) {
+      &:before {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
