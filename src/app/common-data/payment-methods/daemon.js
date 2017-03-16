@@ -62,7 +62,7 @@ function* fetchData(bity) {
 
 function* sendFetchDataRequest(bity) {
   try {
-    const data = yield call(bity.exchangeRates.fetchAllMethods);
+    const data = yield call(bity.paymentMethods.fetchAllMethods);
     return { data, error: null };
   } catch (e) {
     return { error: e };

@@ -9,12 +9,23 @@ import {
 } from '../../../common-data/quota';
 
 import {
+  selectors as paymentMethodsStoreSelectors
+} from '../../../common-data/payment-methods';
+
+import {
   selectors as bankAccountsStoreSelectors,
   actions as bankAccountStoreActions
 } from '../../../common-data/bank-accounts';
 
 import * as formActions from './form/actions';
 import * as bankAccountsActions from './bank-accounts/actions';
+
+import * as exchangePartiesSelectors from './exchange-parties/selectors';
+import * as bankAccountsSelectors from './bank-accounts/selectors';
+import * as paymentMethodsSelectors from './payment-methods/selectors';
+import * as externalReferenceSelectors from './external-reference/selectors';
+
+import { actions as exchangeOrderActions } from '../../../common-data/exchange-order';
 
 export default function convertFormDaemonFactory() {
   return function* runConvertFormDaemon() {
@@ -33,11 +44,13 @@ function* onMounted() {
     const rates = yield select(exchangeRatesSelectors.getData);
     const quota = yield select(quotaSelectors.getData);
     const bankAccounts = yield select(bankAccountsStoreSelectors.getData);
+    const paymentMethods = yield select(paymentMethodsStoreSelectors.getData);
 
     yield put(formActions.setupInitialStateData({
       rates,
       quota,
-      bankAccounts
+      bankAccounts,
+      paymentMethods
     }));
   }
 }
@@ -70,5 +83,23 @@ function* listenSubmitIntents() {
   while (true) { // eslint-disable-line no-constant-condition
     yield take(formActions.SUBMIT);
     yield put(formActions.submitStarted());
+
+    const rawInputAmount = yield select(exchangePartiesSelectors.getInputAmount);
+    const inputAmount = parseFloat(rawInputAmount);
+    const inputCurrencyCode = yield select(exchangePartiesSelectors.getInputSelectedCurrencyCode);
+    const outputCurrencyCode = yield select(exchangePartiesSelectors.getOutputSelectedCurrencyCode);
+    const bankAccountId = yield select(bankAccountsSelectors.getSelectedAccountId);
+    const paymentMethodCode = yield select(paymentMethodsSelectors.getSelectedPaymentMethodId);
+    const externalReference = yield select(externalReferenceSelectors.getExternalReference);
+
+    const formData = {
+      inputAmount,
+      inputCurrencyCode,
+      outputCurrencyCode,
+      bankAccountId,
+      paymentMethodCode,
+      externalReference
+    };
+    yield put(exchangeOrderActions.createOrder(formData));
   }
 }

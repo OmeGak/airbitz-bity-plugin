@@ -4,6 +4,7 @@ import ExchangeRateWidget from './exchange-rate-widget';
 
 import ExchangeParties from './exchange-parties';
 import BankAccounts from './bank-accounts';
+import PaymentMethods from './payment-methods';
 import ExternalReference from './external-reference';
 import SubmitBtn from './submit-btn';
 
@@ -11,6 +12,7 @@ import styles from './form.less';
 
 const propTypes = {
   showBankAccounts: PropTypes.bool.isRequired,
+  showPaymentMethods: PropTypes.bool.isRequired,
   showExternalReference: PropTypes.bool.isRequired,
   onMounted: PropTypes.func.isRequired,
   onUnmounted: PropTypes.func.isRequired
@@ -38,6 +40,16 @@ export default class ConvertForm extends Component {
       );
     }
 
+    const { showPaymentMethods } = this.props;
+    let paymentMethodsSection = null;
+    if (showPaymentMethods) {
+      paymentMethodsSection = (
+        <div className={styles.formSection}>
+          <PaymentMethods />
+        </div>
+      );
+    }
+
     const { showExternalReference } = this.props;
     let externalReferenceSection = null;
     if (showExternalReference) {
@@ -59,6 +71,7 @@ export default class ConvertForm extends Component {
             <ExchangeParties />
           </div>
           {bankAccountsSection}
+          {paymentMethodsSection}
           {externalReferenceSection}
           <div className={styles.formSection}>
             <SubmitBtn />

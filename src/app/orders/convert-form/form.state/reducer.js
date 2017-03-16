@@ -1,18 +1,27 @@
-import { EMPTY_AMOUNT, EMPTY_ACCOUNT_ID } from './constants';
+import { EMPTY_AMOUNT, EMPTY_ACCOUNT_ID, EMPTY_PAYMENT_METHOD_ID } from './constants';
 import { fiatCurrencies, cryptoCurrencies } from '../../../common-data/currencies';
 
 import formReducer from './form/reducer';
 import * as formActions from './form/actions';
+
 import ratesReducer from './rates/reducer';
 import * as ratesActions from './rates/actions';
+
 import quotaReducer from './quota/reducer';
 import * as quotaActions from './quota/actions';
+
 import exchangePartiesReducer from './exchange-parties/reducer';
 import * as exchangePartiesActions from './exchange-parties/actions';
+
 import bankAccountsReducer from './bank-accounts/reducer';
 import * as bankAccountsActions from './bank-accounts/actions';
+
+import paymentMethodsReducer from './payment-methods/reducer';
+import * as paymentMethodsActions from './payment-methods/actions';
+
 import externalReferenceReducer from './external-reference/reducer';
 import * as externalReferenceActions from './external-reference/actions';
+
 import errorsReducer from './errors/reducer';
 import * as errorsActions from './errors/actions';
 
@@ -20,6 +29,7 @@ const ratesActionTypes = extractActionTypes(ratesActions);
 const quotaActionTypes = extractActionTypes(quotaActions);
 const exchangePartiesActionTypes = extractActionTypes(exchangePartiesActions);
 const bankAccountsActionTypes = extractActionTypes(bankAccountsActions);
+const paymentMethodsActionTypes = extractActionTypes(paymentMethodsActions);
 const externalReferenceActionTypes = extractActionTypes(externalReferenceActions);
 
 const allActionTypes = [].concat(
@@ -27,7 +37,8 @@ const allActionTypes = [].concat(
   quotaActionTypes,
   exchangePartiesActionTypes,
   bankAccountsActionTypes,
-  externalReferenceActionTypes
+  externalReferenceActionTypes,
+  paymentMethodsActionTypes
 );
 
 const currencyListA = fiatCurrencies.map(({ code }) => code);
@@ -53,6 +64,12 @@ const initialState = {
     available: [],
     selectedId: EMPTY_ACCOUNT_ID,
     loading: false
+  },
+  paymentMethods: {
+    all: [],
+    available: [],
+    selectedId: EMPTY_PAYMENT_METHOD_ID,
+    showUi: false
   },
   externalReference: '',
   errors: {
@@ -92,13 +109,14 @@ export default function convertFormReducer(state = initialState, action = {}) {
 }
 
 function onSetupInitialData(state, { payload }) {
-  const { rates, quota, bankAccounts } = payload;
+  const { rates, quota, bankAccounts, paymentMethods } = payload;
 
   let nextState = { ...state };
 
   nextState = convertFormReducer(nextState, ratesActions.ratesChanged(rates));
   nextState = convertFormReducer(nextState, quotaActions.quotaChanged(quota));
   nextState = convertFormReducer(nextState, bankAccountsActions.allAccountsChanged(bankAccounts));
+  nextState = convertFormReducer(nextState, paymentMethodsActions.paymentMethodsChanged(paymentMethods));
 
   return nextState;
 }
@@ -120,6 +138,7 @@ function processOwnAction(state, action) {
   const isQuotaAction = quotaActionTypes.indexOf(action.type) !== -1;
   const isExchangePartiesAction = exchangePartiesActionTypes.indexOf(action.type) !== -1;
   const isBankAccountsAction = bankAccountsActionTypes.indexOf(action.type) !== -1;
+  const isPaymentMethodsAction = paymentMethodsActionTypes.indexOf(action.type) !== -1;
   const isExternalReferenceAction = externalReferenceActionTypes.indexOf(action.type) !== -1;
 
   switch (true) {
@@ -131,6 +150,8 @@ function processOwnAction(state, action) {
       return exchangePartiesReducer(state, action);
     case isBankAccountsAction:
       return bankAccountsReducer(state, action);
+    case isPaymentMethodsAction:
+      return paymentMethodsReducer(state, action);
     case isExternalReferenceAction:
       return externalReferenceReducer(state, action);
     default:
@@ -154,6 +175,7 @@ function updateAnotherPartOfState(state, action) {
   }
 
   nextState = updateBankAccounts(nextState, action);
+  nextState = updatePaymentMethods(nextState, action);
 
   return nextState;
 }
@@ -182,6 +204,16 @@ function updateBankAccounts(state, action) {
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
       return bankAccountsReducer(state, action);
+    default:
+      return state;
+  }
+}
+
+function updatePaymentMethods(state, action) {
+  switch (action.type) {
+    case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
+    case exchangePartiesActions.SWAPPED_AROUND:
+      return paymentMethodsReducer(state, action);
     default:
       return state;
   }

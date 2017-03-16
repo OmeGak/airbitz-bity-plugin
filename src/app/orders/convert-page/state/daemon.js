@@ -17,6 +17,9 @@ import {
   actions as exchangeRatesStoreActions
 } from '../../../common-data/exchange-rates';
 import {
+  actions as paymentMethodsStoreActions
+} from '../../../common-data/payment-methods';
+import {
   actions as airbitzWalletStoreActions
 } from '../../../common-data/airbitz-wallet';
 
@@ -95,6 +98,18 @@ function* preparePage() {
       continue; // eslint-disable-line no-continue
     }
     if (exchangeRatesPreloading.failed) {
+      yield put(actions.preparationFailed());
+      continue; // eslint-disable-line no-continue
+    }
+
+    // ----------------------
+    // make sure payment methods preloaded
+    // ----------------------
+    const paymentMethodsPreloading = yield call(preloadPaymentMethods);
+    if (paymentMethodsPreloading.canceled || paymentMethodsPreloading.skipNextSteps) {
+      continue; // eslint-disable-line no-continue
+    }
+    if (paymentMethodsPreloading.failed) {
       yield put(actions.preparationFailed());
       continue; // eslint-disable-line no-continue
     }
@@ -195,6 +210,28 @@ function* preloadExchangeRates() {
     failed: take(exchangeRatesStoreActions.FETCH_FAILED),
     succeed: take(exchangeRatesStoreActions.FETCH_SUCCEED),
     alreadyHasData: take(exchangeRatesStoreActions.ALREADY_HAS_DATA)
+  });
+
+  if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
+    return { canceled: true };
+  }
+
+  if (typeof res.failed !== 'undefined') {
+    return { failed: true };
+  }
+
+  return { success: true };
+}
+
+function* preloadPaymentMethods() {
+  yield put(paymentMethodsStoreActions.fetchData());
+
+  const res = yield race({
+    unmounted: take(actions.UNMOUNTED),
+    canceled: take(paymentMethodsStoreActions.FETCH_CANCELED),
+    failed: take(paymentMethodsStoreActions.FETCH_FAILED),
+    succeed: take(paymentMethodsStoreActions.FETCH_SUCCEED),
+    alreadyHasData: take(paymentMethodsStoreActions.ALREADY_HAS_DATA)
   });
 
   if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
