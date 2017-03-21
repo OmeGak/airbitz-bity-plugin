@@ -4,10 +4,8 @@ import * as exchangePartiesActions from '../exchange-parties/actions';
 
 export default function formReducer(state, action) {
   switch (action.type) {
-    case actions.SUBMIT_STARTED:
-      return onSubmitStarted(state, action);
-    case actions.SUBMIT_FINISHED:
-      return onSubmitFinished(state, action);
+    case actions.MOUNTED:
+      return onMounted(state, action);
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
       return onOutputCurrencyChanged(state, action);
@@ -16,22 +14,12 @@ export default function formReducer(state, action) {
   }
 }
 
-function onSubmitStarted(state) {
+function onMounted(state) {
   return {
     ...state,
     form: {
       ...state.form,
-      submitting: true
-    }
-  };
-}
-
-function onSubmitFinished(state) {
-  return {
-    ...state,
-    form: {
-      ...state.form,
-      submitting: false
+      mounted: true
     }
   };
 }

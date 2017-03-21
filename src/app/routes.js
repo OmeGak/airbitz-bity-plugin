@@ -7,6 +7,7 @@ import OrdersHistoryPage from './orders/orders-history-page';
 import AccountInfoPage from './account/account-info-page';
 
 import ConvertPage from './orders/convert-page';
+import SuccessfulConvertPage from './orders/successful-convert-page';
 import { QuotaExceededPage } from './quota';
 import { Page as PhoneNotVerifiedPage } from './phone/phone-not-verified-page';
 
@@ -32,6 +33,10 @@ export default {
     {
       path: 'convert',
       component: protectedRoute(ConvertPage)
+    },
+    {
+      path: 'convert/success',
+      component: protectedRoute(SuccessfulConvertPage)
     },
     {
       path: 'account',

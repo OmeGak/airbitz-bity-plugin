@@ -5,7 +5,6 @@ import {
   selectors as accountInfoSelectors
 } from '../account-info';
 import * as actions from './actions';
-import * as selectors from './selectors';
 
 export default function quotaStoreDaemonFactory(bity) {
   return function* runQuotaStoreDaemon() {
@@ -26,12 +25,6 @@ function* listenUnauth() {
 function* listenFetchIntents(bity) {
   while (true) { // eslint-disable-line no-constant-condition
     yield take(actions.FETCH_DATA);
-
-    const hasData = yield select(selectors.hasData);
-    if (hasData) {
-      yield put(actions.alreadyHasData());
-      continue; // eslint-disable-line no-continue
-    }
 
     yield put(actions.fetchStarted());
 

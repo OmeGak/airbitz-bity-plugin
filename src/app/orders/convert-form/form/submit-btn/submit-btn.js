@@ -18,7 +18,7 @@ const defaultProps = {
   disabled: false
 };
 
-export default function SubmitBtn(props) {
+export default function SubmitBtn(props, context) {
   const { inProgress, formIsValid, onClick } = props;
   const content = createContent(inProgress);
 
@@ -28,14 +28,23 @@ export default function SubmitBtn(props) {
   const disabled = !formIsValid || inProgress;
 
   return (
-    <button className={btnClassName} onClick={onClick} disabled={disabled}>
+    <button className={btnClassName} onClick={handleClick} disabled={disabled}>
       {content}
     </button>
   );
+
+  function handleClick() {
+    onClick(context.router);
+  }
 }
 
 SubmitBtn.propTypes = propTypes;
 SubmitBtn.defaultProps = defaultProps;
+
+// TODO it is not a best place for this
+SubmitBtn.contextTypes = {
+  router: PropTypes.object
+};
 
 function createContent(inProgress) { // eslint-disable-line react/prop-types
   if (inProgress) {

@@ -1,4 +1,5 @@
 import { reducer as notificationSystemReducer } from 'react-notification-system-redux';
+import { mountPoint } from './constants';
 import runNotificationsDaemon from './notifications-daemon';
 
 export default function setupNotifications(cfg) {
@@ -6,7 +7,7 @@ export default function setupNotifications(cfg) {
 
   const reducers = {
     ...prevReducers,
-    notifications: notificationSystemReducer
+    [mountPoint]: notificationSystemReducer
   };
 
   const sagas = [

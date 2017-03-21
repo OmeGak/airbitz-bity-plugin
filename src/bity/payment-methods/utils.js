@@ -1,9 +1,9 @@
 import * as quotaUtils from '../quota/utils';
 
-export function findEnabledPaymentMethodsByCurrencyCode(paymentMethods, quotaData, currencyCode) {
+export function findEnabledPaymentMethodsByCurrencyCode(paymentMethods, quotaData, inputCurrencyCode) {
   const quotaGroup = quotaUtils.getQuotaGroup(quotaData);
   return paymentMethods
-    .filter(obj => filterByCurrency(obj, currencyCode))
+    .filter(obj => filterByCurrency(obj, inputCurrencyCode))
     .filter(obj => isPaymentMethodEnabled(obj, quotaGroup))
     .filter(obj => !isDeprecatedPaymentMethod(obj));
 }

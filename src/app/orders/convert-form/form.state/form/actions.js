@@ -23,22 +23,9 @@ export function setupInitialStateData(data) {
 }
 
 export const SUBMIT = `${prefix}::SUBMIT`;
-export function submit() {
+export function submit(router) {
   return {
-    type: SUBMIT
-  };
-}
-
-export const SUBMIT_STARTED = `${prefix}::SUBMIT_STARTED`;
-export function submitStarted() {
-  return {
-    type: SUBMIT_STARTED
-  };
-}
-
-export const SUBMIT_FINISHED = `${prefix}::SUBMIT_FINISHED`;
-export function submitFinished() {
-  return {
-    type: SUBMIT_FINISHED
+    type: SUBMIT,
+    payload: router
   };
 }

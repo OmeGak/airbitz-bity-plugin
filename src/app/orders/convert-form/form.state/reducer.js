@@ -91,7 +91,7 @@ const initialState = {
     }
   },
   form: {
-    submitting: false,
+    mounted: false,
     showBankAccounts: false, // TODO this needs a better place in the state
     showExternalReference: false // TODO this needs a better place in the state
   }
@@ -101,6 +101,8 @@ export default function convertFormReducer(state = initialState, action = {}) {
   switch (action.type) {
     case formActions.SETUP_INITIAL_STATE_DATA:
       return onSetupInitialData(state, action);
+    case formActions.MOUNTED:
+      return formReducer(state, action);
     case formActions.UNMOUNTED:
       return resetState(state, action);
     default:

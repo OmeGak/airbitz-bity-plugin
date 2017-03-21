@@ -85,7 +85,7 @@ class QuotaExceededPage extends Component {
           <CardHeader>Quota is exceeded</CardHeader>
           <CardBody className={styles.cardBody}>
             <div className={styles.text}>Your {quotaType} limit is exceeded.</div>
-            <div className={styles.text}>Increase your limit at
+            <div className={styles.text}>Increase your limit at &nbsp;
               <ExternalLink href="https://bity.com/">bity.com</ExternalLink></div>
             <div className={styles.text}>and</div>
             <div>
