@@ -9,6 +9,20 @@ export function getFiatToCryptoRequestCategoryParameter(outputCryptoCurrencyCode
   }
 }
 
+export function getCryptoToFiatRequestCategoryParameter(inputCurrencyCode, outputCurrencyCode) {
+  const supportedFiatCurrencies = [
+    currencies.EUR.code,
+    currencies.CHF.code
+  ];
+
+  const isBtcToFiat = inputCurrencyCode === currencies.BTC.code &&
+    supportedFiatCurrencies.indexOf(outputCurrencyCode) > -1;
+  if (isBtcToFiat) {
+    return 'SELL';
+  }
+  throw new Error(`Unsupported pair of currencies "${inputCurrencyCode}", ${outputCurrencyCode}"`);
+}
+
 export function createNotesForAirbitz() {
   return dateToString(new Date());
 }

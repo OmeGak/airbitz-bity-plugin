@@ -3,7 +3,8 @@ import { spawn, take, put, call, race } from 'redux-saga/effects';
 import {
   AIRBITZ_WALLET_ERROR_KEY,
   AIRBITZ_PUBLIC_ADDRESS_ERROR_KEY,
-  REQUEST_ERROR_KEY
+  REQUEST_ERROR_KEY,
+  CONFIRM_SPENDING_ERROR_KEY
 } from './constants';
 import * as actions from './actions';
 
@@ -88,7 +89,7 @@ function* performExchangeFromFiatToCrypto(bity, formData) {
   // -------------------
   // send the request to bity
   // -------------------
-  const requestResult = yield call(sendRequestStep, bity, formData, airbitzPublicAddress);
+  const requestResult = yield call(sendFiatToCryptoRequestStep, bity, formData, airbitzPublicAddress);
   if (requestResult.canceled) {
     yield call(disposePublicAddressOfAirbitzWallet, wallet, requestId);
     yield put(actions.canceled());
@@ -118,11 +119,75 @@ function* performExchangeFromFiatToCrypto(bity, formData) {
   // -------------------
   // after the success
   // -------------------
-  yield put(actions.succeed(response));
+  yield put(actions.succeed(response, exchangeDirection.FIAT_TO_CRYPTO));
 }
 
-function performExchangeCryptoToFiat() {
-  airbitz.ui.showAlert('Not implemented', 'Exchange from crypto to fiat is not implemented');
+function* performExchangeCryptoToFiat(bity, formData) {
+  yield put(actions.started());
+
+  // -------------------
+  // obtain selected Airbitz wallet
+  // -------------------
+  const getAirbitzWalletResult = yield call(getAirbitzWalletStep);
+  if (getAirbitzWalletResult.canceled) {
+    yield put(actions.canceled());
+    return;
+  }
+  if (getAirbitzWalletResult.error) {
+    yield put(actions.failed(AIRBITZ_WALLET_ERROR_KEY, getAirbitzWalletResult.error));
+    return;
+  }
+  const wallet = getAirbitzWalletResult.data;
+
+  // -------------------
+  // send the request to bity in order to obtain public crypto address
+  // -------------------
+  const requestResult = yield call(sendCryptoToFiatRequestStep, bity, formData);
+  if (requestResult.canceled) {
+    yield put(actions.canceled());
+    return;
+  }
+  if (requestResult.error) {
+    yield put(actions.failed(REQUEST_ERROR_KEY, requestResult.error));
+    return;
+  }
+  const { data: orderDetails } = requestResult;
+  const { outputCryptoAddress, orderId } = orderDetails;
+
+  // -------------------
+  // ask the Airbitz user to confirm the transaction
+  // -------------------
+  const btcAmount = formData.inputAmount;
+  const confirmationResult = yield call(askConfirmBtcSpendingStep, wallet, outputCryptoAddress, btcAmount);
+  if (confirmationResult.canceled) {
+    yield put(actions.canceled());
+    return;
+  }
+  if (confirmationResult.error) {
+    yield put(actions.failed(CONFIRM_SPENDING_ERROR_KEY, confirmationResult.error));
+    return;
+  }
+
+  const { data: { back } } = confirmationResult;
+  if (back === true) {
+    yield call(sendCancelOrderRequest, bity, orderId);
+    yield put(actions.canceled());
+    return;
+  }
+
+  // -------------------
+  // force refresh of quota data
+  // -------------------
+  const refreshQuotaResult = yield call(refreshQuotaStep);
+  if (refreshQuotaResult.canceled) {
+    yield put(actions.canceled());
+    return;
+  }
+
+  // -------------------
+  // after the success
+  // -------------------
+  yield put(actions.succeed(orderDetails, exchangeDirection.CRYPTO_TO_FIAT));
 }
 
 // ==========================
@@ -163,7 +228,7 @@ function* getPublicAddressOfAirbitzWalletStep(wallet) {
   return { data: { address, requestId }, error };
 }
 
-function* sendRequestStep(bity, formData, airbitzPublicAddress) {
+function* sendFiatToCryptoRequestStep(bity, formData, airbitzPublicAddress) {
   const category = utils.getFiatToCryptoRequestCategoryParameter(formData.outputCurrencyCode);
 
   const dataForRequest = {
@@ -173,7 +238,29 @@ function* sendRequestStep(bity, formData, airbitzPublicAddress) {
   };
 
   const res = yield race({
-    request: call(sendRequest, bity, dataForRequest),
+    request: call(sendFiatToCryptoRequest, bity, dataForRequest),
+    unauth: take(authStoreActions.UNAUTHENTICATED)
+  });
+
+  if (typeof res.unauth !== 'undefined') {
+    return { canceled: true };
+  }
+
+  const { data, error } = res.request;
+  return { data, error };
+}
+
+function* sendCryptoToFiatRequestStep(bity, formData) {
+  const { inputCurrencyCode, outputCurrencyCode } = formData;
+  const category = utils.getCryptoToFiatRequestCategoryParameter(inputCurrencyCode, outputCurrencyCode);
+
+  const dataForRequest = {
+    ...formData,
+    category
+  };
+
+  const res = yield race({
+    request: call(sendCryptoToFiatRequest, bity, dataForRequest),
     unauth: take(authStoreActions.UNAUTHENTICATED)
   });
 
@@ -199,6 +286,20 @@ function* refreshQuotaStep() {
     return { canceled: true };
   }
   return {};
+}
+
+function* askConfirmBtcSpendingStep(wallet, outputCryptoAddress, btcAmount) {
+  const res = yield race({
+    confirmationResult: call(askConfirmBtcSpending, wallet, outputCryptoAddress, btcAmount),
+    unauth: take(authStoreActions.UNAUTHENTICATED)
+  });
+
+  if (typeof res.unauth !== 'undefined') {
+    return { canceled: true };
+  }
+
+  const { data = {}, error } = res.confirmationResult;
+  return { data, error };
 }
 
 // ==========================
@@ -252,11 +353,59 @@ function disposePublicAddressOfAirbitzWallet(wallet, requestId) {
   airbitz.core.finalizeReceiveRequest(wallet, requestId);
 }
 
-function* sendRequest(bity, formData) {
+function* sendFiatToCryptoRequest(bity, formData) {
   try {
     const data = yield call(bity.orders.exchangeFiatToCrypto, formData);
     return { error: null, data };
   } catch (e) {
     return { error: e };
   }
+}
+
+function* sendCryptoToFiatRequest(bity, formData) {
+  try {
+    const data = yield call(bity.orders.exchangeCryptoToFiat, formData);
+    return { error: null, data };
+  } catch (e) {
+    return { error: e };
+  }
+}
+
+function* askConfirmBtcSpending(wallet, outputCryptoAddress, btcAmount) {
+  const satoshiAmount = btcToSatoshi(btcAmount);
+
+  const defaultOpts = {
+    label: 'Bity',
+    category: 'Exchange:Sell Bitcoin',
+    notes: utils.createNotesForAirbitz()
+  };
+
+  const promiseFactory = () => new Promise((resolve, reject) => {
+    const opts = {
+      ...defaultOpts,
+      success: resolve,
+      error: reject
+    };
+    airbitz.core.createSpendRequest(wallet, outputCryptoAddress, satoshiAmount, opts);
+  });
+
+  try {
+    const result = yield call(promiseFactory);
+    return { data: result };
+  } catch (e) {
+    return { error: e };
+  }
+}
+
+function* sendCancelOrderRequest(bity, orderId) {
+  try {
+    const data = yield call(bity.orders.cancelOrder, orderId);
+    return { error: null, data };
+  } catch (e) {
+    return { error: e };
+  }
+}
+
+function btcToSatoshi(btcValue) {
+  return Math.floor(btcValue * 100000000);
 }

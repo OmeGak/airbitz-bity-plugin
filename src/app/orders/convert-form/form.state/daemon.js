@@ -93,15 +93,18 @@ function* listenSubmitIntents() {
     const inputAmount = parseFloat(rawInputAmount);
     const inputCurrencyCode = yield select(exchangePartiesSelectors.getInputSelectedCurrencyCode);
     const outputCurrencyCode = yield select(exchangePartiesSelectors.getOutputSelectedCurrencyCode);
-    const bankAccountId = yield select(bankAccountsSelectors.getSelectedAccountId);
     const paymentMethodCode = yield select(paymentMethodsSelectors.getSelectedPaymentMethodId);
     const externalReference = yield select(externalReferenceSelectors.getExternalReference);
+
+    const allBankAccounts = yield select(bankAccountsSelectors.getAllBankAccounts);
+    const bankAccountId = yield select(bankAccountsSelectors.getSelectedAccountId);
+    const bankAccountUuid = getBankAccountUuid(allBankAccounts, bankAccountId);
 
     const formData = {
       inputAmount,
       inputCurrencyCode,
       outputCurrencyCode,
-      bankAccountId,
+      bankAccountUuid,
       paymentMethodCode,
       externalReference
     };
@@ -139,6 +142,7 @@ function* processFailedResult(router) {
   const isAirbitzWalletError = yield select(exchangeOrderSelectors.hasAirbitzWalletError);
   const isAirbitzPublicAddressError = yield select(exchangeOrderSelectors.hasAirbitzPublicAddressError);
   const isRequestError = yield select(exchangeOrderSelectors.hasRequestError);
+  const isConfirmSpendingError = yield select(exchangeOrderSelectors.hasConfirmSpendingError);
 
   switch (true) {
     case isAirbitzWalletError:
@@ -149,6 +153,9 @@ function* processFailedResult(router) {
       break;
     case isRequestError:
       yield call(processRequestError, router);
+      break;
+    case isConfirmSpendingError:
+      yield call(processConfirmSpendingError);
       break;
   }
 }
@@ -185,6 +192,10 @@ function* processRequestError(router) {
   yield call(showErrorNotification, msg);
 }
 
+function* processConfirmSpendingError() {
+  yield call(showNotification, 'Error', 'Can\'t obtain confirmation for spending');
+}
+
 function* redirectToSuccessPage(router) {
   // TODO DRY for url
   // TODO get rid of router
@@ -205,4 +216,12 @@ function* showErrorNotification(reasonMsg) {
 
 function* showNotification(title, msg) {
   yield put(notificationActions.notify({ title, msg }));
+}
+
+function getBankAccountUuid(bankAccounts, bankAccountId) {
+  const list = bankAccounts.filter(({ id }) => id === bankAccountId);
+  if (list.length === 0) {
+    return '';
+  }
+  return list[0].uuid;
 }

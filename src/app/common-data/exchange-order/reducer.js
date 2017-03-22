@@ -4,7 +4,8 @@ import {
   NO_DATA,
   AIRBITZ_WALLET_ERROR_KEY,
   AIRBITZ_PUBLIC_ADDRESS_ERROR_KEY,
-  REQUEST_ERROR_KEY
+  REQUEST_ERROR_KEY,
+  CONFIRM_SPENDING_ERROR_KEY
 } from './constants';
 
 const initialState = {
@@ -12,9 +13,11 @@ const initialState = {
   errors: {
     [AIRBITZ_WALLET_ERROR_KEY]: NO_ERROR,
     [AIRBITZ_PUBLIC_ADDRESS_ERROR_KEY]: NO_ERROR,
-    [REQUEST_ERROR_KEY]: NO_ERROR
+    [REQUEST_ERROR_KEY]: NO_ERROR,
+    [CONFIRM_SPENDING_ERROR_KEY]: NO_ERROR
   },
-  data: NO_DATA
+  data: NO_DATA,
+  exchangeDirection: null
 };
 
 export default function exchangeOrderReducer(state = initialState, action = {}) {
@@ -55,8 +58,10 @@ function onFailed(state, { payload }) {
 }
 
 function onSucceed(state, { payload }) {
+  const { response, exchangeDirection } = payload;
   return {
     ...initialState,
-    data: payload
+    data: response,
+    exchangeDirection
   };
 }

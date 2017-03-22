@@ -31,9 +31,12 @@ export function failed(errorKey, errorData) {
 }
 
 export const SUCCEED = `${prefix}::SUCCEED`;
-export function succeed(response) {
+export function succeed(response, exchangeDirection) {
   return {
     type: SUCCEED,
-    payload: response
+    payload: {
+      response,
+      exchangeDirection
+    }
   };
 }

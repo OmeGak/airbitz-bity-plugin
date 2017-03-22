@@ -6,7 +6,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(Widget);
 
 function mapStateToProps(state) {
   return {
-    data: selectors.getData(state)
+    data: selectors.getData(state),
+    exchangeDirection: selectors.getExchangeDirection(state)
   };
 }
 
