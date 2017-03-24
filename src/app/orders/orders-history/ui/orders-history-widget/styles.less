@@ -21,4 +21,81 @@
   .faded {
     opacity: 0.1;
   }
+
+  .listHeader {
+    margin-bottom: 10px;
+
+    &:before,
+    &:after {
+      content: '';
+      display: table;
+      width: 100%;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+
+  .refreshBtnContainer {
+    display: block;
+    float: right;
+  }
+
+  .refreshBtn {
+    @height: 16px;
+
+    display: block;
+    line-height: @height;
+
+    box-sizing: border-box;
+    padding: 5px;
+    
+    border: 1px solid #333333;
+    border-radius: 5px;
+    
+    user-select: none;
+    cursor: pointer;
+
+    * {
+      line-height: inherit;
+      vertical-align: middle;
+    }
+
+    :global(.refresh-icon) {
+      width: @height;
+    }
+  }
+
+  .refreshBtnLabel {
+    padding-right: 5px;
+  }
+}
+
+.refresh-icon {
+  position: relative;
+  display: inline-block;
+  min-width: 10px;
+
+  &:after {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-top: 100%;
+  }
+
+  &:before {
+    content: '';
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    display: block;
+
+    background: url("assets/refresh.svg") no-repeat;
+    background-size: cover;
+  }
 }

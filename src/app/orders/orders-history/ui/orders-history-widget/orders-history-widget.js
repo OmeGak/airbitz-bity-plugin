@@ -12,7 +12,8 @@ const propTypes = {
   isFetchStarted: PropTypes.bool.isRequired,
   isPristine: PropTypes.bool.isRequired,
   onMounted: PropTypes.func.isRequired,
-  onUnmounted: PropTypes.func.isRequired
+  onUnmounted: PropTypes.func.isRequired,
+  onRefreshBtn: PropTypes.func.isRequired
 };
 
 const defaultProps = {
@@ -24,6 +25,12 @@ const spinnerClassName = classNames(styles.spinner);
 export default class OrdersHistory extends Component {
   static propTypes = propTypes;
   static defaultProps = defaultProps;
+
+  constructor(props) {
+    super(props);
+
+    this.handleClickOnRefreshBtn = this.handleClickOnRefreshBtn.bind(this);
+  }
 
   componentDidMount() {
     this.props.onMounted();
@@ -37,6 +44,11 @@ export default class OrdersHistory extends Component {
 
   componentWillUnmount() {
     this.props.onUnmounted();
+  }
+
+  handleClickOnRefreshBtn(event) {
+    event.preventDefault();
+    this.props.onRefreshBtn();
   }
 
   render() {
@@ -65,6 +77,14 @@ export default class OrdersHistory extends Component {
         <Card className={styles.card}>
           <CardHeader>Orders History</CardHeader>
           <CardBody className={bodyClassName}>
+            <div className={styles.listHeader}>
+              <div className={styles.refreshBtnContainer}>
+                <span className={styles.refreshBtn} onClick={this.handleClickOnRefreshBtn}>
+                  <span className={styles.refreshBtnLabel}>Refresh</span>
+                  <i className="refresh-icon" />
+                </span>
+              </div>
+            </div>
             {bodyContent}
           </CardBody>
           <CardFooter className={footerClassName}>

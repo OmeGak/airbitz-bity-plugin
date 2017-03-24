@@ -21,6 +21,9 @@ function mapDispatchToProps(dispatch) {
     onUnmounted() {
       dispatch(actions.cancelFetch());
       dispatch(actions.reset());
+    },
+    onRefreshBtn() {
+      dispatch(actions.refresh());
     }
   };
 }

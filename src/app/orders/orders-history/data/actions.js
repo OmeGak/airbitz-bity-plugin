@@ -64,3 +64,10 @@ export function reset() {
     type: HAS_BEEN_RESET
   };
 }
+
+export const REFRESH = `${prefix}::REFRESH`;
+export function refresh() {
+  return {
+    type: REFRESH
+  };
+}
