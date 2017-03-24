@@ -10,6 +10,7 @@ import ConvertPage from './orders/convert-page';
 import SuccessfulConvertPage from './orders/successful-convert-page';
 import { QuotaExceededPage } from './quota';
 import { Page as PhoneNotVerifiedPage } from './phone/phone-not-verified-page';
+import OrderDetailsPage from './orders/order-details-page';
 
 export default {
   path: '/',
@@ -29,6 +30,10 @@ export default {
     {
       path: 'orders',
       component: protectedRoute(OrdersHistoryPage)
+    },
+    {
+      path: 'orders/:id',
+      component: protectedRoute(OrderDetailsPage)
     },
     {
       path: 'convert',

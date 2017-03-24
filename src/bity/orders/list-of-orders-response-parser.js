@@ -7,13 +7,15 @@ export default function parse({ meta: rawMeta = {}, objects = [] }) {
     const status = getOrderStatus(rawOrder);
     const from = getTransactionInput(rawOrder);
     const to = getTransactionOutput(rawOrder);
+    const id = extractOrderId(rawOrder);
 
     return {
       reference,
       date,
       status,
       from,
-      to
+      to,
+      id
     };
   });
 
@@ -31,17 +33,31 @@ function getOrderDate({ timestamp_created: str }) {
   return new Date(parts[0], parts[1] - 1, parts[2], parts[3] || 0, parts[4] || 0, parts[5] || 0, 0);
 }
 
-function getOrderStatus({ status = '' }) {
-  const v = status.toLowerCase();
-  const { orderStatus } = constants;
-
-  switch (v) {
-    case 'open':
-      return orderStatus.OPEN;
-    case 'canc':
-      return orderStatus.CANCELED;
+// TODO DRY see ./order-details-parser.js
+function getOrderStatus({ status }) {
+  switch (status) {
+    case 'OPEN':
+      return {
+        isOpen: true
+      };
+    case 'CANC':
+      return {
+        isCanceled: true
+      };
+    case 'RCVE':
+      return {
+        isPaymentReceived: true
+      };
+    case 'CONF':
+      return {
+        isConfirmed: true
+      };
+    case 'FILL':
+      return {
+        isPaymentFinalized: true
+      };
     default:
-      throw new Error(`Unknown order status "${status}"`);
+      return {};
   }
 }
 
@@ -99,4 +115,12 @@ function parseRawMeta(rawMeta = {}) {
     hasPrevPage,
     hasNextPage
   };
+}
+
+function extractOrderId({ resource_uri: v }) {
+  const res = /([^/]+)\/?$/.exec(v);
+  if (!Array.isArray(res) || res.length < 2) {
+    throw new Error('Can\'t extract order id');
+  }
+  return res[1];
 }

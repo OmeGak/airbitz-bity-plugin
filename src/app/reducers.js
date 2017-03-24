@@ -17,6 +17,7 @@ import { setup as setupExchangeRatesStore } from './common-data/exchange-rates';
 import { setup as setupAirbitzWalletStore } from './common-data/airbitz-wallet';
 import { setup as setupExchangeOrder } from './common-data/exchange-order';
 import { setup as setupConvertForm2State } from './orders/convert-form/form.state';
+import { setup as setupOrderDetailsPageState } from './orders/order-details-page/state';
 
 const bity = createBity();
 
@@ -42,6 +43,7 @@ cfg = setupExchangeRatesStore(cfg, bity);
 cfg = setupAirbitzWalletStore(cfg, bity);
 cfg = setupExchangeOrder(cfg, bity);
 cfg = setupConvertForm2State(cfg, bity);
+cfg = setupOrderDetailsPageState(cfg, bity);
 
 const { reducers, sagas } = cfg;
 const reducer = combineReducers(reducers);

@@ -72,3 +72,23 @@ export function extractProviderData(rawPaymentMethodData) {
     name
   };
 }
+
+export function extractDescriptions({ text = [] }) {
+  return text.map((obj) => {
+    const {
+      payment_method_description: description,
+      payment_method_disabled_message: disabledMessage,
+      payment_method_image_path: imagePath,
+      payment_method_locale: locale,
+      payment_method_name: name
+    } = obj;
+
+    return {
+      description,
+      disabledMessage,
+      imagePath,
+      locale,
+      name
+    };
+  });
+}

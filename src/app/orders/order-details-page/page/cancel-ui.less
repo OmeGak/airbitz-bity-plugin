@@ -1,0 +1,31 @@
+:local {
+  .root {
+    position: relative;
+    display: block;
+
+    text-align: right;
+
+    @media (max-width: 380px) {
+      text-align: center;
+    }
+  }
+
+  .confirmationLabel {
+    font-size: 12px;
+    margin-right: 10px;
+
+    @media (max-width: 380px) {
+      display: block;
+      margin-right: 0;
+      margin-bottom: 5px;
+    }
+  }
+
+  .confirmationButtons {
+    display: inline-block;
+
+    button + button {
+      margin-left: 10px;
+    }
+  }
+}

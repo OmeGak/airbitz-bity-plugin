@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
+import { withRouter } from 'react-router';
 import numeral from 'numeral';
 import * as bityConstants from '../../../../../bity/orders/constants';
 import styles from './styles.less';
-
-const orderStatuses = { ...bityConstants.orderStatus };
+import * as utils from './utils';
 
 const fiatCurrencies = { ...bityConstants.fiatCurrencies };
 
@@ -17,7 +17,7 @@ const currencies = {
 export const orderPropType = PropTypes.shape({
   reference: PropTypes.string.isRequired,
   date: PropTypes.instanceOf(Date),
-  status: PropTypes.oneOf(Object.values(orderStatuses)),
+  status: PropTypes.object.isRequired,
   from: PropTypes.shape({
     currency: PropTypes.oneOf(Object.values(currencies)),
     amount: PropTypes.number.isRequired
@@ -29,20 +29,32 @@ export const orderPropType = PropTypes.shape({
 });
 
 const propTypes = {
-  order: orderPropType.isRequired
+  order: orderPropType.isRequired,
+  router: PropTypes.object.isRequired
 };
 
-export default function OrderRow({ order }) {
-  const { reference } = order;
+export default withRouter(OrderRow);
+
+function OrderRow({ order, router }) {
+  const { reference, id } = order;
+
+  const statusTitle = getOrderStatusTitle(order);
+
   return (
-    <div className={styles.row}>
+    <div className={styles.row} onClick={handleClick}>
       <div className={styles.cellReference}>{reference}</div>
       <div className={styles.cellType}>{getOrderTypeTitle(order)}</div>
       <div className={styles.cellDate}>{getOrderDateTitle(order)}</div>
       <div className={styles.cellAmount}>{getOrderAmountTitle(order)}</div>
-      <div className={styles.cellStatus}>{getOrderStatusTitle(order)}</div>
+      <div className={styles.cellStatus}>{statusTitle}</div>
     </div>
   );
+
+  function handleClick(event) {
+    event.preventDefault();
+    // TODO router.push should be in another place
+    router.push(`orders/${id}`);
+  }
 }
 
 OrderRow.propTypes = propTypes;
@@ -115,14 +127,7 @@ function createAmountPart({ currency, amount }) { // eslint-disable-line react/p
 // title for order status
 // --------------------------
 function getOrderStatusTitle({ status }) {
-  switch (status) {
-    case orderStatuses.OPEN:
-      return 'Open';
-    case orderStatuses.CANCELED:
-      return 'Canceled';
-    default:
-      throw new Error(`Unknown status "${status}"`);
-  }
+  return utils.getOrderStatusTitle(status);
 }
 
 // --------------------------

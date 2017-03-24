@@ -1,3 +1,5 @@
+import parse from './cancel-order-response-parser';
+
 const URL = '/order/';
 
 export default function cancelOrderFactory(ajax) {
@@ -9,6 +11,6 @@ export default function cancelOrderFactory(ajax) {
     };
 
     return ajax(ajaxCfg)
-      .then(resp => resp.data);
+      .then(resp => parse(resp.data));
   };
 }

@@ -1,4 +1,4 @@
-import parse from './list-of-orders-reponse-parser';
+import parse from './list-of-orders-response-parser';
 
 const URL = '/order/';
 
