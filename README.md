@@ -60,6 +60,25 @@ Therefore, you can use
 + `yarn run dist -- --env.platform=ios` in order to compile the application with `airbitz-bridge-ios.js`
 + `yarn run dist -- --env.platform=android` in order to compile the application with `airbitz-bridge-android.js`
 
+## Dev / Configuration of compiled application
+
+There is directory `$PROJECT_ROOT/config` which contains config files.
+
++ `dev.js` contains configuration for development builds
++ `prod.js` contains configuration for production builds
++ `default.js` contains shared configuration
+
+By default it uses this logic
+
++ `yarn run dist` - use `$PROJECT_ROOT/config/prod.js`
++ otherwise - use `$PROJECT_ROOT/config/dev.js`
+
+You can override this using CLI parameter `--env.config=$CONFIG_KEY`.  
+For example,
+
++ use `dev` configuration for `production` build: `yarn run dist -- --env.config=dev`
++ use `prod` configuration for `dev` build: `yarn run dev -- --env.config=prod`
+
 ## Dev / TODO
 
 ## Update [react-redux](https://github.com/reactjs/react-redux)

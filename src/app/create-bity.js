@@ -1,17 +1,8 @@
 import createBityInstance from '../bity';
 import { airbitzStorageFactory } from '../airbitz';
 
-// ==========================
-// dev config
-// ==========================
-const HOST = 'https://dev.sbex.ch/';
-const CLIENT_ID = 'o9FNeKNxVvYnJm6ANamRmJezkvEeXnRrYowp6ihB';
-
-// ==========================
-// prod config
-// ==========================
-// const HOST = 'https://bity.com/';
-// const CLIENT_ID = 'QmaTkYI50XmCF18fupZgdAOptYqDzVix12RpqFYS';
+const HOST = process.env.HOST;
+const CLIENT_ID = process.env.CLIENT_ID;
 
 export default function createBity() {
   const bityCfg = {

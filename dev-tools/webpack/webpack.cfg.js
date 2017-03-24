@@ -17,6 +17,7 @@ module.exports = function createWebpackConfig(env) {
   cfg = require('./parts/process-assets')(cfg, globalCfg);
 
   cfg = require('./parts/setup-airbitz-api')(cfg, globalCfg, env);
+  cfg = require('./parts/inject-config')(cfg, globalCfg, env);
 
   return cfg;
 };
