@@ -9,6 +9,7 @@ import exchangeRatesApiFactory from './exchange-rates';
 import bankAccountsApiFactory from './bank-accounts';
 import quotaApiFactory from './quota';
 import phoneApiFactory from './phone';
+import signupApiFactory from './signup';
 
 export default function createBityInstance(opts = {}) {
   const {
@@ -49,6 +50,7 @@ export default function createBityInstance(opts = {}) {
   const bankAccountsApi = bankAccountsApiFactory(ajaxForApi);
   const quotaApi = quotaApiFactory(ajaxForApi);
   const phoneApi = phoneApiFactory(ajaxForApi);
+  const signupApi = signupApiFactory(ajaxForApi);
 
   return {
     auth: authApiFactory(ajaxForAuth),
@@ -58,6 +60,7 @@ export default function createBityInstance(opts = {}) {
     paymentMethods: paymentMethodsApi,
     bankAccounts: bankAccountsApi,
     quota: quotaApi,
-    phone: phoneApi
+    phone: phoneApi,
+    signup: signupApi
   };
 }

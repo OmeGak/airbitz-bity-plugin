@@ -1,0 +1,28 @@
+:local {
+  .root {
+    :global(.form-group) {
+      position: relative;
+    }
+  }
+
+  .loading {
+    display: table;
+    width: auto;
+    margin: 0 auto;
+
+    > * {
+      display: table-cell;
+      vertical-align: middle;
+
+      &:nth-child(2) {
+        padding-left: 5px;
+      }
+    }
+  }
+  
+  .otherOptions,
+  .tos {
+    text-align: center;
+    margin-top: 20px
+  }
+}
