@@ -62,8 +62,8 @@ class PhoneNotVerifiedPage extends Component {
         <Card>
           <CardHeader>Your phone number is not verified</CardHeader>
           <CardBody className={styles.cardBody}>
-            <div className={styles.text}>Verify your phone number on
-              <ExternalLink href="http://bity.com/">bity.com</ExternalLink></div>
+            <div className={styles.text}>Verify your phone number
+              on <ExternalLink href="http://bity.com/">bity.com</ExternalLink></div>
             <div className={styles.text}>and</div>
             <div>
               <button className={btnClassName} onClick={this.onTryAgainBtn} type="button">
