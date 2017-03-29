@@ -14,7 +14,7 @@
     "test": "karma start karma.conf.js --single-run",
     "test:watch": "karma start karma.conf.js --single-run=false",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config ./dev-tools/webpack/webpack.cfg.js",
-    "dist": "run-s dist:clean dist:compile dist:clean-after-compile",
+    "dist": "node ./dev-tools/commands/dist",
     "dist:clean": "shx rm -rf dist",
     "dist:compile": "cross-env NODE_ENV=production webpack -p --progress --config ./dev-tools/webpack/webpack.cfg.js",
     "dist:clean-after-compile": "shx rm ./dist/*.js ./dist/*.css"
