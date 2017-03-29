@@ -51,7 +51,7 @@ function onSignupStarted(state) {
 }
 
 function onSignupSucceed(state, { payload }) {
-  const { username, phoneNumber, password } = payload;
+  const { username, phoneNumber, email, password } = payload;
 
   return {
     ...state,
@@ -62,7 +62,7 @@ function onSignupSucceed(state, { payload }) {
       failed: false,
       failReason: EMPTY_FAIL_REASON
     },
-    successfulRegistrationData: { username, phoneNumber, password }
+    successfulRegistrationData: { username, phoneNumber, email, password }
   };
 }
 

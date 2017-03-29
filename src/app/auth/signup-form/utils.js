@@ -1,5 +1,18 @@
 import { parse, isValidNumber } from 'libphonenumber-js';
 
+export function usernameFieldValidatorFactory() {
+  return {
+    // required: isNotEmptyString
+  };
+}
+
+export function emailFieldValidatorFactory() {
+  return {
+    required: isNotEmptyString,
+    email: isValidEmail
+  };
+}
+
 export function passwordFieldValidatorFactory() {
   return {
     required: isNotEmptyString,
@@ -28,6 +41,19 @@ export function passwordFieldErrorMessages() {
   };
 }
 
+export function usernameFieldErrorMessages() {
+  return {
+    required: 'Please provide username'
+  };
+}
+
+export function emailFieldErrorMessages() {
+  return {
+    required: 'Please provide an email',
+    email: 'Please provide a valid email'
+  };
+}
+
 function isNotEmptyString(v) {
   return typeof v === 'string' && v.length > 0;
 }
@@ -43,4 +69,8 @@ function isValidPhoneNumber(v) {
 
   const parsedValue = parse(v);
   return isValidNumber(parsedValue);
+}
+
+function isValidEmail(v) {
+  return /.+@.+\..+/i.test(v);
 }

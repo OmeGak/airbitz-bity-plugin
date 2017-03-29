@@ -50,7 +50,7 @@ function* listenSignupIntents(bity) {
 
 function* sendSignupRequest(bity, formData) {
   try {
-    const data = yield call(bity.signup.signup2, formData);
+    const data = yield call(bity.signup.signup, formData);
     return { data };
   } catch (error) {
     return { error };
@@ -64,11 +64,11 @@ function* notifyAboutFailedSignup(error) {
 }
 
 function prepareFormData(rawFormData) {
-  const { password, phoneNumber } = rawFormData;
+  const { password, email } = rawFormData;
   let username = rawFormData.username;
   if (typeof username !== 'string' || username.length === 0) {
-    username = phoneNumber;
+    username = email;
   }
 
-  return { username, password, phoneNumber };
+  return { username, password, email };
 }

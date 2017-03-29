@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { LocalForm, Field, Control } from 'react-redux-form';
+import { LocalForm, Field } from 'react-redux-form';
 import { Card, CardHeader, CardBody } from '../../lib/card';
 import ExternalLink from '../../lib/external-link';
 import Spinner from '../../lib/spinner';
 import Link from '../../lib/link';
-import PhoneInput from './phone-input';
 import ErrorMsg from './error-msg';
 import * as utils from './utils';
 
@@ -16,8 +15,9 @@ const propTypes = {
 };
 
 const validators = {
-  password: utils.passwordFieldValidatorFactory(),
-  phoneNumber: utils.phoneNumberFieldValidatorFactory()
+  username: utils.usernameFieldValidatorFactory(),
+  email: utils.emailFieldValidatorFactory(),
+  password: utils.passwordFieldValidatorFactory()
 };
 
 export default class SignupForm extends Component {
@@ -40,11 +40,11 @@ export default class SignupForm extends Component {
     });
   }
 
-  onFormSubmit({ username, password, phoneNumber }) {
+  onFormSubmit({ username, password, email }) {
     this.props.onSubmit({
       username,
       password,
-      phoneNumber
+      email
     });
   }
 
@@ -79,11 +79,14 @@ export default class SignupForm extends Component {
                 <Field model=".username">
                   <input id="username" type="text" className="form-control" placeholder="Username" />
                 </Field>
+                <ErrorMsg model=".username" messages={utils.usernameFieldErrorMessages()} />
               </div>
               <div className="form-group">
-                <label htmlFor="phone">Phone</label>
-                <Control id="phone" model=".phoneNumber" component={PhoneInput} />
-                <ErrorMsg model=".phoneNumber" messages={utils.phoneNumberFieldErrorMessages()} />
+                <label htmlFor="email">Email</label>
+                <Field model=".email">
+                  <input id="email" type="email" className="form-control" placeholder="Email" />
+                </Field>
+                <ErrorMsg model=".email" messages={utils.emailFieldErrorMessages()} />
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password</label>
