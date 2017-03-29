@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import Header from './app-header';
 import Footer from './footer';
 import Menu from './menu';
-import Notifications from '../notifications/notifications';
 import styles from './styles.less';
 
 const propTypes = {
@@ -26,7 +25,6 @@ export default function Shell({ children }) {
         </div>
         <Footer />
       </div>
-      <Notifications />
     </div>
   );
 }

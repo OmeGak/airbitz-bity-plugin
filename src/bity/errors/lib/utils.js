@@ -4,11 +4,11 @@ export function createError(code) {
   return { code };
 }
 
-export function createUnknownError() {
-  return createError(UNKNOWN_ERROR);
+export function createUnknownError(err) {
+  return err;
 }
 
 export function isUnknownError(err = {}) {
   const { code } = err;
-  return code === UNKNOWN_ERROR;
+  return code === UNKNOWN_ERROR || typeof code === 'undefined';
 }

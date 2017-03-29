@@ -18,5 +18,5 @@ export default function parseBityErrorResponse(response) {
       return result;
     }
   }
-  return createUnknownError();
+  return createUnknownError(response);
 }

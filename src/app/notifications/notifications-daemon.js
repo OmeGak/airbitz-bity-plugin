@@ -1,5 +1,4 @@
-import { take, spawn, put, call } from 'redux-saga/effects';
-import { error as showErrorAction } from 'react-notification-system-redux';
+import { take, spawn, call } from 'redux-saga/effects';
 import { actions as authStoreActions } from '../common-data/auth';
 import * as actions from './actions';
 import { parse } from '../../bity/errors';
@@ -25,8 +24,15 @@ function* listen() {
   while (true) { // eslint-disable-line no-constant-condition
     const { payload: response } = yield take(listenMessages);
     const err = parse(response);
-    const notificationCfg = convertBityErrorToNotificationCfg(err);
-    yield put(showErrorAction(notificationCfg));
+
+    const title = 'Error';
+    let msg;
+    if (err instanceof Error) {
+      msg = `Error\n${err.message}`;
+    } else {
+      msg = convertBityErrorToNotificationCfg(err);
+    }
+    yield call(airbitz.ui.showAlert, title, msg);
   }
 }
 
