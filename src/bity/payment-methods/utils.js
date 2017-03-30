@@ -5,7 +5,8 @@ export function findEnabledPaymentMethodsByCurrencyCode(paymentMethods, quotaDat
   return paymentMethods
     .filter(obj => filterByCurrency(obj, inputCurrencyCode))
     .filter(obj => isPaymentMethodEnabled(obj, quotaGroup))
-    .filter(obj => !isDeprecatedPaymentMethod(obj));
+    .filter(obj => !isDeprecatedPaymentMethod(obj))
+    .filter(obj => isAllowedFiatPaymentMethod(obj, inputCurrencyCode));
 }
 
 function filterByCurrency({ currencies }, currencyCode) {
@@ -26,6 +27,23 @@ const deprecatedPaymentMethodCodes = [
 ];
 function isDeprecatedPaymentMethod({ code }) {
   return deprecatedPaymentMethodCodes.indexOf(code) !== -1;
+}
+
+const allowedFiatToCryptoPaymentMethodCodes = [
+  'BANKXFER'
+];
+
+function isAllowedFiatPaymentMethod({ code }, inputCurrencyCode) {
+  if (!isFiatCurrency(code)) {
+    return true;
+  }
+  return allowedFiatToCryptoPaymentMethodCodes.indexOf(inputCurrencyCode) > -1;
+}
+
+// TODO DRY
+const fiatCurrencyCodes = ['EUR', 'CHF'];
+function isFiatCurrency(currencyCode) {
+  return fiatCurrencyCodes.indexOf(currencyCode) > -1;
 }
 
 // ==========================
