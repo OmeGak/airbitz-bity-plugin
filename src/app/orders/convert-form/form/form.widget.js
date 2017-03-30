@@ -7,6 +7,7 @@ import BankAccounts from './bank-accounts';
 import PaymentMethods from './payment-methods';
 import ExternalReference from './external-reference';
 import SubmitBtn from './submit-btn';
+import EstimatedPriceNotification from './estimated-price-notification';
 
 import styles from './form.less';
 
@@ -69,6 +70,7 @@ export default class ConvertForm extends Component {
         <CardBody>
           <div className={styles.formSection}>
             <ExchangeParties />
+            <EstimatedPriceNotification className={styles.estimatedPriceNotification} />
           </div>
           {bankAccountsSection}
           {paymentMethodsSection}
