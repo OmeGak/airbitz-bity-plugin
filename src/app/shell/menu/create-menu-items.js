@@ -21,11 +21,11 @@ function createGuestMenuItems(onMenuItemClick) {
 
 function createKnownUserMenuItems(onMenuItemClick) {
   return [
-    <MenuItem onClick={onMenuItemClick} key="1">
-      <Link to="/orders" title="History" className="menu-item--history" />
-    </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="2">
       <Link to="/convert" title="Buy / Sell" className="menu-item--convert" />
+    </MenuItem>,
+    <MenuItem onClick={onMenuItemClick} key="1">
+      <Link to="/orders" title="History" className="menu-item--history" />
     </MenuItem>,
     <MenuItem onClick={onMenuItemClick} key="3">
       <Link to="/account" title="My Info" className="menu-item--account" />

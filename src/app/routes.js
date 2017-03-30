@@ -16,7 +16,7 @@ export default {
   path: '/',
   component: Shell,
   indexRoute: {
-    onEnter: (nextState, replace) => replace('/orders')
+    onEnter: (nextState, replace) => replace('/convert')
   },
   childRoutes: [
     {
