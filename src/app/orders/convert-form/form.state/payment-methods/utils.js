@@ -18,8 +18,11 @@ export function calcSelectedPaymentMethod(availablePaymentMethods, previousId) {
   return availablePaymentMethods[0].code;
 }
 
-export function calcVisibilityOfPaymentMethodsUi(inputCurrencyCode) {
-  return currenciesUtils.isFiatCurrency(inputCurrencyCode);
+export function calcVisibilityOfPaymentMethodsUi(inputCurrencyCode, availablePaymentMethods) {
+  if (!currenciesUtils.isFiatCurrency(inputCurrencyCode)) {
+    return false;
+  }
+  return Array.isArray(availablePaymentMethods) && availablePaymentMethods.length > 1;
 }
 
 function isEmptyArray(obj) {

@@ -112,6 +112,9 @@ function onVisibilityOfPaymentMethodsUiChanged(state, { payload: isVisible }) {
 
 function calcAndUpdateVisibilityOfPaymentMethodsUi(state) {
   const {
+    paymentMethods: {
+      available: availablePaymentMethods
+    },
     exchangeParties: {
       input: {
         selectedCurrencyCode: inputCurrencyCode
@@ -119,7 +122,7 @@ function calcAndUpdateVisibilityOfPaymentMethodsUi(state) {
     }
   } = state;
 
-  const isVisible = utils.calcVisibilityOfPaymentMethodsUi(inputCurrencyCode);
+  const isVisible = utils.calcVisibilityOfPaymentMethodsUi(inputCurrencyCode, availablePaymentMethods);
   return paymentMethodsReducer(state, actions.paymentMethodsUiVisibilityChanged(isVisible));
 }
 
