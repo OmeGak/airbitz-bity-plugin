@@ -1,27 +1,23 @@
 import { take, put, spawn, race, call, select } from 'redux-saga/effects';
+
 import * as actions from './actions';
+
 import {
   actions as quotaStoreActions,
   selectors as quotaStoreSelectors,
   utils as quotaStoreUtils
 } from '../../../common-data/quota';
+
+import { actions as bankAccountsStoreActions } from '../../../common-data/bank-accounts';
+
+import { actions as exchangeRatesStoreActions } from '../../../common-data/exchange-rates';
+
+import { actions as paymentMethodsStoreActions } from '../../../common-data/payment-methods';
+
 import {
-  actions as phoneStoreActions,
-  selectors as phoneStoreSelectors,
-  utils as phoneStoreUtils
+  data as phoneDataStore,
+  load as loadPhoneOp
 } from '../../../common-data/phone';
-import {
-  actions as bankAccountsStoreActions
-} from '../../../common-data/bank-accounts';
-import {
-  actions as exchangeRatesStoreActions
-} from '../../../common-data/exchange-rates';
-import {
-  actions as paymentMethodsStoreActions
-} from '../../../common-data/payment-methods';
-import {
-  actions as airbitzWalletStoreActions
-} from '../../../common-data/airbitz-wallet';
 
 export default function convertPageDaemonFactory() {
   return function* runConvertPageDaemon() {
@@ -45,72 +41,30 @@ function* preparePage() {
 
     yield put(actions.preparationStarted());
 
-    // ----------------------
-    // make sure quota is not exceeded
-    // ----------------------
-    const quotaIsNotExceeded = yield call(verifyQuotaIsNotExceeded, router);
-    if (quotaIsNotExceeded.canceled || quotaIsNotExceeded.skipNextSteps) {
-      continue; // eslint-disable-line no-continue
-    }
-    if (quotaIsNotExceeded.failed) {
-      yield put(actions.preparationFailed());
+    let stepResult;
+
+    stepResult = yield call(checkPhoneStep, router);
+    if (stepResult.skipNextSteps === true) {
       continue; // eslint-disable-line no-continue
     }
 
-    // ----------------------
-    // make sure account is activated
-    // ----------------------
-    const accountIsActivated = yield call(verifyAccountIsActivated, router);
-    if (accountIsActivated.canceled || accountIsActivated.skipNextSteps) {
-      continue; // eslint-disable-line no-continue
-    }
-    if (accountIsActivated.failed) {
-      yield put(actions.preparationFailed());
+    stepResult = yield call(checkQuotaStep, router);
+    if (stepResult.skipNextSteps === true) {
       continue; // eslint-disable-line no-continue
     }
 
-    // ----------------------
-    // make sure the data of selected Airbitz wallet is preloaded
-    // ----------------------
-    const airbitzWalletDataPreloading = yield call(preloadAirbitzWalletData);
-    if (airbitzWalletDataPreloading.failed) {
-      yield put(actions.preparationFailed());
+    stepResult = yield call(preloadBankAccountsStep);
+    if (stepResult.skipNextSteps === true) {
       continue; // eslint-disable-line no-continue
     }
 
-    // ----------------------
-    // make sure bank accounts preloaded
-    // ----------------------
-    const bankAccountsPreloading = yield call(preloadBankAccounts);
-    if (bankAccountsPreloading.canceled || bankAccountsPreloading.skipNextSteps) {
-      continue; // eslint-disable-line no-continue
-    }
-    if (bankAccountsPreloading.failed) {
-      yield put(actions.preparationFailed());
+    stepResult = yield call(preloadExchangeRatesStep);
+    if (stepResult.skipNextSteps === true) {
       continue; // eslint-disable-line no-continue
     }
 
-    // ----------------------
-    // make sure exchange rates preloaded
-    // ----------------------
-    const exchangeRatesPreloading = yield call(preloadExchangeRates);
-    if (exchangeRatesPreloading.canceled || exchangeRatesPreloading.skipNextSteps) {
-      continue; // eslint-disable-line no-continue
-    }
-    if (exchangeRatesPreloading.failed) {
-      yield put(actions.preparationFailed());
-      continue; // eslint-disable-line no-continue
-    }
-
-    // ----------------------
-    // make sure payment methods preloaded
-    // ----------------------
-    const paymentMethodsPreloading = yield call(preloadPaymentMethods);
-    if (paymentMethodsPreloading.canceled || paymentMethodsPreloading.skipNextSteps) {
-      continue; // eslint-disable-line no-continue
-    }
-    if (paymentMethodsPreloading.failed) {
-      yield put(actions.preparationFailed());
+    stepResult = yield call(preloadPaymentMethodsStep);
+    if (stepResult.skipNextSteps === true) {
       continue; // eslint-disable-line no-continue
     }
 
@@ -121,7 +75,66 @@ function* preparePage() {
   }
 }
 
-function* verifyQuotaIsNotExceeded(router) {
+// --------------------------
+// check active and verified phone exists
+// --------------------------
+function* checkPhoneStep(router) {
+  yield put(loadPhoneOp.actions.load());
+
+  const res = yield race({
+    unmounted: take(actions.UNMOUNTED),
+    canceled: take(loadPhoneOp.actions.CANCELED),
+    failed: take(loadPhoneOp.actions.FAILED),
+    succeed: take(loadPhoneOp.actions.SUCCEED),
+    cached: take(loadPhoneOp.actions.CACHED)
+  });
+
+  if (res.unmounted || res.canceled) {
+    return {
+      skipNextSteps: true
+    };
+  }
+
+  if (res.failed) {
+    yield put(actions.preparationFailed());
+    return {
+      skipNextSteps: true
+    };
+  }
+
+  const hasActivePhone = yield select(phoneDataStore.selectors.hasData);
+  if (!hasActivePhone) {
+    goToRegisterPhonePage(router);
+    return {
+      skipNextSteps: true
+    };
+  }
+
+  const phone = yield select(phoneDataStore.selectors.getData);
+
+  if (!phone.isActive) {
+    goToRegisterPhonePage(router);
+    return {
+      skipNextSteps: true
+    };
+  }
+
+  if (!phone.isVerified) {
+    goToVerifyPhonePage(router);
+    return {
+      skipNextSteps: true
+    };
+  }
+
+  return {
+    skipNextSteps: false
+  };
+}
+
+// --------------------------
+// check active and verified phone
+// --------------------------
+function* checkQuotaStep(router) {
   yield put(quotaStoreActions.fetchData());
 
   const res = yield race({
@@ -132,54 +145,37 @@ function* verifyQuotaIsNotExceeded(router) {
     alreadyHasData: take(quotaStoreActions.ALREADY_HAS_DATA)
   });
 
-  if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
-    return { canceled: true };
+  if (res.unmounted || res.canceled) {
+    return {
+      skipNextSteps: true
+    };
   }
 
-  if (typeof res.failed !== 'undefined') {
-    return { failed: true };
+  if (res.failed) {
+    yield put(actions.preparationFailed());
+    return {
+      skipNextSteps: true
+    };
   }
 
   const quotaData = yield select(quotaStoreSelectors.getData);
   const isQuotaExceeded = quotaStoreUtils.isAnyQuotaExceeded(quotaData);
   if (isQuotaExceeded) {
-    router.replace('/quota/exceeded');
-    return { skipNextSteps: true };
+    goToQuotaExceededPage(router);
+    return {
+      skipNextSteps: true
+    };
   }
 
-  return { success: true };
+  return {
+    skipNextSteps: false
+  };
 }
 
-function* verifyAccountIsActivated(router) {
-  yield put(phoneStoreActions.fetchData());
-
-  const res = yield race({
-    unmounted: take(actions.UNMOUNTED),
-    canceled: take(phoneStoreActions.FETCH_CANCELED),
-    failed: take(phoneStoreActions.FETCH_FAILED),
-    succeed: take(phoneStoreActions.FETCH_SUCCEED),
-    alreadyHasData: take(phoneStoreActions.ALREADY_HAS_DATA)
-  });
-
-  if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
-    return { canceled: true };
-  }
-
-  if (typeof res.failed !== 'undefined') {
-    return { failed: true };
-  }
-
-  const phoneData = yield select(phoneStoreSelectors.getData);
-  const hasVerifiedPhoneNumber = phoneStoreUtils.hasVerifiedPhoneNumber(phoneData);
-  if (!hasVerifiedPhoneNumber) {
-    router.replace('/phone/not-verified');
-    return { skipNextSteps: true };
-  }
-
-  return { success: true };
-}
-
-function* preloadBankAccounts() {
+// --------------------------
+// preload bank accounts
+// --------------------------
+function* preloadBankAccountsStep() {
   yield put(bankAccountsStoreActions.fetchData());
 
   const res = yield race({
@@ -190,18 +186,28 @@ function* preloadBankAccounts() {
     alreadyHasData: take(bankAccountsStoreActions.ALREADY_HAS_DATA)
   });
 
-  if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
-    return { canceled: true };
+  if (res.unmounted || res.canceled) {
+    return {
+      skipNextSteps: true
+    };
   }
 
-  if (typeof res.failed !== 'undefined') {
-    return { failed: true };
+  if (res.failed) {
+    yield put(actions.preparationFailed());
+    return {
+      skipNextSteps: true
+    };
   }
 
-  return { success: true };
+  return {
+    skipNextSteps: false
+  };
 }
 
-function* preloadExchangeRates() {
+// --------------------------
+// preload exchange rates
+// --------------------------
+function* preloadExchangeRatesStep() {
   yield put(exchangeRatesStoreActions.fetchData());
 
   const res = yield race({
@@ -212,18 +218,28 @@ function* preloadExchangeRates() {
     alreadyHasData: take(exchangeRatesStoreActions.ALREADY_HAS_DATA)
   });
 
-  if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
-    return { canceled: true };
+  if (res.unmounted || res.canceled) {
+    return {
+      skipNextSteps: true
+    };
   }
 
-  if (typeof res.failed !== 'undefined') {
-    return { failed: true };
+  if (res.failed) {
+    yield put(actions.preparationFailed());
+    return {
+      skipNextSteps: true
+    };
   }
 
-  return { success: true };
+  return {
+    skipNextSteps: false
+  };
 }
 
-function* preloadPaymentMethods() {
+// --------------------------
+// preload payment methods
+// --------------------------
+function* preloadPaymentMethodsStep() {
   yield put(paymentMethodsStoreActions.fetchData());
 
   const res = yield race({
@@ -234,29 +250,35 @@ function* preloadPaymentMethods() {
     alreadyHasData: take(paymentMethodsStoreActions.ALREADY_HAS_DATA)
   });
 
-  if (typeof res.unmounted !== 'undefined' || typeof res.canceled !== 'undefined') {
-    return { canceled: true };
+  if (res.unmounted || res.canceled) {
+    return {
+      skipNextSteps: true
+    };
   }
 
-  if (typeof res.failed !== 'undefined') {
-    return { failed: true };
+  if (res.failed) {
+    yield put(actions.preparationFailed());
+    return {
+      skipNextSteps: true
+    };
   }
 
-  return { success: true };
+  return {
+    skipNextSteps: false
+  };
 }
 
-function* preloadAirbitzWalletData() {
-  yield put(airbitzWalletStoreActions.fetchData());
+// --------------------------
+// routing
+// --------------------------
+function goToRegisterPhonePage(router) {
+  router.replace('phone/register');
+}
 
-  const res = yield race({
-    unmounted: take(actions.UNMOUNTED),
-    succeed: take(airbitzWalletStoreActions.FETCH_SUCCEED),
-    alreadyHasData: take(airbitzWalletStoreActions.ALREADY_HAS_DATA)
-  });
+function goToVerifyPhonePage(router) {
+  router.replace('phone/verify');
+}
 
-  if (typeof res.unmounted !== 'undefined') {
-    return { canceled: true };
-  }
-
-  return { success: true };
+function goToQuotaExceededPage(router) {
+  router.replace('/quota/exceeded');
 }

@@ -9,7 +9,8 @@ import AccountInfoPage from './account/account-info-page';
 import ConvertPage from './orders/convert-page';
 import SuccessfulConvertPage from './orders/successful-convert-page';
 import { QuotaExceededPage } from './quota';
-import { Page as PhoneNotVerifiedPage } from './phone/phone-not-verified-page';
+import RegisterPhonePage from './phone/register-phone-page/page';
+import VerifyPhonePage from './phone/verify-phone-page/page';
 import OrderDetailsPage from './orders/order-details-page';
 
 export default {
@@ -52,8 +53,12 @@ export default {
       component: protectedRoute(QuotaExceededPage)
     },
     {
-      path: '/phone/not-verified',
-      component: protectedRoute(PhoneNotVerifiedPage)
+      path: 'phone/register',
+      component: protectedRoute(RegisterPhonePage)
+    },
+    {
+      path: 'phone/verify',
+      component: protectedRoute(VerifyPhonePage)
     }
   ]
 };
