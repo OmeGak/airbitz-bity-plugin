@@ -1,6 +1,6 @@
-import * as actions from './actions';
-import * as selectors from './selectors';
+import * as data from './data';
+import * as load from './load';
+import * as add from './add';
 import setup from './setup';
-import * as utils from './utils';
 
-export { actions, selectors, setup, utils };
+export { setup, data, load, add };

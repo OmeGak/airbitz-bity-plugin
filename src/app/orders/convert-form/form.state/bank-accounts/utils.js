@@ -1,11 +1,10 @@
 import { EMPTY_ACCOUNT_ID } from '../constants';
-import { utils as bankAccountUtils } from '../../../../common-data/bank-accounts';
 
 export function findBankAccountsByCurrencyCode(allAccounts, currencyCode) {
   if (isEmptyArray(allAccounts)) {
     return [];
   }
-  return bankAccountUtils.findBankAccountsByCurrencyCode(allAccounts, currencyCode);
+  return allAccounts.filter(obj => obj.currencyCode === currencyCode);
 }
 
 export function calcNextSelectedId(accounts, existingId) {

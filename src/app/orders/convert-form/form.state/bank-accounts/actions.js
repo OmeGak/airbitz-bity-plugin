@@ -23,24 +23,3 @@ export function selectedAccountIdChanged(id) {
     payload: id
   };
 }
-
-export const REFRESH_REQUESTED = `${prefix}::REFRESH_REQUESTED`;
-export function refresh() {
-  return {
-    type: REFRESH_REQUESTED
-  };
-}
-
-export const REFRESH_STARTED = `${prefix}::REFRESH_STARTED`;
-export function refreshStarted() {
-  return {
-    type: REFRESH_STARTED
-  };
-}
-
-export const REFRESH_FINISHED = `${prefix}::REFRESH_FINISHED`;
-export function refreshFinished() {
-  return {
-    type: REFRESH_FINISHED
-  };
-}

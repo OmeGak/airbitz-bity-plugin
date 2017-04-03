@@ -14,11 +14,6 @@ import {
   selectors as paymentMethodsStoreSelectors
 } from '../../../common-data/payment-methods';
 
-import {
-  selectors as bankAccountsStoreSelectors,
-  actions as bankAccountStoreActions
-} from '../../../common-data/bank-accounts';
-
 import * as formActions from './form/actions';
 import * as formSelectors from './form/selectors';
 import * as bankAccountsActions from './bank-accounts/actions';
@@ -33,12 +28,14 @@ import {
   selectors as exchangeOrderSelectors
 } from '../../../common-data/exchange-order';
 
+import { data as bankAccountsDataStore } from '../../../common-data/bank-accounts';
+
 export default function convertFormDaemonFactory() {
   return function* runConvertFormDaemon() {
     yield [
       yield spawn(onMounted),
-      yield spawn(refreshBankAccountsData),
-      yield spawn(listenSubmitIntents)
+      yield spawn(listenSubmitIntents),
+      yield spawn(onBankAccountsChanged)
     ];
   };
 }
@@ -49,7 +46,7 @@ function* onMounted() {
 
     const rates = yield select(exchangeRatesSelectors.getData);
     const quota = yield select(quotaSelectors.getData);
-    const bankAccounts = yield select(bankAccountsStoreSelectors.getData);
+    const bankAccounts = yield select(bankAccountsDataStore.selectors.getData);
     const paymentMethods = yield select(paymentMethodsStoreSelectors.getData);
 
     yield put(formActions.setupInitialStateData({
@@ -61,27 +58,15 @@ function* onMounted() {
   }
 }
 
-function* refreshBankAccountsData() {
+function* onBankAccountsChanged() {
   while (true) { // eslint-disable-line no-constant-condition
-    yield take(bankAccountsActions.REFRESH_REQUESTED);
-    yield put(bankAccountsActions.refreshStarted());
-
-    yield put(bankAccountStoreActions.fetchData(true));
-
-    const res = yield race({
-      succeed: take(bankAccountStoreActions.FETCH_SUCCEED),
-      failed: take(bankAccountStoreActions.FETCH_FAILED),
-      canceled: take(bankAccountStoreActions.FETCH_CANCELED),
-      unmounted: take(formActions.UNMOUNTED)
-    });
-    if (typeof res.unmounted !== 'undefined') {
+    yield take(bankAccountsDataStore.actions.CHANGED);
+    const isMounted = yield select(formSelectors.isMounted);
+    if (!isMounted) {
       continue; // eslint-disable-line no-continue
     }
-
-    const bankAccountsData = yield select(bankAccountsStoreSelectors.getData);
-    yield put(bankAccountsActions.allAccountsChanged(bankAccountsData));
-
-    yield put(bankAccountsActions.refreshFinished());
+    const data = yield select(bankAccountsDataStore.selectors.getData);
+    yield put(bankAccountsActions.allAccountsChanged(data));
   }
 }
 

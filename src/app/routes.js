@@ -12,6 +12,7 @@ import { QuotaExceededPage } from './quota';
 import RegisterPhonePage from './phone/register-phone-page/page';
 import VerifyPhonePage from './phone/verify-phone-page/page';
 import OrderDetailsPage from './orders/order-details-page';
+import CreateBankAccountPage from './bank-accounts/create-page/page';
 
 export default {
   path: '/',
@@ -59,6 +60,10 @@ export default {
     {
       path: 'phone/verify',
       component: protectedRoute(VerifyPhonePage)
+    },
+    {
+      path: 'bank-accounts/create',
+      component: protectedRoute(CreateBankAccountPage)
     }
   ]
 };

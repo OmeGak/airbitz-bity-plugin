@@ -13,10 +13,6 @@ export default function bankAccountsReducer(state, action) {
       return calcAndUpdateAvailableAccounts(state, action);
     case actions.SELECTED_ACCOUNT_ID_CHANGED:
       return onSelectedAccountIdChanged(state, action);
-    case actions.REFRESH_STARTED:
-      return onRefreshStarted(state, action);
-    case actions.REFRESH_FINISHED:
-      return onRefreshFinished(state, action);
     default:
       return state;
   }
@@ -93,27 +89,4 @@ function calcAndUpdateSelectedAccountId(state) {
 
   const id = utils.calcNextSelectedId(accounts, selectedId);
   return bankAccountsReducer(state, actions.selectedAccountIdChanged(id));
-}
-
-// --------------------------
-// refreshing
-// --------------------------
-function onRefreshStarted(state) {
-  return {
-    ...state,
-    bankAccounts: {
-      ...state.bankAccounts,
-      loading: true
-    }
-  };
-}
-
-function onRefreshFinished(state) {
-  return {
-    ...state,
-    bankAccounts: {
-      ...state.bankAccounts,
-      loading: false
-    }
-  };
 }

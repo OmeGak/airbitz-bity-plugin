@@ -11,7 +11,3 @@ export function getAvailableAccounts(state) {
 export function getSelectedAccountId(state) {
   return state[mountPoint].bankAccounts.selectedId;
 }
-
-export function isRefreshStarted(state) {
-  return state[mountPoint].bankAccounts.loading;
-}

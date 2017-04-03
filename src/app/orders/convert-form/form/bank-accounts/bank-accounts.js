@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Selector from '../selector';
-import ExternalLink from '../../../../lib/external-link';
+import Link from '../../../../lib/link';
 import RefreshBtn from './refresh-btn';
 
 import styles from './styles.less';
@@ -71,10 +71,18 @@ export default function BankAccounts(props) {
     default:
       createBtnTitle = 'Register bank account';
   }
+
+  const linkPath = {
+    pathname: 'bank-accounts/create',
+    state: {
+      currencyCode
+    }
+  };
+
   const createBtn = (
-    <ExternalLink className="btn btn-link btn-xs" href="https://bity.com/">
+    <Link className="btn btn-link btn-xs" to={linkPath}>
       <span>{createBtnTitle}</span>
-    </ExternalLink>
+    </Link>
   );
 
   // ------------------------

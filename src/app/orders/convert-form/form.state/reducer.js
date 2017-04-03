@@ -62,8 +62,7 @@ const initialState = {
   bankAccounts: {
     all: [],
     available: [],
-    selectedId: EMPTY_ACCOUNT_ID,
-    loading: false
+    selectedId: EMPTY_ACCOUNT_ID
   },
   paymentMethods: {
     all: [],

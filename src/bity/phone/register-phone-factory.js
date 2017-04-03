@@ -27,6 +27,7 @@ function parseResponse() {
 
 // TODO DRY. This should be in another place
 // TODO get rid of the hardcoded value '/api/v1/'
+// TODO why we need this?
 function createPersonResourceUrl(userId) {
   return `/api/v1/person/${userId}/`;
 }

@@ -1,23 +1,13 @@
-import { mountPoint } from './constants';
-import reducer from './reducer';
-import daemonFactory from './daemon';
+import { setup as setupBankAccountsDataStore } from './data';
+import { setup as setupLoadBankAccounts } from './load';
+import { setup as setupAddBankAccountOp } from './add';
 
-export default function setupBankAccountsStore(cfg = {}, bity) {
-  const { reducers: prevReducers = {}, sagas: prevSagas = [] } = cfg;
+export default function setupBankAccounts(cfg, bity) {
+  let nextCfg = { ...cfg };
 
-  const reducers = {
-    ...prevReducers,
-    [mountPoint]: reducer
-  };
+  nextCfg = setupBankAccountsDataStore(nextCfg, bity);
+  nextCfg = setupLoadBankAccounts(nextCfg, bity);
+  nextCfg = setupAddBankAccountOp(nextCfg, bity);
 
-  const sagas = [
-    ...prevSagas,
-    daemonFactory(bity)
-  ];
-
-  return {
-    ...cfg,
-    reducers,
-    sagas
-  };
+  return nextCfg;
 }

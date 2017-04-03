@@ -1,7 +1,6 @@
 import { currencies } from '../../../../common-data/currencies';
 import { utils as quotaUtils } from '../../../../common-data/quota';
 import { utils as exchangeRatesUtils } from '../../../../common-data/exchange-rates';
-import { utils as bankAccountUtils } from '../../../../common-data/bank-accounts';
 
 // --------------------------
 // isPositiveNumber
@@ -83,5 +82,8 @@ export function bankAccountIsRequired(outputCurrencyCode) {
 }
 
 export function hasBankAccount(currencyCode, bankAccountsData) {
-  return bankAccountUtils.hasBankAccount(bankAccountsData, currencyCode);
+  if (!Array.isArray(bankAccountsData)) {
+    return false;
+  }
+  return bankAccountsData.some(obj => obj.currencyCode === currencyCode);
 }

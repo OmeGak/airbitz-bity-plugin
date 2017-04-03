@@ -6,7 +6,10 @@ import { Link as OriginalLink, withRouter } from 'react-router';
 export default withRouter(Link);
 
 const propTypes = {
-  to: PropTypes.string.isRequired,
+  to: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object
+  ]).isRequired,
   replace: PropTypes.bool,
   router: PropTypes.shape({
     replace: PropTypes.func.isRequired

@@ -8,7 +8,7 @@ import {
   utils as quotaStoreUtils
 } from '../../../common-data/quota';
 
-import { actions as bankAccountsStoreActions } from '../../../common-data/bank-accounts';
+import { load as loadBankAccountsOp } from '../../../common-data/bank-accounts';
 
 import { actions as exchangeRatesStoreActions } from '../../../common-data/exchange-rates';
 
@@ -176,14 +176,14 @@ function* checkQuotaStep(router) {
 // preload bank accounts
 // --------------------------
 function* preloadBankAccountsStep() {
-  yield put(bankAccountsStoreActions.fetchData());
+  yield put(loadBankAccountsOp.actions.load());
 
   const res = yield race({
     unmounted: take(actions.UNMOUNTED),
-    canceled: take(bankAccountsStoreActions.FETCH_CANCELED),
-    failed: take(bankAccountsStoreActions.FETCH_FAILED),
-    succeed: take(bankAccountsStoreActions.FETCH_SUCCEED),
-    alreadyHasData: take(bankAccountsStoreActions.ALREADY_HAS_DATA)
+    canceled: take(loadBankAccountsOp.actions.CANCELED),
+    failed: take(loadBankAccountsOp.actions.FAILED),
+    succeed: take(loadBankAccountsOp.actions.SUCCEED),
+    cached: take(loadBankAccountsOp.actions.CACHED)
   });
 
   if (res.unmounted || res.canceled) {
