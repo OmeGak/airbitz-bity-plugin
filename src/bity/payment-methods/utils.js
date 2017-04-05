@@ -15,7 +15,8 @@ function filterByCurrency({ currencies }, currencyCode) {
 
 function isPaymentMethodEnabled(paymentMethod, quotaGroup) {
   const { code, provider } = paymentMethod;
-  if ((code === 'SKRILLPSP' || code === 'SOFORTPSP') && quotaGroup === 'fstquota0') {
+  // XXX: For now, we just allow BANKXFER and BTCGATEWAY, so we filter out fast bank transfer methods
+  if ((code === 'SKRILLPSP' || code === 'SOFORTPSP')) {
     return false;
   }
 
