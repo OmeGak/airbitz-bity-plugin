@@ -12,6 +12,8 @@ import EstimatedPriceNotification from './estimated-price-notification';
 import styles from './form.less';
 
 const propTypes = {
+  isExchangeFromCryptoToFiat: PropTypes.bool.isRequired,
+  hasBankAccounts: PropTypes.bool.isRequired,
   showBankAccounts: PropTypes.bool.isRequired,
   showPaymentMethods: PropTypes.bool.isRequired,
   showExternalReference: PropTypes.bool.isRequired,
@@ -31,6 +33,8 @@ export default class ConvertForm extends Component {
   }
 
   render() {
+    const { hasBankAccounts, isExchangeFromCryptoToFiat } = this.props;
+
     const { showBankAccounts } = this.props;
     let bankAccountsSection = null;
     if (showBankAccounts) {
@@ -53,12 +57,21 @@ export default class ConvertForm extends Component {
 
     const { showExternalReference } = this.props;
     let externalReferenceSection = null;
-    if (showExternalReference) {
+    if (showExternalReference && hasBankAccounts) {
       externalReferenceSection = (
         <div className={styles.formSection}>
           <ExternalReference />
         </div>
       );
+    }
+
+    let submitBtnNode = (
+      <div className={styles.formSection}>
+        <SubmitBtn />
+      </div>
+    );
+    if (isExchangeFromCryptoToFiat && !hasBankAccounts) {
+      submitBtnNode = null;
     }
 
     return (
@@ -75,9 +88,7 @@ export default class ConvertForm extends Component {
           {bankAccountsSection}
           {paymentMethodsSection}
           {externalReferenceSection}
-          <div className={styles.formSection}>
-            <SubmitBtn />
-          </div>
+          {submitBtnNode}
         </CardBody>
       </Card>
     );

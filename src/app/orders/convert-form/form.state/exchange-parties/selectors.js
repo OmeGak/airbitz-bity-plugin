@@ -1,4 +1,19 @@
 import { mountPoint } from '../constants';
+import { utils } from '../../../../common-data/currencies';
+
+export function isExchangeFromCryptoToFiat(state) {
+  const {
+    exchangeParties: {
+      input: {
+        selectedCurrencyCode: inputCurrencyCode
+      },
+      output: {
+        selectedCurrencyCode: outputCurrencyCode
+      }
+    }
+  } = state[mountPoint];
+  return utils.isCryptoCurrency(inputCurrencyCode) && utils.isFiatCurrency(outputCurrencyCode);
+}
 
 // --------------------------
 // input
