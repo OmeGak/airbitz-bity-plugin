@@ -35,7 +35,7 @@ export default function SuccessSignupWidget(props) {
     emailNode = (
       <tr>
         <td><strong>Email:&nbsp;</strong></td>
-        <td><span>{email}</span></td>
+        <td className={styles.fieldValue}><span>{email}</span></td>
       </tr>
     );
   }
@@ -46,7 +46,7 @@ export default function SuccessSignupWidget(props) {
     phoneNumberNode = (
       <tr>
         <td><strong>Phone number:&nbsp;</strong></td>
-        <td><span>{phoneNumber}</span></td>
+        <td className={styles.fieldValue}><span>{phoneNumber}</span></td>
       </tr>
     );
   }
@@ -82,13 +82,13 @@ export default function SuccessSignupWidget(props) {
             <tbody>
               <tr>
                 <td><strong>Username:&nbsp;</strong></td>
-                <td><span>{username}</span></td>
+                <td className={styles.fieldValue}><span>{username}</span></td>
               </tr>
               {emailNode}
               {phoneNumberNode}
               <tr>
                 <td><strong>Password:&nbsp;</strong></td>
-                <td><span>{password}</span></td>
+                <td className={styles.fieldValue}><span>{password}</span></td>
               </tr>
             </tbody>
           </table>
