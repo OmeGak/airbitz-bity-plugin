@@ -166,6 +166,11 @@ class CreateBankAccountPage extends Component {
               {/* base form */}
               <div>
                 <div className={formGroupClassName}>
+                  <label htmlFor="personal-label">Personal label</label>
+                  <Control.text model=".personalLabel" className="form-control" id="personal-label" />
+                </div>
+
+                <div className={formGroupClassName}>
                   <label htmlFor="bank-name">Bank Name</label>
                   <Control.text model=".bankName" className="form-control" id="bank-name" />
                   <Errors
@@ -222,11 +227,6 @@ class CreateBankAccountPage extends Component {
                     }}
                     show={{ touched: true, focus: false }}
                   />
-                </div>
-
-                <div className={formGroupClassName}>
-                  <label htmlFor="personal-label">Personal label</label>
-                  <Control.text model=".personalLabel" className="form-control" id="personal-label" />
                 </div>
               </div>
               {/* / base form */}
