@@ -323,7 +323,7 @@ function* getAirbitzWallet() {
 
 function* getPublicAddressOfAirbitzWallet(wallet, extraOpts = {}) {
   const defaultOpts = {
-    label: 'Bity',
+    label: 'Bity.com',
     category: 'Exchange:Buy Bitcoin',
     notes: utils.createNotesForAirbitz()
   };
@@ -375,7 +375,7 @@ function* askConfirmBtcSpending(wallet, outputCryptoAddress, btcAmount) {
   const satoshiAmount = btcToSatoshi(btcAmount);
 
   const defaultOpts = {
-    label: 'Bity',
+    label: 'Bity.com',
     category: 'Exchange:Sell Bitcoin',
     notes: utils.createNotesForAirbitz()
   };
