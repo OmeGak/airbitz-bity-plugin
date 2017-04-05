@@ -52,7 +52,7 @@ export default class CancelOrderUi extends Component {
       );
     } else {
       content = (
-        <button className="btn btn-primary" onClick={this.showConfirmation}>Cancel</button>
+        <button className={`btn btn-primary ${styles.cancelBtn}`} onClick={this.showConfirmation}>Cancel</button>
       );
     }
 

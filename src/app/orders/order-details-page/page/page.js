@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Page from '../../../lib/page';
 import { Card, CardHeader, CardBody } from '../../../lib/card';
 import PageLoader from '../../../lib/page-loader';
+import Link from '../../../lib/link';
 import CancelOrderUi from './cancel-ui';
 import * as utils from './utils';
 
@@ -164,7 +165,14 @@ export default class OrderDetailsPage extends Component {
                 {outputReferenceNode}
                 {orderStatusNode}
               </div>
-              {cancelUiNode}
+              <div className={styles.footer}>
+                <div className={styles.cancelUi}>
+                  {cancelUiNode}
+                </div>
+                <Link to="/orders" className={`btn btn-primary ${styles.backBtn}`}>
+                  <span>Back to History</span>
+                </Link>
+              </div>
             </CardBody>
           </Card>
         </Page>
