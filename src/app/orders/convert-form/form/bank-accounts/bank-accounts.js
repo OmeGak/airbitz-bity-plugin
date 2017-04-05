@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Selector from '../selector';
 import Link from '../../../../lib/link';
-import RefreshBtn from './refresh-btn';
+// import RefreshBtn from './refresh-btn';
 
 import styles from './styles.less';
 
@@ -11,10 +11,10 @@ const propTypes = {
     PropTypes.string,
     PropTypes.number
   ]).isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  // isLoading: PropTypes.bool.isRequired,
   currencyCode: PropTypes.string.isRequired,
-  onAccountChange: PropTypes.func.isRequired,
-  onRefreshBtnClick: PropTypes.func.isRequired
+  onAccountChange: PropTypes.func.isRequired
+  // onRefreshBtnClick: PropTypes.func.isRequired
 };
 const defaultProps = {};
 
@@ -88,11 +88,11 @@ export default function BankAccounts(props) {
   // ------------------------
   // refresh btn
   // ------------------------
-  const { onRefreshBtnClick, isLoading } = props;
-  const refreshBtn = (
-    <RefreshBtn className={styles.refreshBtn}
-      onClick={onRefreshBtnClick} isLoading={isLoading} disabled={isLoading} />
-  );
+  // const { onRefreshBtnClick, isLoading } = props;
+  // const refreshBtn = (
+  //   <RefreshBtn className={styles.refreshBtn}
+  //     onClick={onRefreshBtnClick} isLoading={isLoading} disabled={isLoading} />
+  // );
 
   return (
     <div className={styles.root}>
@@ -101,9 +101,11 @@ export default function BankAccounts(props) {
       <div className={styles.createBtnContainer}>
         {createBtn}
       </div>
+      {/*
       <div className={styles.refreshBtnContainer}>
         {refreshBtn}
       </div>
+      */}
     </div>
   );
 }
