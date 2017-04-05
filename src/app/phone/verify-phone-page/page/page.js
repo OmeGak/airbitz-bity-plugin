@@ -123,7 +123,7 @@ class VerifyPhonePage extends Component {
                 {submitBtnContent}
               </button>
 
-              <button type="button" className={`btn btn-primary ${styles.resendBtn}`}
+              <button type="button" className={`btn btn-success ${styles.resendBtn}`}
                 onClick={this.onResendBtn} disabled={disableResendBtn}>
                 {resendBtnContent}
               </button>
