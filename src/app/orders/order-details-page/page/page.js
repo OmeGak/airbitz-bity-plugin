@@ -115,7 +115,7 @@ export default class OrderDetailsPage extends Component {
 
       const inputReferenceNode = (
         <div>
-          <span>REFERENCE: {inputReference}</span>
+          <span className={styles.inputReference}>REFERENCE: {inputReference}</span>
         </div>
       );
 
