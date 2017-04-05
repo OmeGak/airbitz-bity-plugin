@@ -1,3 +1,3 @@
-import Widget from './phone-input';
+import Widget from './raw-phone-input';
 
 export default Widget;
