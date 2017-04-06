@@ -1,7 +1,4 @@
 import React, { PropTypes } from 'react';
-/* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import * as airbitz from 'airbitzPluginApi';
-/* eslint-enable import/no-extraneous-dependencies, import/extensions */
 
 const propTypes = {
   href: PropTypes.string.isRequired,
@@ -20,7 +17,7 @@ export default function ExternalLink(props) {
 
   function onClick(event) {
     event.preventDefault();
-    airbitz.ui.launchExternal(href);
+    window.Airbitz.ui.launchExternal(href);
   }
 }
 

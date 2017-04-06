@@ -8,10 +8,6 @@ import {
 } from './constants';
 import * as actions from './actions';
 
-/* eslint-disable import/no-extraneous-dependencies, import/first, import/extensions */
-import * as airbitz from 'airbitzPluginApi';
-/* eslint-enable import/no-extraneous-dependencies, import/first, import/extensions */
-
 import * as utils from './utils';
 
 import { actions as authStoreActions } from '../auth';
@@ -307,7 +303,7 @@ function* askConfirmBtcSpendingStep(wallet, outputCryptoAddress, btcAmount) {
 // ==========================
 function* getAirbitzWallet() {
   const promiseFactory = () => new Promise((resolve, reject) => {
-    airbitz.core.getSelectedWallet({
+    window.Airbitz.core.getSelectedWallet({
       success: resolve,
       error: reject
     });
@@ -334,7 +330,7 @@ function* getPublicAddressOfAirbitzWallet(wallet, extraOpts = {}) {
   };
 
   const promiseFactory = () => new Promise((resolve, reject) => {
-    airbitz.core.createReceiveRequest(wallet, {
+    window.Airbitz.core.createReceiveRequest(wallet, {
       ...opts,
       success: resolve,
       error: reject
@@ -350,7 +346,7 @@ function* getPublicAddressOfAirbitzWallet(wallet, extraOpts = {}) {
 }
 
 function disposePublicAddressOfAirbitzWallet(wallet, requestId) {
-  airbitz.core.finalizeReceiveRequest(wallet, requestId);
+  window.Airbitz.core.finalizeReceiveRequest(wallet, requestId);
 }
 
 function* sendFiatToCryptoRequest(bity, formData) {
@@ -386,7 +382,7 @@ function* askConfirmBtcSpending(wallet, outputCryptoAddress, btcAmount) {
       success: resolve,
       error: reject
     };
-    airbitz.core.createSpendRequest(wallet, outputCryptoAddress, satoshiAmount, opts);
+    window.Airbitz.core.createSpendRequest(wallet, outputCryptoAddress, satoshiAmount, opts);
   });
 
   try {

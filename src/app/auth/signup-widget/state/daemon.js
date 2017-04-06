@@ -1,9 +1,5 @@
 import { take, spawn, put, call, race, select } from 'redux-saga/effects';
 
-/* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import * as airbitz from 'airbitzPluginApi';
-/* eslint-enable import/no-extraneous-dependencies, import/extensions */
-
 import * as actions from './actions';
 import * as selectors from './selectors';
 import * as notificationActions from '../../../notifications/actions';
@@ -78,7 +74,7 @@ function prepareFormData(rawFormData) {
   let affiliateCode;
   try {
     // due this code https://github.com/Airbitz/airbitz-plugins/blob/master/lib/js/airbitz-bridge-dev.js#L101
-    affiliateCode = airbitz.config.get('AFFILIATE_CODE');
+    affiliateCode = window.Airbitz.config.get('AFFILIATE_CODE');
   } catch (e) { // eslint-disable-line no-empty
   }
 
