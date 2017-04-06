@@ -142,11 +142,14 @@ export default class OrderDetailsPage extends Component {
         );
       }
 
+      const shouldShowCancelUi = order.status.isOpen === true && !isCanceled;
       let cancelUiNode = null;
-      if (!isCanceled) {
+      if (shouldShowCancelUi) {
         cancelUiNode = (
           <div className={styles.cancelUi}>
-            <CancelOrderUi onSubmit={this.onCancel} />
+            <div className={styles.cancelUi}>
+              <CancelOrderUi onSubmit={this.onCancel} />
+            </div>
           </div>
         );
       }
@@ -166,9 +169,7 @@ export default class OrderDetailsPage extends Component {
                 {orderStatusNode}
               </div>
               <div className={styles.footer}>
-                <div className={styles.cancelUi}>
-                  {cancelUiNode}
-                </div>
+                {cancelUiNode}
                 <Link to="/orders" className={`btn btn-primary ${styles.backBtn}`}>
                   <span>Back to History</span>
                 </Link>
