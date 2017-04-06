@@ -69,7 +69,7 @@ export function extractCountryCodeFromUrl(url) {
 export function extractProviderData(rawPaymentMethodData) {
   const {
     payment_provider: {
-      accounts = [],
+      accounts: rawAccounts = [],
       close_time: closeTime,
       is_24hrs: is24Hrs,
       is_open: isOpen,
@@ -79,6 +79,17 @@ export function extractProviderData(rawPaymentMethodData) {
       provider_name: name
     }
   } = rawPaymentMethodData;
+
+  const accounts = rawAccounts.map((obj) => {
+    const { currency, details, name } = obj;
+    const currencyCode = extractCurrencyCode(currency);
+
+    return {
+      currencyCode,
+      details,
+      name
+    };
+  });
 
   return {
     accounts,
@@ -90,6 +101,15 @@ export function extractProviderData(rawPaymentMethodData) {
     enabled,
     name
   };
+}
+
+// TODO DRY
+function extractCurrencyCode(url = '') {
+  const res = /([^/]+)\/?$/.exec(url);
+  if (!Array.isArray(res) || res.length < 2) {
+    throw new Error('Can\'t extract currency code');
+  }
+  return res[1];
 }
 
 export function extractDescriptions({ text = [] }) {
