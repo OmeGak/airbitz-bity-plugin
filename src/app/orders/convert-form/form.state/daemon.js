@@ -23,6 +23,8 @@ import * as bankAccountsSelectors from './bank-accounts/selectors';
 import * as paymentMethodsSelectors from './payment-methods/selectors';
 import * as externalReferenceSelectors from './external-reference/selectors';
 
+import { actions as authActions } from '../../../common-data/auth';
+
 import {
   actions as exchangeOrderActions,
   selectors as exchangeOrderSelectors
@@ -35,7 +37,8 @@ export default function convertFormDaemonFactory() {
     yield [
       yield spawn(onMounted),
       yield spawn(listenSubmitIntents),
-      yield spawn(onBankAccountsChanged)
+      yield spawn(onBankAccountsChanged),
+      yield spawn(listenUnauth)
     ];
   };
 }
@@ -114,6 +117,13 @@ function* listenSubmitIntents() {
   }
 }
 
+function* listenUnauth() {
+  while (true) { // eslint-disable-line no-constant-condition
+    yield take(authActions.UNAUTHENTICATED);
+    yield put(formActions.reset());
+  }
+}
+
 function* processSuccessfulResult(router) {
   const isMounted = yield select(formSelectors.isMounted);
   if (isMounted) {
@@ -121,6 +131,8 @@ function* processSuccessfulResult(router) {
   } else {
     yield call(showSuccessNotification);
   }
+
+  yield put(formActions.reset());
 }
 
 function* processFailedResult(router) {

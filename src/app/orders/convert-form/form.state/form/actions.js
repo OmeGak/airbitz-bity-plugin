@@ -29,3 +29,10 @@ export function submit(router) {
     payload: router
   };
 }
+
+export const RESET = `${prefix}::RESET`;
+export function reset() {
+  return {
+    type: RESET
+  };
+}

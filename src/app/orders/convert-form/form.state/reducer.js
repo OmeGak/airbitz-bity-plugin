@@ -102,7 +102,7 @@ export default function convertFormReducer(state = initialState, action = {}) {
       return onSetupInitialData(state, action);
     case formActions.MOUNTED:
       return formReducer(state, action);
-    case formActions.UNMOUNTED:
+    case formActions.RESET:
       return resetState(state, action);
     default:
       return processOtherActions(state, action);
