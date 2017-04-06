@@ -12,14 +12,17 @@ const htmlMinifierCfg = {
   collapseWhitespace: true
 };
 
-module.exports = function setupHtmlEntries(webpackCfg, { SRC_ROOT, IS_PRODUCTION_MODE }) {
+module.exports = function setupHtmlEntries(webpackCfg, { SRC_ROOT, IS_PRODUCTION_MODE }, webpackEnv = {}) {
+  const isExternalAirbitz = webpackEnv['abc-release'] === true;
+
   const { plugins = [] } = webpackCfg;
 
   const entries = [
     {
       filename: 'index.html',
       template: path.resolve(SRC_ROOT, 'index.html'),
-      inlineSource: '.(js|css)$'
+      inlineSource: '.(js|css)$',
+      isExternalAirbitz
     }
   ];
 

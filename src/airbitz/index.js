@@ -1,7 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies, import/extensions */
-import 'airbitzPluginApi';
-/* eslint-enable import/no-extraneous-dependencies, import/extensions */
+if (process.env.IS_AIRBITZ_RELEASE !== true) {
+  require('airbitzPluginApi'); // eslint-disable-line global-require, import/no-extraneous-dependencies
+}
 
-import airbitzStorageFactory from './storage';
+import airbitzStorageFactory from './storage'; // eslint-disable-line import/first
 
 export { airbitzStorageFactory };

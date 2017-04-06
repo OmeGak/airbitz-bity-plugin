@@ -17,7 +17,10 @@
     "dist": "node ./dev-tools/commands/dist",
     "dist:clean": "shx rm -rf dist",
     "dist:compile": "cross-env NODE_ENV=production webpack -p --progress --config ./dev-tools/webpack/webpack.cfg.js",
-    "dist:clean-after-compile": "shx rm ./dist/*.js ./dist/*.css"
+    "dist:clean-after-compile": "shx rm ./dist/*.js ./dist/*.css",
+    "dist-abc": "node ./dev-tools/commands/dist-abc",
+    "dist-abc:move-result": "shx mv ./dist/index.html ./index.html",
+    "dist-abc:clear-result": "shx rm -f ./index.html"
   },
   "devDependencies": {
     "autoprefixer": "^6.6.1",

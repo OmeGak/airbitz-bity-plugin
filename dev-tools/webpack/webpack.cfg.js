@@ -3,10 +3,10 @@ module.exports = function createWebpackConfig(env) {
 
   const globalCfg = require('../global.cfg');
 
-  let cfg = require('./parts/create-seed')(globalCfg);
+  let cfg = require('./parts/create-seed')(globalCfg, env);
 
   cfg = require('./parts/setup-js-entries')(cfg, globalCfg);
-  cfg = require('./parts/setup-html-entries')(cfg, globalCfg);
+  cfg = require('./parts/setup-html-entries')(cfg, globalCfg, env);
 
   cfg = require('./parts/setup-output')(cfg, globalCfg);
   cfg = require('./parts/setup-debugging')(cfg, globalCfg);

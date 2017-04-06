@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 
-module.exports = function createWebpackConfigSeed({ NODE_ENV, PROJECT_ROOT }) {
+module.exports = function createWebpackConfigSeed({ NODE_ENV, PROJECT_ROOT }, webpackEnv = {}) {
+  const isAirbitzRelease = webpackEnv['abc-release'] === true;
+
   return {
     context: PROJECT_ROOT,
     target: 'web',
@@ -17,7 +19,8 @@ module.exports = function createWebpackConfigSeed({ NODE_ENV, PROJECT_ROOT }) {
     plugins: [
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify(NODE_ENV)
+          NODE_ENV: JSON.stringify(NODE_ENV),
+          IS_AIRBITZ_RELEASE: JSON.stringify(isAirbitzRelease)
         }
       })
     ],

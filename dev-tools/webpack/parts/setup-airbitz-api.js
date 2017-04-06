@@ -1,6 +1,7 @@
 const path = require('path');
 
 const platforms = {
+  NONE: 'none',
   WEB: 'web',
   IOS: 'ios',
   ANDROID: 'android'
@@ -15,6 +16,10 @@ const mapPlatformToBridgeFile = {
 };
 
 module.exports = function setupAirbitzApi(webpackCfg, { PROJECT_ROOT }, webpackEnv = {}) {
+  if (webpackEnv['abc-release']) {
+    return webpackCfg;
+  }
+
   const { platform = platforms.WEB } = webpackEnv;
   if (allowedPlatformValues.indexOf(platform) === -1) {
     throw new Error(`Unknown value for platform: "${platform}"`);
