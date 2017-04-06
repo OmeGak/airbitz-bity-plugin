@@ -1,5 +1,7 @@
+import parseOrderDetails from './order-details-parser';
+
 export default function parse(data) {
-  return data;
+  return parseOrderDetails(data);
 }
 
 export function parseCryptoToFiatResponse(data) {

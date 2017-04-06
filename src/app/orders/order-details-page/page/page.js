@@ -107,6 +107,25 @@ export default class OrderDetailsPage extends Component {
         );
       }
 
+      let paymentMethodProviderAccounts = [];
+      if (hasPaymentMethodDetails) {
+        paymentMethodProviderAccounts =
+          paymentMethodDetails.provider.accounts.filter(obj => obj.currencyCode === currencyCode);
+      }
+
+      /* eslint-disable react/no-danger, react/no-array-index-key */
+      let paymentMethodProviderAccountsNode = null;
+      if (paymentMethodProviderAccounts.length > 0) {
+        paymentMethodProviderAccountsNode = (
+          <div>
+            {paymentMethodProviderAccounts.map((obj, index) => (
+              <div key={index} dangerouslySetInnerHTML={{ __html: obj.details }} />
+            ))}
+          </div>
+        );
+      }
+      /* eslint-enable react/no-danger, react/no-array-index-key */
+
       const formattedInputAmount = utils.formatAmount(amount, currencyCode);
       const inputAmountNode = (
         <div>
@@ -163,6 +182,7 @@ export default class OrderDetailsPage extends Component {
             <CardBody>
               {paymentMethodNameNode}
               <div className={styles.orderInfo}>
+                {paymentMethodProviderAccountsNode}
                 {inputAmountNode}
                 {inputReferenceNode}
                 {outputReferenceNode}

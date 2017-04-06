@@ -3,6 +3,7 @@ import Page from '../../lib/page';
 import { Card, CardHeader, CardBody } from '../../lib/card';
 import Link from '../../lib/link';
 import { exchangeDirection as exchangeDirections } from '../../common-data/currencies';
+import * as utils from './utils';
 
 import styles from './styles.less';
 
@@ -10,7 +11,8 @@ const btnClassName = `${styles.btn} btn btn-primary`;
 
 const propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
-  exchangeDirection: PropTypes.string.isRequired
+  exchangeDirection: PropTypes.string.isRequired,
+  paymentMethods: PropTypes.array.isRequired // eslint-disable-line react/no-unused-prop-types
 };
 
 export default function SuccessfulConvertPage(props) {
@@ -49,13 +51,50 @@ export default function SuccessfulConvertPage(props) {
 SuccessfulConvertPage.propTypes = propTypes;
 
 function createFiatToCryptoContent(props) {
+  // TODO DRY see order-details-page/page/page.js
+
   const {
     data: { // eslint-disable-line react/prop-types
-      amount,
-      currency: currencyCode,
-      reference: referenceId
-    }
+      input: {
+        amount,
+        reference: referenceId,
+        currencyCode,
+        paymentMethodCode
+      }
+    },
+    paymentMethods // eslint-disable-line react/prop-types
   } = props;
+
+  const paymentMethodDetails = utils.getPaymentMethodDetails(paymentMethodCode, paymentMethods);
+  const hasPaymentMethodDetails = paymentMethodDetails !== null;
+
+  let paymentMethodNameNode = null;
+  if (hasPaymentMethodDetails) {
+    paymentMethodNameNode = (
+      <div className={styles.paymentMethodDetails}>
+        <span>Payment method used: {paymentMethodDetails.name}</span>
+      </div>
+    );
+  }
+
+  let paymentMethodProviderAccounts = [];
+  if (hasPaymentMethodDetails) {
+    paymentMethodProviderAccounts =
+      paymentMethodDetails.provider.accounts.filter(obj => obj.currencyCode === currencyCode);
+  }
+
+  /* eslint-disable react/no-danger, react/no-array-index-key */
+  let paymentMethodProviderAccountsNode = null;
+  if (paymentMethodProviderAccounts.length > 0) {
+    paymentMethodProviderAccountsNode = (
+      <div>
+        {paymentMethodProviderAccounts.map((obj, index) => (
+          <div key={index} dangerouslySetInnerHTML={{ __html: obj.details }} />
+        ))}
+      </div>
+    );
+  }
+  /* eslint-enable react/no-danger, react/no-array-index-key */
 
   return (
     <div className={styles.section}>
@@ -63,7 +102,9 @@ function createFiatToCryptoContent(props) {
         <span>Please follow the instructions below for the payment.</span>
       </div>
       <div className={styles.section}>
+        {paymentMethodNameNode}
         <div className={styles.orderInfo}>
+          {paymentMethodProviderAccountsNode}
           <div className={styles.reference}>
             <span>reference:&nbsp;</span>
             <span>{referenceId}</span>
