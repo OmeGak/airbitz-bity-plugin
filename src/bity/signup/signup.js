@@ -4,16 +4,22 @@ const URL = '/user_signup/user_signup/';
 
 export default function signupRequestFactory(ajax) {
   return (data) => {
-    const { username, email, password } = data;
+    const { username, email, password, affiliateCode } = data;
+
+    const requestData = {
+      username,
+      email,
+      password
+    };
+
+    if (typeof affiliateCode === 'string' && affiliateCode.length > 0) {
+      requestData.code = affiliateCode;
+    }
 
     const ajaxCfg = {
       method: 'POST',
       url: URL,
-      data: {
-        username,
-        email,
-        password
-      }
+      data: requestData
     };
 
     return ajax(ajaxCfg)
