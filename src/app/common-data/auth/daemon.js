@@ -8,7 +8,8 @@ export default function authDaemonFactory(bity) {
     yield [
       yield spawn(listenAuthStatus, bity),
       yield spawn(listenLoginRequests, bity),
-      yield spawn(listenLogoutRequests, bity)
+      yield spawn(listenLogoutRequests, bity),
+      yield spawn(listenRenewTokenIntents, bity)
     ];
   };
 }
@@ -67,5 +68,26 @@ function* listenLogoutRequests(bity) {
     }
 
     yield call(bity.auth.logout);
+  }
+}
+
+function* listenRenewTokenIntents(bity) {
+  while (true) { // eslint-disable-line no-constant-condition
+    yield take(actions.REFRESH_TOKEN);
+
+    const isAuthenticated = yield select(selectors.isAuthenticated);
+    const isLoginRequestStarted = yield select(selectors.isLoginRequestStarted);
+    if (!isAuthenticated || isLoginRequestStarted) {
+      yield put(actions.refreshTokenCanceled());
+      continue; // eslint-disable-line no-continue
+    }
+
+    yield put(actions.refreshTokenStarted());
+    try {
+      yield call(bity.auth.refreshAccessToken);
+      yield put(actions.refreshTokenSucceed());
+    } catch (e) {
+      yield put(actions.refreshTokenFailed());
+    }
   }
 }

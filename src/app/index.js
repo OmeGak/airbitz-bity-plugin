@@ -4,6 +4,7 @@ import Router from 'react-router/lib/Router';
 import hashHistory from 'react-router/lib/hashHistory';
 import { Provider } from 'react-redux';
 import routes from './routes';
+import { AppPreloader } from './app-preloader';
 
 const propTypes = {
   store: PropTypes.object.isRequired
@@ -12,7 +13,9 @@ const propTypes = {
 export default function App({ store }) {
   return (
     <Provider store={store}>
-      <Router key={Math.random()} history={hashHistory} routes={routes} />
+      <AppPreloader>
+        <Router key={Math.random()} history={hashHistory} routes={routes} />
+      </AppPreloader>
     </Provider>
   );
 }

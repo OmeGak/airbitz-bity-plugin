@@ -54,3 +54,41 @@ export function logout() {
     type: LOGOUT_REQUESTED
   };
 }
+
+// ==========================
+// renew token
+// ==========================
+export const REFRESH_TOKEN = `${prefix}::REFRESH_TOKEN`;
+export function refreshToken() {
+  return {
+    type: REFRESH_TOKEN
+  };
+}
+
+export const REFRESH_TOKEN_STARTED = `${prefix}::REFRESH_TOKEN_STARTED`;
+export function refreshTokenStarted() {
+  return {
+    type: REFRESH_TOKEN_STARTED
+  };
+}
+
+export const REFRESH_TOKEN_SUCCEED = `${prefix}::REFRESH_TOKEN_SUCCEED`;
+export function refreshTokenSucceed() {
+  return {
+    type: REFRESH_TOKEN_SUCCEED
+  };
+}
+
+export const REFRESH_TOKEN_FAILED = `${prefix}::REFRESH_TOKEN_FAILED`;
+export function refreshTokenFailed() {
+  return {
+    type: REFRESH_TOKEN_FAILED
+  };
+}
+
+export const REFRESH_TOKEN_CANCELED = `${prefix}::REFRESH_TOKEN_CANCELED`;
+export function refreshTokenCanceled() {
+  return {
+    type: REFRESH_TOKEN_CANCELED
+  };
+}

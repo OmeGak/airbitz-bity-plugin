@@ -3,6 +3,7 @@ import authAjaxPluginFactory from './auth-ajax-plugin';
 const STORAGE_KEY = 'bity.auth';
 
 const LOGIN_PATH = '/o/token/';
+const REFRESH_TOKEN_PATH = '/o/token/';
 const LOGOUT_PATH = '/o/revoke_token/';
 
 // in order to reduce the size of cookies
@@ -28,7 +29,7 @@ export default function authFactory(opts = {}) {
       return {
         login: sendLoginRequest.bind(this, ajax),
         logout: sendLogoutRequest.bind(this, ajax),
-        renewToken,
+        refreshAccessToken: refreshAccessToken.bind(this, ajax),
         isAuthenticated,
         onAuthStatusChanged
       };
@@ -79,6 +80,10 @@ export default function authFactory(opts = {}) {
   // ------------------------
   function getAccessToken() {
     return getStoredData()[ACCESS_TOKEN_KEY] || '';
+  }
+
+  function getRefreshToken() {
+    return getStoredData()[REFRESH_TOKEN_KEY] || '';
   }
 
   function hasAccessToken() {
@@ -168,11 +173,40 @@ export default function authFactory(opts = {}) {
 
     return ajax(cfg);
   }
-}
 
-function renewToken() {
-  // TODO implement it
-  throw new Error('bity.auth.renewToken is not implemented');
+  function refreshAccessToken(ajax) {
+    const refreshToken = getRefreshToken();
+
+    const cfg = {
+      url: REFRESH_TOKEN_PATH,
+      method: 'POST',
+      form: {
+        client_id: clientId,
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken
+      }
+    };
+
+    return ajax(cfg)
+      .then((resp) => {
+        const { data = {} } = resp;
+
+        // TODO also see expires_in
+        const { access_token, refresh_token } = data;
+        const nextData = {
+          [ACCESS_TOKEN_KEY]: access_token,
+          [REFRESH_TOKEN_KEY]: refresh_token
+        };
+
+        storeData(nextData);
+
+        return {
+          ...resp,
+          data: nextData
+        };
+      })
+      .catch(resp => Promise.reject(resp));
+  }
 }
 
 function isNotEmptyString(v) {

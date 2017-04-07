@@ -21,6 +21,7 @@ import { setup as setupPhoneStore } from './common-data/phone';
 import { setup as setupRegisterPhonePageState } from './phone/register-phone-page/state';
 import { setup as setupVerifyPhonePageState } from './phone/verify-phone-page/state';
 import { setup as setupAddBankAccountPageState } from './bank-accounts/create-page/state';
+import { setup as setupAppPreloader } from './app-preloader/state';
 
 const bity = createBity();
 
@@ -50,6 +51,7 @@ cfg = setupSignupWidgetState(cfg, bity);
 cfg = setupRegisterPhonePageState(cfg, bity);
 cfg = setupVerifyPhonePageState(cfg, bity);
 cfg = setupAddBankAccountPageState(cfg, bity);
+cfg = setupAppPreloader(cfg, bity);
 
 const { reducers, sagas } = cfg;
 const reducer = combineReducers(reducers);
