@@ -71,12 +71,9 @@ function prepareFormData(rawFormData) {
     username = email;
   }
 
-  let affiliateCode;
-  try {
-    // due this code https://github.com/Airbitz/airbitz-plugins/blob/master/lib/js/airbitz-bridge-dev.js#L101
-    affiliateCode = window.Airbitz.config.get('AFFILIATE_CODE');
-  } catch (e) { // eslint-disable-line no-empty
+  const affiliateCode = window.Airbitz.config.get('AFFILIATE_CODE');
+  if (typeof affiliateCode === 'string' && affiliateCode.length > 0) {
+    throw new Error("Invalid affiliate code");
   }
-
   return { username, password, email, affiliateCode };
 }

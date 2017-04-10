@@ -9,12 +9,9 @@ export default function signupRequestFactory(ajax) {
     const requestData = {
       username,
       email,
-      password
+      password,
+      code: affiliateCode
     };
-
-    if (typeof affiliateCode === 'string' && affiliateCode.length > 0) {
-      requestData.code = affiliateCode;
-    }
 
     const ajaxCfg = {
       method: 'POST',
