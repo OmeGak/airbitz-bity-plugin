@@ -1,0 +1,66 @@
+:local {
+  .section {
+    display: block;
+  }
+
+  .section + .section {
+    margin-top: 20px;
+  }
+
+  .orderInfo {
+    display: block;
+
+    box-sizing: border-box;
+    padding: 20px;
+
+    border: 1px solid #a2a2a2;
+    border-radius: 4px;
+
+    background-color: #eeeeee;
+  }
+
+  .orderInfoSection {
+    text-transform: uppercase;
+  }
+
+  .reference {
+    .orderInfoSection();
+    color: #fc7bad;
+  }
+
+  .amount {
+    .orderInfoSection();
+  }
+
+  .amountValue {
+    font-weight: bold;
+  }
+
+  .buttons {
+    text-align: center;
+  }
+
+  .btn {
+    width: 220px;
+  }
+
+  .btn + .btn {
+    margin-left: 20px;
+  }
+
+  .paymentMethodDetails {
+    margin-bottom: 10px;
+  }
+
+  @media (max-width: 600px) {
+    .btn {
+      display: block;
+      margin: 0 auto;
+    }
+
+    .btn + .btn {
+      margin-left: auto;
+      margin-top: 10px;
+    }
+  }
+}

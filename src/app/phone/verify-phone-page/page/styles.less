@@ -1,0 +1,73 @@
+:local {
+  .errorCardBody {
+    text-align: center;
+  }
+
+  .phoneNumber {
+    font-size: 16px;
+    font-weight: normal;
+    color: #777777;
+  }
+
+  .buttons {
+    position: relative;
+
+    display: block;
+    width: 100%;
+
+    margin-top: 20px;
+
+    &:before,
+    &:after {
+      content: '';
+      display: table;
+      width: 100%;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+
+  .btn {
+    min-width: 170px;
+  }
+
+  .resendBtn {
+    .btn();
+    float: left;
+  }
+
+  .verifyBtn {
+    .btn();
+    float: right;
+  }
+
+  .loading {
+    display: table;
+    width: auto;
+    margin: 0 auto;
+
+    > * {
+      display: table-cell;
+      vertical-align: middle;
+
+      &:nth-child(2) {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .resendBtn,
+    .verifyBtn {
+      float: none;
+      display: block;
+      width: 100%;
+    }
+
+    .resendBtn {
+      margin-top: 10px;
+    }
+  }
+}

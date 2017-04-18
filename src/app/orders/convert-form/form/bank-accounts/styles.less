@@ -1,0 +1,44 @@
+:local {
+  .root {
+    position: relative;
+
+    display: block;
+    width: 100%;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+
+  .labelNoAccount {
+    text-align: center;
+  }
+
+  .btn {
+    white-space: normal;
+  }
+
+  .loading {
+    display: table;
+    width: auto;
+    margin: 0 auto;
+
+    > * {
+      display: table-cell;
+      vertical-align: middle;
+
+      &:nth-child(2) {
+        padding-left: 5px;
+      }
+    }
+  }
+
+  .refreshBtn {
+    min-width: 210px;
+  }
+
+  .createBtnContainer,
+  .refreshBtnContainer {
+    text-align: center;
+  }
+}

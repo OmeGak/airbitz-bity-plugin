@@ -1,0 +1,63 @@
+:local {
+  .errorCardBody {
+    text-align: center;
+  }
+
+  .paymentMethodDetails {
+    margin-bottom: 10px;
+  }
+
+  .orderInfo {
+    display: block;
+
+    box-sizing: border-box;
+    padding: 20px;
+
+    border: 1px solid #a2a2a2;
+    border-radius: 4px;
+
+    background-color: #eeeeee;
+  }
+
+  .inputReference {
+    word-break: break-all;
+  }
+
+  .footer {
+    display: block;
+
+    margin-top: 20px;
+
+    &:before,
+    &:after {
+      content: '';
+      display: table;
+      width: 100%;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+
+  .cancelUi {
+    float: right;
+  }
+
+  .backBtn {
+    float: left;
+  }
+
+  @media (max-width: 545px) {
+    .cancelUi {
+      float: none;
+      margin-bottom: 20px;
+    }
+
+    .backBtn {
+      float: none;
+      display: block;
+      width: 100%;
+    }
+  }
+}

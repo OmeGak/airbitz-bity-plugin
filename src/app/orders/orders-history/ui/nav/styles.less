@@ -1,0 +1,42 @@
+@import '../../../../shell/bity-colors';
+
+:local {
+  .nav {
+    display: block;
+    width: 100%;
+
+    &:before,
+    &after {
+      content: '';
+      display: table;
+      width: 100%;
+    }
+
+    &:after {
+      clear: both;
+    }
+  }
+
+  .navInner {
+    display: block;
+    float: right;
+  }
+
+  .navBtn {
+    display: inline-block;
+
+    color: @bity-blue;
+    font-size: 14px;
+
+    cursor: pointer;
+    user-select: none;
+
+    &:active {
+      text-decoration: underline;
+    }
+  }
+
+  .navBtn + .navBtn {
+    margin-left: 10px;
+  }
+}

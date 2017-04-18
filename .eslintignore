@@ -1,0 +1,12 @@
+node_modules/
+
+dist/
+build/
+src/lib/
+
+# XXX: Temporarily ignoring bity library until we move it out of this repo
+!src/lib/bity
+
+maintenance/
+
+client/assets/
