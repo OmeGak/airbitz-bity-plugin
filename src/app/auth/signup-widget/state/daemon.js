@@ -102,7 +102,9 @@ function prepareFormData(rawFormData) {
   } catch (e) { // eslint-disable-line no-empty
   }
 
-  return { username, password, email, affiliateCode };
+  const clientId = process.env.CLIENT_ID;
+
+  return { username, password, email, affiliateCode, clientId };
 }
 
 // ==========================
