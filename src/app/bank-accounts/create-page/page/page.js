@@ -7,7 +7,9 @@ import Page from '../../../lib/page';
 import PageLoader from '../../../lib/page-loader';
 import Spinner from '../../../lib/spinner';
 import { Card, CardHeader, CardBody } from '../../../lib/card';
+import Link from '../../../lib/link';
 
+import { backToConvertPageLink } from '../constants';
 import styles from './styles.less';
 
 const propTypes = {
@@ -237,7 +239,9 @@ class CreateBankAccountPage extends Component {
 
               {/* footer */}
               <div className={styles.footer}>
-                <button type="submit" className={`btn btn-primary ${styles.btn}`} disabled={disableSubmitBtn}>
+                <Link to={backToConvertPageLink} replace
+                  className={`btn btn-primary ${styles.cancelBtn}`}>Cancel</Link>
+                <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={disableSubmitBtn}>
                   {submitBtnContent}
                 </button>
               </div>

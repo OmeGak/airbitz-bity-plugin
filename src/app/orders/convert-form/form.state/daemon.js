@@ -45,7 +45,19 @@ export default function convertFormDaemonFactory() {
 
 function* onMounted() {
   while (true) { // eslint-disable-line no-constant-condition
-    yield take(formActions.MOUNTED);
+    // TODO 'exchangeDirection', 'fromCreateBankRoute' etc is too tangled. Needs a better approach
+    const {
+      payload: {
+        routeState: {
+          exchangeDirection,
+          fromCreateBankRoute = false
+        } = {}
+      }
+    } = yield take(formActions.MOUNTED);
+
+    if (fromCreateBankRoute !== true) {
+      yield put(formActions.reset());
+    }
 
     const rates = yield select(exchangeRatesSelectors.getData);
     const quota = yield select(quotaSelectors.getData);
@@ -56,7 +68,8 @@ function* onMounted() {
       rates,
       quota,
       bankAccounts,
-      paymentMethods
+      paymentMethods,
+      exchangeDirection
     }));
   }
 }
@@ -204,7 +217,7 @@ function* processConfirmSpendingError() {
 function* redirectToSuccessPage(router) {
   // TODO DRY for url
   // TODO get rid of router
-  yield call(router.push, 'convert/success');
+  yield call(router.push, '/convert/success');
 }
 
 function* showSuccessNotification() {

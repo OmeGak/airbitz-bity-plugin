@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import Header from './app-header';
 import Footer from './footer';
-import Menu from './menu';
 import styles from './styles.less';
 
 const propTypes = {
@@ -15,7 +14,6 @@ const defaultProps = {
 export default function Shell({ children }) {
   return (
     <div className={styles.root}>
-      <Menu />
       <div className={styles.app}>
         <div className={styles.header}>
           <Header />

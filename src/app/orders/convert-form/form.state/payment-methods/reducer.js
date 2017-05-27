@@ -6,6 +6,7 @@ export default function paymentMethodsReducer(state, action) {
   switch (action.type) {
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
+    case exchangePartiesActions.EXCHANGE_DIRECTION_CHANGED:
       return onOutputCurrencyChanged(state, action);
     case actions.PAYMENT_METHODS_CHANGED:
       return onPaymentMethodsChanged(state, action);

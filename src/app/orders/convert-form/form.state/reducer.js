@@ -49,12 +49,14 @@ const initialState = {
   quota: {},
   exchangeParties: {
     input: {
+      isFiatCurrency: true,
       amount: EMPTY_AMOUNT,
       selectedCurrencyCode: currencyListA[0],
       currencyList: currencyListA,
       isSourceOfChanges: false
     },
     output: {
+      isFiatCurrency: false,
       amount: EMPTY_AMOUNT,
       selectedCurrencyCode: currencyListB[0],
       currencyList: currencyListB,
@@ -112,7 +114,7 @@ export default function convertFormReducer(state = initialState, action = {}) {
 }
 
 function onSetupInitialData(state, { payload }) {
-  const { rates, quota, bankAccounts, paymentMethods } = payload;
+  const { rates, quota, bankAccounts, paymentMethods, exchangeDirection } = payload;
 
   let nextState = { ...state };
 
@@ -120,12 +122,22 @@ function onSetupInitialData(state, { payload }) {
   nextState = convertFormReducer(nextState, quotaActions.quotaChanged(quota));
   nextState = convertFormReducer(nextState, bankAccountsActions.allAccountsChanged(bankAccounts));
   nextState = convertFormReducer(nextState, paymentMethodsActions.paymentMethodsChanged(paymentMethods));
+  nextState = convertFormReducer(nextState, exchangePartiesActions.exchangeDirectionChanged(exchangeDirection));
 
   return nextState;
 }
 
-function resetState() {
-  return { ...initialState };
+function resetState(state) {
+  // daemon can send 'RESET' after 'MOUNTED'. So we need preserve this value
+  // TODO this needs a better approach
+  const { form: { mounted } } = state;
+  return {
+    ...initialState,
+    form: {
+      ...initialState.form,
+      mounted
+    }
+  };
 }
 
 function processOtherActions(state, action) {
@@ -206,6 +218,7 @@ function updateBankAccounts(state, action) {
   switch (action.type) {
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
+    case exchangePartiesActions.EXCHANGE_DIRECTION_CHANGED:
       return bankAccountsReducer(state, action);
     default:
       return state;
@@ -216,6 +229,7 @@ function updatePaymentMethods(state, action) {
   switch (action.type) {
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
+    case exchangePartiesActions.EXCHANGE_DIRECTION_CHANGED:
       return paymentMethodsReducer(state, action);
     default:
       return state;

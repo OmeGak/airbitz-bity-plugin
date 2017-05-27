@@ -12,6 +12,8 @@ import EstimatedPriceNotification from './estimated-price-notification';
 import styles from './form.less';
 
 const propTypes = {
+  // TODO get rid of 'routeState'
+  routeState: PropTypes.object,
   isExchangeFromCryptoToFiat: PropTypes.bool.isRequired,
   hasBankAccounts: PropTypes.bool.isRequired,
   showBankAccounts: PropTypes.bool.isRequired,
@@ -21,11 +23,16 @@ const propTypes = {
   onUnmounted: PropTypes.func.isRequired
 };
 
+const defaultProps = {
+  routeState: {}
+};
+
 export default class ConvertForm extends Component {
   static propTypes = propTypes;
+  static defaultProps = defaultProps;
 
   componentDidMount() {
-    this.props.onMounted();
+    this.props.onMounted(this.props.routeState);
   }
 
   componentWillUnmount() {
@@ -74,10 +81,12 @@ export default class ConvertForm extends Component {
       submitBtnNode = null;
     }
 
+    const headerTitle = isExchangeFromCryptoToFiat ? 'Sell Bitcoins' : 'Buy Bitcoins';
+
     return (
       <Card>
         <CardHeader className={styles.cardHeader}>
-          <div className={styles.headerTitle}>Buy / Sell</div>
+          <div className={styles.headerTitle}>{headerTitle}</div>
           <ExchangeRateWidget className={styles.exchangeRateWidget} />
         </CardHeader>
         <CardBody>

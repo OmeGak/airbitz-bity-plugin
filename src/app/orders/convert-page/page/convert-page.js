@@ -8,6 +8,7 @@ import styles from './styles.less';
 
 const propTypes = {
   router: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   onMounted: PropTypes.func.isRequired,
   onUnmounted: PropTypes.func.isRequired,
   isPreparationStarted: PropTypes.bool.isRequired,
@@ -47,9 +48,10 @@ class ConvertPage extends Component {
     }
 
     if (this.props.isPreparationCompleted) {
+      // TODO get rid of 'routeState'
       return (
         <Page>
-          <ConvertForm />
+          <ConvertForm routeState={this.props.location.state} />
         </Page>
       );
     }

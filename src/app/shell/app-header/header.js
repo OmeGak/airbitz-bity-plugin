@@ -1,20 +1,19 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import classNames from 'classnames';
 import styles from './styles.less';
 
 import Logo from './logo';
-import MenuBtn from './menu-btn';
 
 const propTypes = {
-  inverted: PropTypes.bool,
-  onMenuBtnClick: PropTypes.func.isRequired
+  inverted: PropTypes.bool
 };
 
 const defaultProps = {
   inverted: false
 };
 
-export default function AppHeader({ inverted, onMenuBtnClick }) {
+export default function AppHeader({ inverted }) {
   const className = classNames(styles.header, {
     [styles.inverted]: inverted
   });
@@ -22,10 +21,9 @@ export default function AppHeader({ inverted, onMenuBtnClick }) {
   return (
     <div className={className}>
       <div className={styles.logoWrapper}>
-        <Logo className={styles.logo} inverted={inverted} />
-      </div>
-      <div className={styles.menuBtnWrapper}>
-        <MenuBtn className={styles.menuBtn} inverted={inverted} onClick={onMenuBtnClick} />
+        <Link to="/">
+          <Logo className={styles.logo} inverted={inverted} />
+        </Link>
       </div>
     </div>
   );

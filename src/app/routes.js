@@ -14,12 +14,13 @@ import VerifyPhonePage from './phone/verify-phone-page/page';
 import OrderDetailsPage from './orders/order-details-page';
 import CreateBankAccountPage from './bank-accounts/create-page/page';
 import AboutUsPage from './about-us-page';
+import HomePage from './home-page';
 
 export default {
   path: '/',
   component: Shell,
   indexRoute: {
-    onEnter: (nextState, replace) => replace('/convert')
+    component: protectedRoute(HomePage)
   },
   childRoutes: [
     {

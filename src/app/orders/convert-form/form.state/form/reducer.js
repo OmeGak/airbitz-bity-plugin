@@ -8,6 +8,7 @@ export default function formReducer(state, action) {
       return onMounted(state, action);
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
+    case exchangePartiesActions.EXCHANGE_DIRECTION_CHANGED:
       return onOutputCurrencyChanged(state, action);
     default:
       return state;

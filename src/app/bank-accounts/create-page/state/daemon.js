@@ -10,6 +10,8 @@ import {
 
 import { add as addOp } from '../../../common-data/bank-accounts';
 
+import { backToConvertPageLink } from '../constants';
+
 let onBankAccountAddedTaskStarted = false;
 
 export default function addBankAccountPageDaemonFactory() {
@@ -99,7 +101,6 @@ function* onBankAccountAdded(router) {
     }
 
     // TODO get rid of router
-    // TODO DRY for URL
-    router.replace('/convert');
+    router.replace(backToConvertPageLink);
   }
 }

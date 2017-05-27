@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Card, CardHeader, CardBody } from '../../lib/card';
 import ExternalLink from '../../lib/external-link';
 import Link from '../../lib/link';
+import AboutUsLink from '../../lib/about-us-link';
 
 import styles from './styles.less';
 
@@ -57,7 +58,7 @@ export default function SuccessSignupWidget(props) {
       notesNode = (
         <div>
           <div>A confirmation email was sent to you. Please check your inbox,
-          including the spam or junk folder, and follow the instructions to activate your account.
+            including the spam or junk folder, and follow the instructions to activate your account.
           </div>
         </div>
       );
@@ -65,7 +66,7 @@ export default function SuccessSignupWidget(props) {
     case hasPhoneNumber:
       notesNode = (
         <div>A confirmation SMS was sent to you. Verify your phone number
-        on <ExternalLink href="https://bity.com/">bity.com</ExternalLink></div>
+          on <ExternalLink href="https://bity.com/">bity.com</ExternalLink></div>
       );
       break;
   }
@@ -99,6 +100,7 @@ export default function SuccessSignupWidget(props) {
         <div className={styles.footer}>
           <Link to="/login" replace className="btn btn-primary btn-block">Login</Link>
         </div>
+        <AboutUsLink />
       </CardBody>
     </Card>
   );

@@ -1,0 +1,70 @@
+:local {
+  .page {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+
+    @media (max-height: 440px) {
+      position: relative;
+      top: auto;
+      bottom: auto;
+      height: 355px;
+    }
+  }
+
+  .card,
+  .cardBody {
+    position: relative;
+    height: 100%;
+  }
+
+  .mainButtons {
+    position: relative;
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+
+    .btnSection {
+      display: block;
+      width: 100%;
+    }
+
+    .btnSection + .btnSection {
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .footerButtons {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 0);
+
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    max-width: 500px;
+
+    .btnSection {
+      display: table-cell;
+      width: 100% / 3;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .btn {
+      display: inline-block;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
+  .mainButtons + .footerButtons {
+    margin-top: 40px;
+  }
+}

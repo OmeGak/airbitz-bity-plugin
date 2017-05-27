@@ -10,6 +10,7 @@ export default function bankAccountsReducer(state, action) {
       return onAvailableAccountsChanged(state, action);
     case exchangePartiesActions.OUTPUT_CURRENCY_CODE_CHANGED:
     case exchangePartiesActions.SWAPPED_AROUND:
+    case exchangePartiesActions.EXCHANGE_DIRECTION_CHANGED:
       return calcAndUpdateAvailableAccounts(state, action);
     case actions.SELECTED_ACCOUNT_ID_CHANGED:
       return onSelectedAccountIdChanged(state, action);

@@ -20,8 +20,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onMounted() {
-      dispatch(actions.mounted());
+    onMounted(exchangeDirection) {
+      dispatch(actions.mounted(exchangeDirection));
     },
     onUnmounted() {
       dispatch(actions.unmounted());

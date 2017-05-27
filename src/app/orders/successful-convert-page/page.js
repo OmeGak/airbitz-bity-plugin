@@ -30,6 +30,11 @@ export default function SuccessfulConvertPage(props) {
       content = null;
   }
 
+  const createAnotherOrderLink = {
+    pathname: '/convert',
+    state: { exchangeDirection }
+  };
+
   return (
     <Page>
       <Card>
@@ -39,7 +44,7 @@ export default function SuccessfulConvertPage(props) {
           <div className={styles.section}>
             <div className={styles.buttons}>
               <Link to="/orders" className={btnClassName}>Go to history</Link>
-              <Link to="/convert" className={btnClassName}>Create another order</Link>
+              <Link to={createAnotherOrderLink} className={btnClassName}>Create another order</Link>
             </div>
           </div>
         </CardBody>

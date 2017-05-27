@@ -47,6 +47,14 @@ export function swap() {
   };
 }
 
+export const EXCHANGE_DIRECTION_CHANGED = `${prefix}::EXCHANGE_DIRECTION_CHANGED`;
+export function exchangeDirectionChanged(exchangeDirection) {
+  return {
+    type: EXCHANGE_DIRECTION_CHANGED,
+    payload: { exchangeDirection }
+  };
+}
+
 export const RATES_CHANGED = `${prefix}::RATES_CHANGED`;
 export function ratesChanged(rates) {
   return {

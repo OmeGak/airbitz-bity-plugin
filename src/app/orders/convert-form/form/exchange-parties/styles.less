@@ -46,6 +46,17 @@
     font-weight: bold;
   }
 
+  .arrow {
+    display: inline-block;
+    width: 18px;
+    height: auto;
+    vertical-align: middle;
+
+    @media (max-width: 800px) {
+      transform: rotate(90deg);
+    }
+  }
+
   @media (max-width: 400px) {
     :global(.form-control) {
       font-size: 13px;

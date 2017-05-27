@@ -6,6 +6,7 @@ import Spinner from '../../lib/spinner';
 import Link from '../../lib/link';
 import ErrorMsg from './error-msg';
 import * as utils from './utils';
+import AboutUsLink from '../../lib/about-us-link';
 
 import styles from './signup-form.less';
 
@@ -117,6 +118,7 @@ export default class SignupForm extends Component {
             <span>
               <Link to="/login" replace>Login</Link>
             </span>
+            <AboutUsLink />
           </div>
           {/* / other options */}
         </CardBody>

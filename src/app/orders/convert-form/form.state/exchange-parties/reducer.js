@@ -1,3 +1,5 @@
+import { exchangeDirection as exchangeDirections } from '../../../../common-data/currencies';
+
 import * as actions from './actions';
 import * as utils from './utils';
 
@@ -15,6 +17,8 @@ export default function exchangePartiesReducer(state, action) {
       return onRatesChanged(state, action);
     case actions.SWAPPED_AROUND:
       return onSwap(state, action);
+    case actions.EXCHANGE_DIRECTION_CHANGED:
+      return onExchangeDirectionChanged(state, action);
     default:
       return state;
   }
@@ -147,21 +151,93 @@ function onRatesChanged(state) {
 }
 
 function onSwap(state) {
-  const {
-    exchangeParties: {
-      input: prevInput,
-      output: prevOutput
-    }
-  } = state;
+  const currentExchangeDirection = getCurrentExchangeDirection(state);
+
+  let nextExchangeDirection;
+  switch (currentExchangeDirection) {
+    case exchangeDirections.CRYPTO_TO_FIAT:
+      nextExchangeDirection = exchangeDirections.FIAT_TO_CRYPTO;
+      break;
+    case exchangeDirections.FIAT_TO_CRYPTO:
+      nextExchangeDirection = exchangeDirections.CRYPTO_TO_FIAT;
+      break;
+  }
+
+  return exchangePartiesReducer(state, actions.exchangeDirectionChanged(nextExchangeDirection));
+}
+
+const validExchangeDirections = [
+  exchangeDirections.CRYPTO_TO_FIAT,
+  exchangeDirections.FIAT_TO_CRYPTO
+];
+function onExchangeDirectionChanged(state, { payload: { exchangeDirection } }) {
+  let nextExchangeDirection = exchangeDirections.FIAT_TO_CRYPTO;
+  if (validExchangeDirections.indexOf(exchangeDirection) !== -1) {
+    nextExchangeDirection = exchangeDirection;
+  }
+
+  const currentExchangeDirection = getCurrentExchangeDirection(state);
+  if (nextExchangeDirection === currentExchangeDirection) {
+    return state;
+  }
+
+  const fiatPart = getFiatPart(state);
+  const cryptoPart = getCryptoPart(state);
+
+  let input;
+  let output;
+  switch (nextExchangeDirection) {
+    case exchangeDirections.FIAT_TO_CRYPTO:
+      input = fiatPart;
+      output = cryptoPart;
+      break;
+    case exchangeDirections.CRYPTO_TO_FIAT:
+      input = cryptoPart;
+      output = fiatPart;
+      break;
+  }
 
   const nextState = {
     ...state,
     exchangeParties: {
       ...state.exchangeParties,
-      input: prevOutput,
-      output: prevInput
+      input,
+      output
     }
   };
-
   return recalculateAndUpdateOutputAmount(nextState);
+}
+
+function getCurrentExchangeDirection(state) {
+  const { exchangeParties: { input, output } } = state;
+  switch (true) {
+    case input.isFiatCurrency === true && output.isFiatCurrency === false:
+      return exchangeDirections.FIAT_TO_CRYPTO;
+    case input.isFiatCurrency === false && output.isFiatCurrency === true:
+      return exchangeDirections.CRYPTO_TO_FIAT;
+    default:
+      throw new Error('Invalid state');
+  }
+}
+
+function getFiatPart(state) {
+  const { exchangeParties: { input, output } } = state;
+  if (input.isFiatCurrency === true) {
+    return input;
+  }
+  if (output.isFiatCurrency === true) {
+    return output;
+  }
+  throw new Error('Invalid state');
+}
+
+function getCryptoPart(state) {
+  const { exchangeParties: { input, output } } = state;
+  if (input.isFiatCurrency === false) {
+    return input;
+  }
+  if (output.isFiatCurrency === false) {
+    return output;
+  }
+  throw new Error('Invalid state');
 }

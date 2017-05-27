@@ -1,9 +1,12 @@
 import { prefix } from '../constants';
 
 export const MOUNTED = `${prefix}::MOUNTED`;
-export function mounted() {
+export function mounted(routeState) {
   return {
-    type: MOUNTED
+    type: MOUNTED,
+    payload: {
+      routeState
+    }
   };
 }
 

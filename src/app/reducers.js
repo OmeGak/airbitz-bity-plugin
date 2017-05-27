@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import createBity from './create-bity';
 import { setup as setupAuthStore } from './common-data/auth';
 import setupNotifications from './notifications/setup';
-import setupSidebarMenu from './shell/menu/state/setup';
 import { setupAccountInfoPage } from './account/account-info-page/state';
 import { setup as setupAccountInfoStore } from './common-data/account-info';
 import { setup as setupOrdersHistory } from './orders/orders-history/data';
@@ -31,7 +30,6 @@ let cfg = {
 
 cfg = setupAuthStore(cfg, bity);
 cfg = setupNotifications(cfg);
-cfg = setupSidebarMenu(cfg);
 cfg = setupAccountInfoPage(cfg);
 cfg = setupAccountInfoStore(cfg, bity);
 cfg = setupOrdersHistory(cfg, bity);
